@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Hello Customer Fintech Solutions — guided loan assistance for personal, home, business and other financing requirements.">
+  <meta property="og:title" content="Hello Customer Fintech Solutions | Loan Assistance">
+  <meta property="og:description" content="Explore suitable loan options with simple, transparent and guided assistance.">
+  <meta property="og:type" content="website">
+  <title>Hello Customer Fintech Solutions | Loan Assistance</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand" href="#top" aria-label="Hello Customer Fintech Solutions home">
+      <span class="brand-mark">HC</span>
+      <span><strong>Hello Customer</strong><small>FINTECH SOLUTIONS</small></span>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">☰</button>
+    <nav id="navLinks">
+      <a href="#loans">Loans</a>
+      <a href="#calculator">EMI Calculator</a>
+      <a href="#process">Process</a>
+      <a href="#faqs">FAQs</a>
+      <a class="nav-cta" href="#eligibility">Check Options</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <div class="pill">A Sundeep's Hub Group Business</div>
+      <h1>Find the right <span>loan option</span> for your needs.</h1>
+      <p class="hero-copy">Simple, transparent and guided assistance to understand loan options, documentation and the next steps.</p>
+      <div class="hero-actions">
+        <a class="btn primary" href="#eligibility">Check My Loan Options →</a>
+        <a class="btn secondary" href="#loans">Explore Loans</a>
+      </div>
+      <div class="trust-row">
+        <span>✓ Eligibility guidance</span><span>✓ Documentation support</span><span>✓ Application assistance</span>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="card-top"><span>Quick Loan Check</span><b>2–3 min</b></div>
+      <h3>Start with your requirement</h3>
+      <p>Choose a loan type and answer a few relevant questions.</p>
+      <a class="mini-start" href="#eligibility">Start Now →</a>
+      <div class="notice">Final approval, interest rate, terms and disbursal are decided by the respective lender.</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="loans">
+  <div class="container">
+    <div class="section-heading"><span>LOAN SOLUTIONS</span><h2>Choose your loan requirement</h2><p>Different needs require different loan paths. Select one to start a guided enquiry.</p></div>
+    <div class="loan-grid">
+      <button class="loan-tile" data-loan="Personal Loan"><i>👤</i><b>Personal Loan</b><small>Personal financial requirements</small></button>
+      <button class="loan-tile" data-loan="Home Loan"><i>🏠</i><b>Home Loan</b><small>Purchase, construction or renovation</small></button>
+      <button class="loan-tile" data-loan="Business Loan"><i>🏢</i><b>Business Loan</b><small>Working capital and expansion</small></button>
+      <button class="loan-tile" data-loan="Loan Against Property"><i>🏦</i><b>Loan Against Property</b><small>Secured funding against eligible property</small></button>
+      <button class="loan-tile" data-loan="Vehicle Loan"><i>🚗</i><b>Vehicle Loan</b><small>New or used vehicle financing</small></button>
+      <button class="loan-tile" data-loan="Education Loan"><i>🎓</i><b>Education Loan</b><small>Education funding in India or abroad</small></button>
+      <button class="loan-tile" data-loan="Loan Balance Transfer"><i>🔄</i><b>Balance Transfer</b><small>Explore transfer options for an existing loan</small></button>
+      <button class="loan-tile" data-loan="EMI Consolidation"><i>📉</i><b>EMI Consolidation</b><small>Review multiple existing obligations</small></button>
+    </div>
+  </div>
+</section>
+
+<section class="section calculator" id="calculator">
+  <div class="container calc-grid">
+    <div><span class="eyebrow">EMI CALCULATOR</span><h2>Plan your monthly repayment.</h2><p>Use the calculator for an estimate. Actual rates and terms depend on the lender and your profile.</p></div>
+    <div class="calc-card">
+      <label>Loan Amount <output id="amountOut">₹5,00,000</output><input id="amount" type="range" min="50000" max="5000000" step="10000" value="500000"></label>
+      <label>Interest Rate <output id="rateOut">12.00%</output><input id="rate" type="range" min="5" max="30" step="0.25" value="12"></label>
+      <label>Tenure <output id="tenureOut">5 Years</output><input id="tenure" type="range" min="1" max="20" step="1" value="5"></label>
+      <div class="emi-result"><small>Estimated monthly EMI</small><strong id="emi">₹11,122</strong><div><span>Principal <b id="principal">₹5,00,000</b></span><span>Interest <b id="interest">₹1,67,304</b></span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section flow-section" id="eligibility">
+  <div class="container">
+    <div class="section-heading"><span>SMART LOAN CHECK</span><h2>Explore a suitable loan path in a few simple steps.</h2><p>This is an enquiry-screening tool, not a loan approval or credit-score calculator.</p></div>
+    <div class="progress-wrap"><div><span id="stepLabel">Step 1 of 6</span><span id="progressPercent">17%</span></div><div class="progress"><span id="progressBar"></span></div></div>
+
+    <form id="eligibilityForm" class="flow-card" novalidate>
+      <div class="flow-step active" data-step="1">
+        <span class="kicker">01 / LOAN TYPE</span><h3>What do you need?</h3><p>Select the closest option.</p>
+        <div class="choice-grid">
+          <button type="button" class="choice" data-loan="Personal Loan"><i>👤</i><b>Personal Loan</b><small>Personal needs</small></button>
+          <button type="button" class="choice" data-loan="Home Loan"><i>🏠</i><b>Home Loan</b><small>Property purchase / construction</small></button>
+          <button type="button" class="choice" data-loan="Business Loan"><i>🏢</i><b>Business Loan</b><small>Business funding</small></button>
+          <button type="button" class="choice" data-loan="Loan Against Property"><i>🏦</i><b>Loan Against Property</b><small>Secured funding</small></button>
+          <button type="button" class="choice" data-loan="Vehicle Loan"><i>🚗</i><b>Vehicle Loan</b><small>Vehicle financing</small></button>
+          <button type="button" class="choice" data-loan="Education Loan"><i>🎓</i><b>Education Loan</b><small>Education funding</small></button>
+          <button type="button" class="choice" data-loan="Loan Balance Transfer"><i>🔄</i><b>Balance Transfer</b><small>Existing loan transfer</small></button>
+          <button type="button" class="choice" data-loan="EMI Consolidation"><i>📉</i><b>EMI Consolidation</b><small>Multiple obligations</small></button>
+        </div>
+        <p class="error" id="loanError"></p>
+      </div>
+
+      <div class="flow-step" data-step="2">
+        <span class="kicker">02 / REQUIREMENT</span><h3 id="requirementTitle">Tell us about your requirement.</h3>
+        <div id="dynamicRequirement"></div>
+      </div>
+
+      <div class="flow-step" data-step="3">
+        <span class="kicker">03 / PROFILE</span><h3>Tell us about your income profile.</h3>
+        <div class="form-grid">
+          <label>Employment Type *<select name="employment" required><option value="">Select</option><option>Salaried</option><option>Self-employed / Business</option><option>Professional</option><option>Other</option></select></label>
+          <label>Approx. Monthly Income *<input name="income" type="number" min="0" required placeholder="e.g. 60000"></label>
+          <label id="experienceWrap">Work Experience<select name="experience"><option value="">Select</option><option>Less than 1 year</option><option>1–2 years</option><option>2–5 years</option><option>5+ years</option></select></label>
+          <label id="vintageWrap" class="hide">Business Vintage<select name="businessVintage"><option value="">Select</option><option>Less than 1 year</option><option>1–2 years</option><option>2–5 years</option><option>5+ years</option></select></label>
+        </div>
+      </div>
+
+      <div class="flow-step" data-step="4">
+        <span class="kicker">04 / EXISTING OBLIGATIONS</span><h3>Do you currently have loans or EMIs?</h3>
+        <div class="segmented"><button type="button" data-existing="Yes">Yes</button><button type="button" data-existing="No">No</button></div>
+        <div id="existingFields" class="hide">
+          <div class="form-grid">
+            <label>Total Monthly EMI<input name="existingEmi" type="number" min="0" placeholder="e.g. 15000"></label>
+            <label>Existing Loan Type<select name="existingLoanType"><option value="">Select</option><option>Personal Loan</option><option>Home Loan</option><option>Business Loan</option><option>Vehicle Loan</option><option>Loan Against Property</option><option>Credit Card / Other</option></select></label>
+            <label>Approx. Outstanding Amount<input name="outstanding" type="number" min="0" placeholder="₹"></label>
+            <label>Approx. Remaining Tenure<select name="remainingTenure"><option value="">Select</option><option>Less than 1 year</option><option>1–3 years</option><option>3–5 years</option><option>5+ years</option></select></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="flow-step" data-step="5">
+        <span class="kicker">05 / CONTACT</span><h3>Where can we reach you?</h3>
+        <div class="form-grid">
+          <label>Full Name *<input name="name" required autocomplete="name" placeholder="Your name"></label>
+          <label>Mobile Number *<input name="mobile" required inputmode="numeric" pattern="[0-9]{10}" maxlength="10" placeholder="10-digit mobile"></label>
+          <label>Email<input name="email" type="email" autocomplete="email" placeholder="you@example.com"></label>
+          <label>State *<select name="state" required><option value="">Select</option><option>Telangana</option><option>Andhra Pradesh</option><option>Other</option></select></label>
+          <label>City *<input name="city" required placeholder="e.g. Hyderabad"></label>
+          <label>Preferred Callback Time<select name="callbackTime"><option value="">Any convenient time</option><option>Morning</option><option>Afternoon</option><option>Evening</option></select></label>
+        </div>
+        <label class="full-field">Additional Requirement<textarea name="message" rows="4" placeholder="Anything else you'd like us to know?"></textarea></label>
+        <label class="consent"><input type="checkbox" name="consent" required> I agree to be contacted regarding my enquiry, understand that this screening does not guarantee loan approval, and have read the <a href="./privacy.html" target="_blank" rel="noopener">Privacy Policy</a> and <a href="./terms.html" target="_blank" rel="noopener">Terms &amp; Conditions</a>.</label>
+        <p class="safe-note">Never share OTPs, passwords, card PINs or banking passwords through this form.</p>
+      </div>
+
+      <div class="flow-step" data-step="6">
+        <span class="kicker">06 / SCREENING RESULT</span>
+        <div class="result-card">
+          <div class="check">✓</div><h3>Your enquiry is ready.</h3>
+          <p>Based on the information provided, you may be able to explore loan options. Final eligibility, rate, amount, tenure and approval are determined by the respective lender.</p>
+          <div class="summary" id="resultSummary"></div>
+          <div class="priority"><b>Enquiry priority:</b> <span id="leadPriority">Standard</span><small>Internal lead-priority only; not a credit score or approval.</small></div>
+          <button class="btn primary submit-btn" id="submitLead" type="submit">Submit My Enquiry</button>
+          <p class="form-status" id="formStatus" role="status"></p>
+        </div>
+      </div>
+
+      <div class="flow-actions"><button class="btn secondary" type="button" id="backBtn">← Back</button><button class="btn primary" type="button" id="nextBtn">Continue →</button></div>
+    </form>
+  </div>
+</section>
+
+<section class="section light" id="process">
+  <div class="container"><div class="section-heading"><span>OUR PROCESS</span><h2>Simple. Transparent. Guided.</h2></div>
+    <div class="process-grid"><div><b>01</b><h3>Understand</h3><p>We understand your requirement and basic profile.</p></div><div><b>02</b><h3>Explore</h3><p>We help you understand potentially suitable options.</p></div><div><b>03</b><h3>Documents</h3><p>We guide you on the information and documents generally required.</p></div><div><b>04</b><h3>Apply</h3><p>Application and final decisions remain subject to the lender.</p></div></div>
+  </div>
+</section>
+
+<section class="section" id="faqs">
+  <div class="container faq"><div class="section-heading"><span>FAQ</span><h2>Common questions</h2></div>
+    <details><summary>Does completing the form guarantee a loan?</summary><p>No. It is only an enquiry and preliminary screening. The respective lender decides eligibility, rate, amount, tenure and approval.</p></details>
+    <details><summary>Will you ask for OTPs or banking passwords?</summary><p>No. Never provide OTPs, PINs, passwords or other confidential banking credentials through this website or to anyone claiming to represent us.</p></details>
+    <details><summary>Can I enquire about more than one loan?</summary><p>Yes. Submit a separate enquiry for each requirement, or mention the additional requirement in the message field.</p></details>
+    <details><summary>What happens after I submit?</summary><p>Your enquiry can be reviewed by our team, who may contact you for clarification and discuss the next steps.</p></details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container footer-grid">
+    <div><div class="brand footer-brand"><span class="brand-mark">HC</span><span><strong>Hello Customer</strong><small>FINTECH SOLUTIONS</small></span></div><p>Loan assistance business under the Sundeep's Hub group.</p></div>
+    <div><b>Business</b><a href="#loans">Loan Solutions</a><a href="#eligibility">Eligibility Check</a><a href="#calculator">EMI Calculator</a></div>
+    <div><b>Contact</b><a href="tel:+919618321100">+91 96183 21100</a><a href="https://wa.me/919618321100" target="_blank" rel="noopener">WhatsApp</a></div>
+  </div>
+  <div class="container footer-bottom">© <span id="year"></span> Hello Customer Fintech Solutions. All rights reserved. <span>•</span> Part of Sundeep's Hub.
+    <div class="legal-links"><a href="./privacy.html">Privacy Policy</a><a href="./terms.html">Terms &amp; Conditions</a></div>
+  </div>
+</footer>
+
+<script src="./script.js"></script>
+</body>
+</html>
