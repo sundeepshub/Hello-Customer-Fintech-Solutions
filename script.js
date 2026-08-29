@@ -1,181 +1,109 @@
-/* Hello Customer Fintech Solutions — GitHub Pages JS
-   Set APPS_SCRIPT_URL to your deployed Google Apps Script Web App URL.
-*/
-const APPS_SCRIPT_URL = "";
-const WHATSAPP_NUMBER = "919618321100"; // Hello Customer Fintech Solutions business WhatsApp
-const WHATSAPP_DEFAULT_MESSAGE = "Hi, I'd like to know more about loan options.";
-const whatsappLink = (msg) => `https://wa.me/${WHATSAPP_NUMBER}${msg ? "?text=" + encodeURIComponent(msg) : ""}`;
+/* Hello Customer Fintech Solutions — dynamic loan enquiry flow */
+const APPS_SCRIPT_URL = 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';
+const BUSINESS_EMAIL = 'hellocustomerfirst@gmail.com';
+const BUSINESS_WHATSAPP = '919618321100'; // change if required
 
-/* Wire every WhatsApp link on the page (footer + floating button) to WHATSAPP_NUMBER,
-   so changing that one constant actually updates the whole site, as the README promises. */
-function applyWhatsAppLinks(){
-  document.querySelectorAll('a[data-whatsapp]').forEach(a => {
-    a.href = whatsappLink(a.dataset.whatsappMsg || WHATSAPP_DEFAULT_MESSAGE);
-  });
-  document.querySelectorAll('a[href^="https://wa.me/"]').forEach(a => {
-    a.href = whatsappLink(WHATSAPP_DEFAULT_MESSAGE);
-  });
-  const tel = document.querySelector('a[href^="tel:"]');
-  if (tel) tel.href = "tel:+" + WHATSAPP_NUMBER;
-}
-applyWhatsAppLinks();
+const testimonials = [
+['Personal Loan','“The biggest help was getting my requirement organised before approaching a lender.”','Illustrative website testimonial'],
+['Home Loan','“The questions about the property made me realise which documents I needed to keep ready.”','Illustrative website testimonial'],
+['Education Loan','“The overseas education section was much easier than explaining everything on a call.”','Illustrative website testimonial'],
+['Business Loan','“They asked about turnover, vintage and banking instead of giving me a generic answer.”','Illustrative website testimonial'],
+['CIBIL Support','“I could explain the old issue and understand what information would be useful next.”','Illustrative website testimonial'],
+['Consolidation','“Listing every EMI separately made the problem much clearer.”','Illustrative website testimonial'],
+['Personal Loan','“The process felt like a conversation rather than a sales pitch.”','Illustrative website testimonial'],
+['Home Loan','“The property questions helped me prepare before discussing the application.”','Illustrative website testimonial'],
+['Business Loan','“The focus on business documentation was useful for my case.”','Illustrative website testimonial'],
+['CIBIL Support','“I appreciated that nobody promised an approval based on a website form.”','Illustrative website testimonial'],
+['Education Loan','“Course, country and university details were easy to provide.”','Illustrative website testimonial'],
+['Consolidation','“I wanted one EMI instead of many and the form captured each commitment.”','Illustrative website testimonial'],
+['Personal Loan','“The team understood the purpose of the loan before talking about documents.”','Illustrative website testimonial'],
+['Home Loan','“The balance-transfer and top-up option matched what I was looking for.”','Illustrative website testimonial'],
+['Business Loan','“The business questions were practical and relevant.”','Illustrative website testimonial'],
+['CIBIL Support','“I could share my concern without feeling judged.”','Illustrative website testimonial'],
+['Consolidation','“Seeing outstanding amounts and tenure together made the next discussion easier.”','Illustrative website testimonial'],
+['Personal Loan','“The document guidance saved me time.”','Illustrative website testimonial'],
+['Home Loan','“The property type questions were detailed without being confusing.”','Illustrative website testimonial'],
+['Education Loan','“It was helpful to mention the country and course at the start.”','Illustrative website testimonial'],
+['Business Loan','“The form asked about current account and turnover, which was relevant to my business.”','Illustrative website testimonial'],
+['CIBIL Support','“The process was transparent about lender decisions.”','Illustrative website testimonial'],
+['Consolidation','“The single-EMI message immediately described my problem.”','Illustrative website testimonial'],
+['Personal Loan','“I liked having the option to request a meeting.”','Illustrative website testimonial'],
+['Home Loan','“I received a clear list of what to send after the enquiry.”','Illustrative website testimonial'],
+['Education Loan','“The overseas study questions were straightforward.”','Illustrative website testimonial'],
+['Business Loan','“The conversation was about understanding my business first.”','Illustrative website testimonial'],
+['CIBIL Support','“The website did not pretend to be a credit bureau.”','Illustrative website testimonial'],
+['Consolidation','“Capturing each EMI separately was a great idea.”','Illustrative website testimonial'],
+['Personal Loan','“A simple, organised enquiry made the next step easier.”','Illustrative website testimonial'],
+['Home Loan','“The team explained that the lender still makes the final decision.”','Illustrative website testimonial'],
+['Business Loan','“I felt someone was actually listening to the complete situation.”','Illustrative website testimonial'],
+['CIBIL Support','“The focus was on facts and documents rather than promises.”','Illustrative website testimonial'],
+['Consolidation','“The enquiry helped me put my multiple EMIs into one picture.”','Illustrative website testimonial'],
+['Education Loan','“I could share my course and destination details without a long phone call.”','Illustrative website testimonial'],
+['Personal Loan','“The process was professional and easy to follow.”','Illustrative website testimonial']
+];
 
-/* Floating WhatsApp button — matches the floating-contact-button pattern used
-   elsewhere on the HelloCustomer site. Injected from JS so it stays in one
-   place to maintain regardless of which HTML page includes this script. */
-(function addFloatingWhatsApp(){
-  const btn = document.createElement("a");
-  btn.className = "float-whatsapp";
-  btn.href = whatsappLink(WHATSAPP_DEFAULT_MESSAGE);
-  btn.target = "_blank";
-  btn.rel = "noopener";
-  btn.setAttribute("aria-label", "Chat on WhatsApp");
-  btn.innerHTML = "💬";
-  document.body.appendChild(btn);
-})();
-
-const $ = s => document.querySelector(s);
-const $$ = s => [...document.querySelectorAll(s)];
-const money = n => new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",maximumFractionDigits:0}).format(Number(n)||0);
-
-function emiCalc(){
-  const P=Number($("#amount").value), annual=Number($("#rate").value), years=Number($("#tenure").value), r=annual/1200, n=years*12;
-  const e=r===0?P/n:P*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
-  $("#amountOut").textContent=money(P);$("#rateOut").textContent=annual.toFixed(2)+"%";$("#tenureOut").textContent=years+(years===1?" Year":" Years");$("#emi").textContent=money(e);$("#principal").textContent=money(P);$("#interest").textContent=money(e*n-P);
-}
-["amount","rate","tenure"].forEach(id=>$("#"+id).addEventListener("input",emiCalc));emiCalc();
-
-$("#menuBtn").addEventListener("click",()=>{const open=$("#navLinks").classList.toggle("open");$("#menuBtn").setAttribute("aria-expanded",open)});
-$$("#navLinks a").forEach(a=>a.addEventListener("click",()=>$("#navLinks").classList.remove("open")));
-
-const cfg={
-"Personal Loan":{title:"How much do you need and why?",html:`<div class="form-grid"><label>Approx. Loan Amount *<input name="loanAmount" type="number" min="1" required placeholder="e.g. 500000"></label><label>Purpose *<select name="purpose" required><option value="">Select</option><option>Medical / Emergency</option><option>Education</option><option>Wedding</option><option>Debt Consolidation</option><option>Home Renovation</option><option>Personal Expenses</option><option>Other</option></select></label></div>`},
-"Home Loan":{title:"Tell us about the home requirement.",html:`<div class="form-grid"><label>Requirement *<select name="purpose" required><option value="">Select</option><option>Home Purchase</option><option>Construction</option><option>Home Extension / Renovation</option><option>Home Loan Balance Transfer</option></select></label><label>Approx. Property Value<input name="propertyValue" type="number" min="0" placeholder="₹"></label><label>Approx. Loan Amount *<input name="loanAmount" type="number" min="1" required placeholder="₹"></label><label>Property Location<input name="propertyLocation" placeholder="City / Area"></label></div>`},
-"Business Loan":{title:"Tell us about your business funding requirement.",html:`<div class="form-grid"><label>Approx. Loan Amount *<input name="loanAmount" type="number" min="1" required placeholder="₹"></label><label>Business Type *<select name="businessType" required><option value="">Select</option><option>Proprietorship</option><option>Partnership</option><option>Private Limited</option><option>LLP</option><option>Other</option></select></label><label>Approx. Annual Turnover<input name="turnover" type="number" min="0" placeholder="₹"></label><label>Purpose *<select name="purpose" required><option value="">Select</option><option>Working Capital</option><option>Business Expansion</option><option>Equipment</option><option>Other</option></select></label></div>`},
-"Loan Against Property":{title:"Tell us about the secured-loan requirement.",html:`<div class="form-grid"><label>Approx. Property Value *<input name="propertyValue" type="number" min="1" required placeholder="₹"></label><label>Approx. Loan Amount *<input name="loanAmount" type="number" min="1" required placeholder="₹"></label><label>Property Type *<select name="propertyType" required><option value="">Select</option><option>Residential</option><option>Commercial</option><option>Other</option></select></label><label>Purpose *<select name="purpose" required><option value="">Select</option><option>Business</option><option>Personal</option><option>Debt Consolidation</option><option>Other</option></select></label></div>`},
-"Vehicle Loan":{title:"Tell us about the vehicle requirement.",html:`<div class="form-grid"><label>Vehicle Type *<select name="vehicleType" required><option value="">Select</option><option>New Car</option><option>Used Car</option><option>Two Wheeler</option><option>Commercial Vehicle</option><option>Other</option></select></label><label>Approx. Vehicle Price<input name="vehicleValue" type="number" min="0" placeholder="₹"></label><label>Approx. Loan Amount *<input name="loanAmount" type="number" min="1" required placeholder="₹"></label><label>New or Used *<select name="vehicleCondition" required><option value="">Select</option><option>New</option><option>Used</option></select></label></div>`},
-"Education Loan":{title:"Tell us about the education requirement.",html:`<div class="form-grid"><label>Course / Program<input name="course" placeholder="e.g. MBA"></label><label>Study Location *<select name="studyLocation" required><option value="">Select</option><option>India</option><option>Abroad</option></select></label><label>Approx. Education Cost<input name="educationCost" type="number" min="0" placeholder="₹"></label><label>Approx. Loan Amount *<input name="loanAmount" type="number" min="1" required placeholder="₹"></label></div>`},
-"Loan Balance Transfer":{title:"Tell us about your existing loan.",html:`<div class="form-grid"><label>Existing Loan Type *<select name="existingLoanType" required><option value="">Select</option><option>Personal Loan</option><option>Home Loan</option><option>Business Loan</option><option>Vehicle Loan</option><option>Loan Against Property</option><option>Other</option></select></label><label>Approx. Outstanding *<input name="outstanding" type="number" min="1" required placeholder="₹"></label><label>Current EMI<input name="currentEmi" type="number" min="0" placeholder="₹"></label><label>Approx. Current Interest Rate<input name="currentRate" type="number" min="0" max="100" step=".01" placeholder="%"></label></div>`},
-"EMI Consolidation":{title:"Help us understand your existing obligations.",html:`<div class="form-grid"><label>Approx. Total Outstanding *<input name="outstanding" type="number" min="1" required placeholder="₹"></label><label>Total Monthly EMI *<input name="currentEmi" type="number" min="0" required placeholder="₹"></label><label>Number of Active Loans / Cards<input name="activeAccounts" type="number" min="1" placeholder="e.g. 3"></label><label>Approx. Loan Amount Needed<input name="loanAmount" type="number" min="0" placeholder="₹"></label></div>`}
-};
-
-const S={step:1,loan:"",a:{},score:0,priority:"Standard"};
-function chooseLoan(type){
-  S.loan=type;
-  $$(".choice").forEach(x=>x.classList.toggle("selected",x.dataset.loan===type));
-  $("#requirementTitle").textContent=cfg[type].title;$("#dynamicRequirement").innerHTML=cfg[type].html;
-  go(2);
-}
-$$(".loan-tile,.choice").forEach(x=>x.addEventListener("click",()=>chooseLoan(x.dataset.loan)));
-
-$$("[data-existing]").forEach(x=>x.addEventListener("click",()=>{$$("[data-existing]").forEach(b=>b.classList.remove("selected"));x.classList.add("selected");S.a.hasExistingLoans=x.dataset.existing;$("#existingFields").classList.toggle("hide",x.dataset.existing!=="Yes")}));
-$('select[name="employment"]').addEventListener("change",e=>{$("#experienceWrap").classList.toggle("hide",e.target.value==="Self-employed / Business");$("#vintageWrap").classList.toggle("hide",e.target.value!=="Self-employed / Business")});
-
-function collect(){
-  const active=$(`.flow-step[data-step="${S.step}"]`);
-  active.querySelectorAll("input,select,textarea").forEach(el=>{if(el.name)S.a[el.name]=el.type==="checkbox"?el.checked:el.value});
-}
-function valid(){
-  if(S.step===1&&!S.loan){$("#loanError").textContent="Please select a loan type.";return false}
-  const active=$(`.flow-step[data-step="${S.step}"]`);
-  for(const el of active.querySelectorAll("[required]"))if(!el.checkValidity()){el.reportValidity();return false}
-  if(S.step===4&&!S.a.hasExistingLoans){alert("Please select Yes or No.");return false}
-  return true
-}
-function go(n){
-  S.step=n;
-  $$(".flow-step").forEach(x=>x.classList.toggle("active",Number(x.dataset.step)===n));
-  const pct=Math.round(n/6*100);$("#stepLabel").textContent=`Step ${n} of 6`;$("#progressPercent").textContent=pct+"%";$("#progressBar").style.width=pct+"%";
-  $("#backBtn").style.visibility=n===1?"hidden":"visible";$("#nextBtn").style.display=n===6?"none":"inline-flex";
-  if(n===6)result();
-  $("#eligibility").scrollIntoView({behavior:"smooth",block:"start"});
-}
-$("#nextBtn").addEventListener("click",()=>{if(!valid())return;collect();go(S.step+1)});
-$("#backBtn").addEventListener("click",()=>go(Math.max(1,S.step-1)));
-
-function result(){
-  collect();const a=S.a,income=+a.income||0,emi=+(a.existingEmi||a.currentEmi)||0,amount=+a.loanAmount||0;
-  let score=0;if(["Salaried","Self-employed / Business","Professional"].includes(a.employment))score+=15;
-  if(income>=50000)score+=20;else if(income>=25000)score+=12;else if(income>0)score+=5;
-  if(emi===0)score+=15;else if(income&&emi/income<=.35)score+=18;else if(income&&emi/income<=.5)score+=10;
-  if(amount>0)score+=10;if(["Home Loan","Loan Against Property"].includes(S.loan)&&(+a.propertyValue||0)>0)score+=15;
-  if(S.loan==="Business Loan"&&(+a.turnover||0)>0)score+=10;if(S.a.hasExistingLoans==="No")score+=8;
-  S.score=score;S.priority=score>=65?"High":score>=40?"Medium":"Standard";$("#leadPriority").textContent=S.priority;
-  const esc=v=>String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
-  $("#resultSummary").innerHTML=[["Loan type",S.loan],["Approx. amount",money(amount)],["Employment",a.employment||"—"],["Monthly income",money(income)],["Existing EMI",money(emi)],["City",a.city||"—"]].map(x=>`<div><span>${esc(x[0])}</span><b>${esc(x[1])}</b></div>`).join("");
-}
-function buildLeadMessage(payload){
-  const lines=[
-    "Hello Customer Fintech Solutions — New Loan Enquiry",
-    "----------------------------------------",
-    `Lead Priority: ${payload.leadPriority || "Standard"}`,
-    `Loan Type: ${payload.loanType || "—"}`,
-    `Name: ${payload.name || "—"}`,
-    `Mobile: ${payload.mobile || "—"}`,
-    `Email: ${payload.email || "—"}`,
-    `State: ${payload.state || "—"}`,
-    `City: ${payload.city || "—"}`,
-    `Callback: ${payload.callbackTime || "—"}`,
-    `Loan Amount: ${payload.loanAmount ? money(payload.loanAmount) : "—"}`,
-    `Purpose: ${payload.purpose || "—"}`,
-    `Employment: ${payload.employment || "—"}`,
-    `Monthly Income: ${payload.income ? money(payload.income) : "—"}`,
-    `Existing Loans: ${payload.hasExistingLoans || "—"}`,
-    `Existing EMI: ${(payload.existingEmi || payload.currentEmi) ? money(payload.existingEmi || payload.currentEmi) : "—"}`,
-    `Outstanding: ${payload.outstanding ? money(payload.outstanding) : "—"}`,
-    "",
-    `Message: ${payload.message || "—"}`
-  ];
-  return lines.join("\n");
-}
-
-function showThankYou(payload){
-  const msg=buildLeadMessage(payload);
-  const wa=whatsappLink(msg);
-  $("#resultSummary").innerHTML=`
-    <div><span>Loan type</span><b>${String(payload.loanType||"—")}</b></div>
-    <div><span>Lead ID</span><b>${String(payload.leadId||"Pending")}</b></div>
-    <div><span>Customer email</span><b>${String(payload.email||"—")}</b></div>
-    <div><span>Status</span><b>Enquiry submitted ✓</b></div>`;
-  $(".result-card").innerHTML=`
-    <div class="check">✓</div>
-    <h3>Thank you, ${String(payload.name||"Customer")}!</h3>
-    <p>Your loan enquiry has been received successfully.</p>
-    <div class="thankyou-box">
-      <strong>What happens next?</strong>
-      <p>Our team will review your enquiry and contact you regarding the next steps.</p>
-      <p><strong>Please send the required documents by email to:</strong><br>
-      <a href="mailto:hellocustomerfirst@gmail.com">hellocustomerfirst@gmail.com</a></p>
-      <p class="doc-note">Please do not send OTPs, passwords, card PINs or banking passwords.</p>
-    </div>
-    <div class="summary" id="resultSummary"></div>
-    <div class="priority"><b>Enquiry priority:</b> <span>${String(payload.leadPriority||"Standard")}</span>
-      <small>Internal lead-priority only; not a credit score or loan approval.</small></div>
-    <div class="thankyou-actions">
-      <a class="btn primary" href="${wa}" target="_blank" rel="noopener">Send Details on WhatsApp →</a>
-      <a class="btn secondary" href="mailto:hellocustomerfirst@gmail.com?subject=Loan%20Documents%20-%20${encodeURIComponent(payload.name||"Customer")}&body=Hello%20Hello%20Customer%20Fintech%20Solutions%2C%0A%0APlease%20find%20my%20required%20loan%20documents%20attached.%0A%0AName%3A%20${encodeURIComponent(payload.name||"")}%0AMobile%3A%20${encodeURIComponent(payload.mobile||"")}%0A">Email Documents</a>
-    </div>
-    <p class="form-status success">Thank you! A confirmation email has been requested for your email address.</p>`;
-}
-
-$("#eligibilityForm").addEventListener("submit",async e=>{
-  e.preventDefault();collect();if(!valid())return;result();
-  const payload={...S.a,loanType:S.loan,leadScore:S.score,leadPriority:S.priority,source:"Hello Customer Fintech Solutions - Loans Landing Page",timestamp:new Date().toISOString()};
-  const btn=$("#submitLead");btn.disabled=true;btn.textContent="Submitting...";
-  try{
-    if(!APPS_SCRIPT_URL){
-      $("#formStatus").textContent="Please configure the Google Apps Script Web App URL in script.js before accepting live enquiries.";
-      btn.disabled=false;btn.textContent="Submit My Enquiry";
-      return;
-    }
-    await fetch(APPS_SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"},body:new URLSearchParams(payload).toString()});
-    showThankYou(payload);
-    $("#nextBtn").style.display="none";
-    $("#backBtn").style.display="none";
-  }catch(err){
-    console.error(err);
-    $("#formStatus").textContent="Unable to submit right now. Please call or WhatsApp us.";
-    btn.disabled=false;btn.textContent="Submit My Enquiry";
-  }
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.photo-slot').forEach(el=>{el.setAttribute('aria-label',`${el.dataset.photo} photo placeholder`)});
+  document.getElementById('menuBtn')?.addEventListener('click',()=>document.getElementById('navLinks').classList.toggle('open'));
+  renderTestimonials(); initCalculator(); initForm();
+  document.querySelectorAll('[data-loan]').forEach(b=>b.addEventListener('click',()=>{preselectLoan(b.dataset.loan)}));
+  document.getElementById('singleEmiBtn')?.addEventListener('click',()=>{preselectLoan('Balance Transfer / Consolidation')});
 });
-$("#year").textContent=new Date().getFullYear();
+function renderTestimonials(){const g=document.getElementById('testimonialGrid');g.innerHTML=testimonials.map((t,i)=>`<article class="testimonial"><p>${t[1]}</p><b>Customer story ${String(i+1).padStart(2,'0')}</b><small>${t[0]} · ${t[2]}</small></article>`).join('')}
+function initCalculator(){const els=['calcAmount','calcRate','calcYears'].map(id=>document.getElementById(id));els.forEach(e=>e?.addEventListener('input',calc));calc()}
+function calc(){const P=+document.getElementById('calcAmount').value||0, annual=+document.getElementById('calcRate').value||0, years=+document.getElementById('calcYears').value||0, n=years*12, r=annual/1200;let emi=0;if(P&&n){emi=r?P*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1):P/n}document.getElementById('calcEmi').textContent=money(emi)}
+function preselectLoan(v){const sel=document.getElementById('loanType');if(!sel)return;sel.value=v;sel.dispatchEvent(new Event('change'));document.getElementById('eligibility').scrollIntoView({behavior:'smooth',block:'start'});}
+function initForm(){
+ const form=document.getElementById('loanForm'); let current=1,total=8;
+ document.getElementById('timestamp').value=new Date().toISOString(); renderStepper(); showStep(1);
+ document.querySelectorAll('.next').forEach(b=>b.addEventListener('click',()=>{if(validateStep(current)){if(current===7)buildReview();current=Math.min(total,current+1);showStep(current)}}));
+ document.querySelectorAll('.prev').forEach(b=>b.addEventListener('click',()=>{current=Math.max(1,current-1);showStep(current)}));
+ form.addEventListener('submit',submitForm);
+ document.querySelectorAll('input[name="customerStatus"]').forEach(r=>r.addEventListener('change',()=>{const existing=document.querySelector('input[name="customerStatus"]:checked')?.value==='Existing Customer';const wrap=document.getElementById('customerConsentWrap');wrap.classList.toggle('hidden',!existing);wrap.querySelector('input').required=existing;const box=document.getElementById('nonCustomerDynamic');box.classList.toggle('hidden',existing);box.innerHTML=existing?'':`<div class="fields two"><label>Relationship with customer *<select name="relationToCustomer" required><option value="">Select</option><option>Self</option><option>Spouse</option><option>Parent</option><option>Child</option><option>Sibling</option><option>Relative</option><option>Friend</option><option>Employee / colleague</option><option>Business partner</option><option>Other</option></select></label><label>Customer's name (if different)<input name="customerNameIfDifferent"></label></div>`}));
+ document.getElementById('sameAddress').addEventListener('change',copyAddress);
+ document.getElementById('dob').addEventListener('change',updateAge);
+ document.getElementById('loanType').addEventListener('change',renderLoanDynamic);
+ document.getElementById('employment').addEventListener('change',renderEmploymentDynamic);
+ document.getElementById('hasExistingEmis').addEventListener('change',toggleEmis);
+ document.getElementById('emiCount').addEventListener('change',renderEmis);
+ document.getElementById('cibilIssue').addEventListener('change',renderCibil);
+ document.querySelectorAll('input[name="addressProofs"]').forEach(x=>x.addEventListener('change',()=>{const vals=[...document.querySelectorAll('input[name="addressProofs"]:checked')].map(x=>x.value);document.getElementById('noProofReasonWrap').classList.toggle('hidden',!vals.includes('No current address proof'))}));
+ document.querySelectorAll('input[name="meetingRequired"]').forEach(x=>x.addEventListener('change',renderMeeting));
+ document.querySelectorAll('.pin-btn').forEach(b=>b.addEventListener('click',()=>lookupPin(b.dataset.target)));
+ function renderStepper(){document.getElementById('stepper').innerHTML=Array.from({length:total},(_,i)=>`<span class="step-dot" data-dot="${i+1}"></span>`).join('')}
+ function showStep(n){document.querySelectorAll('.form-step').forEach(s=>s.classList.toggle('active',+s.dataset.step===n));document.querySelectorAll('.step-dot').forEach(d=>d.classList.toggle('active',+d.dataset.dot<=n));document.getElementById('eligibility').scrollIntoView({behavior:'smooth',block:'start'});}
+ function validateStep(n){const s=document.querySelector(`.form-step[data-step="${n}"]`);let ok=true;[...s.querySelectorAll('[required]')].forEach(el=>{if(el.closest('.hidden'))return;if((el.type==='radio'||el.type==='checkbox')){const group=s.querySelectorAll(`[name="${el.name}"]`);if(![...group].some(x=>x.checked)){group.forEach(x=>x.closest('label')?.classList.add('invalid'));ok=false}}else if(!el.value.trim()){el.classList.add('invalid');ok=false}else el.classList.remove('invalid')});if(n===5&&document.getElementById('hasExistingEmis').value==='Yes'){const count=document.getElementById('emiCount').value;if(!count){ok=false;alert('Please select how many existing EMIs you have.');}else if(count==='11'&&getEmis().length<11){ok=false;alert('Please add the EMI details currently shown. Use “Add another EMI” until all your EMIs are entered.')}}if(!ok){const bad=s.querySelector('.invalid,[required]:invalid');bad?.focus();if(!s.querySelector('.invalid'))alert('Please complete the required fields before continuing.')}return ok}
+ function renderLoanDynamic(){const type=document.getElementById('loanType').value, box=document.getElementById('loanDynamic');let h='';
+ if(['Home Loan','Home Loan Balance Transfer + Top-up','Loan Against Property'].includes(type)){h+=`<div class="fields two"><label>Is the property confirmed? *<select name="propertyConfirmed" required><option value="">Select</option><option>Yes</option><option>No</option></select></label><label>Property type *<select name="propertyType" id="propertyType" required><option value="">Select property type</option><option>Flat / Apartment</option><option>Independent House</option><option>Villa / Bungalow</option><option>Row House / Duplex</option><option>Residential Plot</option><option>House + Land</option><option>Under-construction Property</option><option>Resale Property</option><option>Commercial Property</option><option>Industrial Property</option><option>Agricultural / Farm Land</option><option>Other</option></select></label></div><div id="propertyDynamic"></div>`}
+ if(type==='Home Loan')h+=`<div class="fields two"><label>Home loan purpose<select name="homePurpose"><option>Purchase - New</option><option>Purchase - Resale</option><option>Construction</option><option>Renovation / Repair</option><option>Extension</option><option>Plot + Construction</option></select></label><label>Estimated property value<input name="propertyValue" type="number"></label></div>`;
+ if(type==='Home Loan Balance Transfer + Top-up')h+=`<div class="fields two"><label>Current lender / bank<input name="currentLender"></label><label>Current outstanding amount<input name="currentHomeOutstanding" type="number"></label><label>Current EMI<input name="currentHomeEmi" type="number"></label><label>Requested top-up amount<input name="topUpAmount" type="number"></label><label>Current home-loan tenure remaining<select name="currentHomeTenure"><option>Less than 1 year</option><option>1–3 years</option><option>3–5 years</option><option>5–10 years</option><option>10–20 years</option><option>20–30 years</option><option>30+ years</option></select></label><label>Reason for transfer<textarea name="balanceTransferReason" rows="2"></textarea></label></div>`;
+ if(type==='Business Loan')h+=`<div class="fields two"><label>Business type<select name="businessType" id="businessType"><option value="">Select</option><option>Trading</option><option>Manufacturing</option><option>Services</option><option>IT / Software</option><option>Retail</option><option>Wholesale</option><option>Healthcare</option><option>Education</option><option>Construction / Infrastructure</option><option>Transport / Logistics</option><option>Restaurant / Hospitality</option><option>Professional Services</option><option>E-commerce</option><option>Other</option></select></label><label>Business name<input name="businessName"></label><label>Business vintage<input name="businessVintage" placeholder="e.g. 2018"></label><label>Monthly turnover<input name="monthlyTurnover" type="number"></label><label>Annual turnover<input name="annualTurnover" type="number"></label><label>Business registration type<select name="businessRegistration"><option>Proprietorship</option><option>Partnership</option><option>LLP</option><option>Private Limited</option><option>Public Limited</option><option>Trust / Society</option><option>Other</option></select></label><label>GST registered?<select name="gstRegistered"><option>Yes</option><option>No</option><option>Not applicable</option></select></label><label>Business current account?<select name="businessCurrentAccount"><option>Yes</option><option>No</option></select></label></div>`;
+ if(type==='Vehicle Loan')h+=`<div class="fields two"><label>Vehicle condition *<select name="vehicleCondition" id="vehicleCondition" required><option value="">Select</option><option>New</option><option>Used</option></select></label><label>Vehicle type<select name="vehicleType"><option>Car</option><option>Two-wheeler</option><option>Commercial vehicle</option><option>Tractor / agricultural vehicle</option><option>Other</option></select></label><div id="vehicleDynamic" class="full"></div></div>`;
+ if(type==='Education Loan')h+=`<div class="fields two"><label>Study country *<select name="studyCountry" id="studyCountry" required>${countryOptions()}</select></label><label>Course / programme<input name="course" required></label><label>University / institution<input name="university"></label><label>Intake / start date<input name="intake"></label><label>Estimated education cost<input name="educationCost" type="number"></label><label>Scholarship available?<select name="scholarship"><option>Yes</option><option>No</option><option>Not sure</option></select></label><div id="educationDynamic" class="full"></div></div>`;
+ if(type==='Balance Transfer / Consolidation')h+=`<div class="fields two"><label>What are you looking to transfer/consolidate?<select name="consolidationType"><option>Personal Loan</option><option>Home Loan</option><option>Credit Card / Other dues</option><option>Multiple loans / EMIs</option><option>Other</option></select></label><label>Reason for looking into balance transfer / consolidation *<select name="balanceTransferReason" required><option value="">Select</option><option>Reduce EMI burden</option><option>Review interest cost</option><option>Combine multiple EMIs into one</option><option>Need additional funds / top-up</option><option>Improve cash-flow</option><option>Other</option></select></label><label class="full">What would make the new arrangement useful to you?<textarea name="consolidationGoal" rows="3"></textarea></label></div>`;
+ if(type==='Personal Loan')h+=`<div class="fields two"><label>Purpose category<select name="personalPurpose"><option>Medical</option><option>Education</option><option>Wedding / family</option><option>Home improvement</option><option>Travel</option><option>Business need</option><option>Debt consolidation</option><option>Other</option></select></label><label>Required by<select name="requiredBy"><option>Immediately</option><option>Within 1 month</option><option>1–3 months</option><option>3+ months</option></select></label></div>`;
+ box.innerHTML=h; if(document.getElementById('propertyType'))document.getElementById('propertyType').addEventListener('change',renderPropertyDynamic);if(document.getElementById('vehicleCondition'))document.getElementById('vehicleCondition').addEventListener('change',renderVehicleDynamic);if(document.getElementById('studyCountry'))document.getElementById('studyCountry').addEventListener('change',renderEducationDynamic);renderPropertyDynamic();renderVehicleDynamic();renderEducationDynamic(); }
+ function renderPropertyDynamic(){const box=document.getElementById('propertyDynamic');if(!box)return;const t=document.getElementById('propertyType')?.value||'';let h='';if(!t){box.innerHTML='';return}if(t.includes('Flat')||t.includes('Apartment'))h=`<div class="fields two"><label>Project / apartment name<input name="projectName"></label><label>Flat / unit number<input name="unitNumber"></label><label>Builder / developer<input name="builderName"></label><label>Built-up area (sq ft)<input name="builtUpArea" type="number"></label></div>`;else if(t.includes('House')||t.includes('Villa')||t.includes('Bungalow')||t.includes('Row'))h=`<div class="fields two"><label>House / plot area (sq ft)<input name="houseArea" type="number"></label><label>Built-up area (sq ft)<input name="builtUpArea" type="number"></label><label>Property age<input name="propertyAge" type="number"></label><label>Occupancy<select name="occupancy"><option>Self occupied</option><option>Tenant occupied</option><option>Vacant</option><option>Under construction</option></select></label></div>`;else if(t.includes('Plot'))h=`<div class="fields two"><label>Plot area (sq ft)<input name="plotArea" type="number"></label><label>Layout / authority<input name="layoutAuthority"></label><label>Plot approval / documentation status<select name="plotApproval"><option>Available</option><option>Not sure</option><option>Not available</option></select></label></div>`;else if(t.includes('Commercial')||t.includes('Industrial'))h=`<div class="fields two"><label>Built-up / usable area<input name="commercialArea" type="number"></label><label>Occupancy<select name="commercialOccupancy"><option>Self occupied</option><option>Tenant occupied</option><option>Vacant</option></select></label><label>Property use<input name="propertyUse"></label><label>Estimated property value<input name="propertyValue" type="number"></label></div>`;else if(t.includes('Agricultural'))h=`<div class="fields two"><label>Land area<input name="landArea"></label><label>Land use / current activity<input name="landUse"></label><label>Location / village<input name="landLocation"></label></div>`;else h=`<div class="fields two"><label>Property location<input name="propertyLocation"></label><label>Estimated property value<input name="propertyValue" type="number"></label></div>`;box.innerHTML=h}
+ function renderVehicleDynamic(){const box=document.getElementById('vehicleDynamic');if(!box)return;const c=document.getElementById('vehicleCondition')?.value;if(c==='New')box.innerHTML=`<div class="fields two"><label>Dealer / showroom<input name="vehicleDealer"></label><label>Make & model<input name="vehicleModel"></label><label>On-road price<input name="vehiclePrice" type="number"></label><label>Expected down payment<input name="vehicleDownPayment" type="number"></label></div>`;else if(c==='Used')box.innerHTML=`<div class="fields two"><label>Vehicle make & model<input name="vehicleModel"></label><label>Registration year<input name="vehicleRegistrationYear" type="number"></label><label>Current owner / seller type<input name="vehicleSellerType"></label><label>Expected purchase price<input name="vehiclePrice" type="number"></label><label>Approx. vehicle mileage<input name="vehicleMileage"></label><label>Vehicle loan currently running?<select name="vehicleExistingLoan"><option>No</option><option>Yes</option><option>Not sure</option></select></label></div>`;else box.innerHTML=''}
+ function renderEducationDynamic(){const b=document.getElementById('educationDynamic');if(!b)return;const c=document.getElementById('studyCountry')?.value;if(!c){b.innerHTML='';return}const overseas=c!=='India';b.innerHTML=`<div class="fields two"><label>Admission confirmed?<select name="admissionConfirmed"><option>Yes</option><option>No</option><option>Application in process</option></select></label><label>Course level<select name="courseLevel"><option>UG</option><option>PG</option><option>PhD</option><option>Professional / Certification</option></select></label><label>Country city / campus<input name="studyCity"></label><label>${overseas?'Visa / financial requirement status':'College / university admission status'}<input name="studyStatus"></label></div>`}
+ function renderEmploymentDynamic(){const e=document.getElementById('employment').value,b=document.getElementById('employmentDynamic');let h='';if(e==='Salaried')h=`<div class="fields two"><label>Working company name *<input name="companyName" required></label><label>Current work experience *<input name="currentExperience" placeholder="e.g. 3 years" required></label><label>Total work experience *<input name="totalExperience" placeholder="e.g. 8 years" required></label><label>PF deduction every month? *<select name="pfDeduction" required><option value="">Select</option><option>Yes</option><option>No</option></select></label><label>Do you have payslips? *<select name="payslips" required><option value="">Select</option><option>Yes</option><option>No</option></select></label><label>Employment type<select name="employmentType"><option>Permanent</option><option>Contract</option><option>Probation</option><option>Other</option></select></label></div>`;else if(['Self-employed / Business','Self-employed Professional'].includes(e))h=`<div class="fields two"><label>Business / practice name<input name="businessName"></label><label>Monthly turnover<input name="monthlyTurnover" type="number"></label><label>Annual turnover<input name="annualTurnover" type="number"></label><label>Business vintage / since year<input name="businessVintage" type="number"></label><label>Current account? *<select name="businessCurrentAccount2" required><option value="">Select</option><option>Yes</option><option>No</option></select></label><label>GST registered?<select name="gstRegistered2"><option>Yes</option><option>No</option><option>Not applicable</option></select></label></div>`;else if(e==='Student')h=`<div class="fields two"><label>Course / institution<input name="studentCourse"></label><label>Expected completion year<input name="completionYear"></label></div>`;b.innerHTML=h}
+ function toggleEmis(){const yes=document.getElementById('hasExistingEmis').value==='Yes';document.getElementById('emiCountWrap').classList.toggle('hidden',!yes);document.getElementById('emiManager').classList.toggle('hidden',!yes);if(!yes){document.getElementById('emiManager').innerHTML='';document.getElementById('totalExistingEmi').value='';document.getElementById('totalOutstandingEmi').value=''}}
+ function renderEmis(){const v=document.getElementById('emiCount').value;const n=v==='11'?10:+v;const box=document.getElementById('emiManager');if(!n){box.innerHTML='';return}box.innerHTML=`<div class="emi-header"><div><h4>Existing EMI details</h4><p class="auto-note">Enter the first ${n} EMI(s). If you selected “More than 10”, use Add another EMI until every EMI is captured.</p></div><button type="button" class="pin-btn" id="addEmi">+ Add another EMI</button></div><div id="emiCards"></div>`;const cards=document.getElementById('emiCards');for(let i=1;i<=n;i++)cards.appendChild(makeEmiCard(i));document.getElementById('addEmi').addEventListener('click',()=>cards.appendChild(makeEmiCard(cards.children.length+1)));cards.addEventListener('input',sumEmis)}
+ function makeEmiCard(i){const d=document.createElement('div');d.className='emi-card';d.innerHTML=`<h4>EMI ${i}</h4><div class="fields two"><label>Bank / lender name<input data-emi="bankName"></label><label>EMI per month<input data-emi="emi" type="number" min="0"></label><label>Outstanding tenure<select data-emi="tenure"><option>Less than 6 months</option><option>6–12 months</option><option>1–3 years</option><option>3–5 years</option><option>5–10 years</option><option>10–15 years</option><option>15–20 years</option><option>20–25 years</option><option>25–30 years</option><option>30+ years</option></select></label><label>Outstanding amount<input data-emi="outstanding" type="number" min="0"></label><label>Any cheque bounce in last 6 months?<select data-emi="bounce"><option>No</option><option>Yes</option><option>Not sure</option></select></label><label>Loan type<input data-emi="loanType" placeholder="e.g. Personal Loan"></label><label class="full">Additional notes for this EMI<textarea data-emi="notes" rows="2"></textarea></label></div>`;return d}
+ function getEmis(){return [...document.querySelectorAll('.emi-card')].map((c,i)=>({number:i+1,bankName:c.querySelector('[data-emi="bankName"]')?.value||'',emi:c.querySelector('[data-emi="emi"]')?.value||'',tenure:c.querySelector('[data-emi="tenure"]')?.value||'',outstanding:c.querySelector('[data-emi="outstanding"]')?.value||'',bounce:c.querySelector('[data-emi="bounce"]')?.value||'',loanType:c.querySelector('[data-emi="loanType"]')?.value||'',notes:c.querySelector('[data-emi="notes"]')?.value||''}))}
+ function sumEmis(){const a=getEmis();document.getElementById('totalExistingEmi').value=a.reduce((x,y)=>x+(+y.emi||0),0)||'';document.getElementById('totalOutstandingEmi').value=a.reduce((x,y)=>x+(+y.outstanding||0),0)||''}
+ function renderCibil(){const v=document.getElementById('cibilIssue').value,b=document.getElementById('cibilDynamic');if(v==='Yes')b.innerHTML=`<div class="fields two"><label>What kind of issue? *<select name="cibilIssueType" required><option>Late payment / overdue</option><option>Settlement / write-off</option><option>Multiple enquiries</option><option>Incorrect account / reporting</option><option>Credit card issue</option><option>Unknown / other</option></select></label><label>When did it occur?<input name="cibilIssueWhen"></label><label>Is there any current overdue? *<select name="currentOverdue" required><option value="">Select</option><option>Yes</option><option>No</option><option>Not sure</option></select></label><label>Approx. CIBIL score if known<input name="knownCibilScore" type="number"></label><label class="full">Briefly explain the issue<textarea name="cibilNotes" rows="3"></textarea></label></div>`;else b.innerHTML=''}
+ function renderMeeting(){const yes=document.querySelector('input[name="meetingRequired"]:checked')?.value==='Yes',b=document.getElementById('meetingDynamic');b.innerHTML=yes?`<div class="fields two"><label>Preferred mode<select name="meetingMode"><option>Google Meet</option><option>Zoom</option><option>Phone call</option><option>In-person, if available</option></select></label><label>Preferred date<input name="meetingDate" type="date"></label><label>Preferred time<input name="meetingTime" type="time"></label></div>`:''}
+ function copyAddress(){const f=form.elements;if(document.getElementById('sameAddress').checked){['Address','Pincode','PostOffice','City','District','State'].forEach(x=>{const a=f['permanent'+x],b=f['present'+x];if(a&&b)b.value=a.value})}}
+ function updateAge(){const d=new Date(document.getElementById('dob').value);if(isNaN(d)){return}const now=new Date();let age=now.getFullYear()-d.getFullYear();const m=now.getMonth()-d.getMonth();if(m<0||(m===0&&now.getDate()<d.getDate()))age--;document.getElementById('age').value=age;document.getElementById('ageText').textContent=`Current age: ${age} years`}
+ async function lookupPin(target){const prefix=target==='work'?'work':target==='permanent'?'permanent':'present',pin=form.elements[prefix+'Pincode']?.value.trim();if(!/^\d{6}$/.test(pin)){alert('Please enter a valid 6-digit Indian pincode.');return}try{const r=await fetch(`https://api.postalpincode.in/pincode/${pin}`);const j=await r.json();if(!j?.[0]?.PostOffice?.length)throw new Error('Pincode not found');const po=j[0].PostOffice[0],all=j[0].PostOffice;form.elements[prefix+'PostOffice'].value=all.map(x=>x.Name).join(', ');form.elements[prefix+'City'].value=po.Block||po.District||'';form.elements[prefix+'District'].value=po.District||'';form.elements[prefix+'State'].value=po.State||'';if(target!=='work')form.elements[prefix+'Country']&&(form.elements[prefix+'Country'].value='India')}catch(e){alert('Could not fetch pincode details. Please verify the pincode or enter the address manually.')}}
+ function countryOptions(){const countries=[`India`,`Afghanistan`,`Albania`,`Algeria`,`American Samoa`,`Andorra`,`Angola`,`Anguilla`,`Antarctica`,`Antigua and Barbuda`,`Argentina`,`Armenia`,`Aruba`,`Australia`,`Austria`,`Azerbaijan`,`Bahamas`,`Bahrain`,`Bangladesh`,`Barbados`,`Belarus`,`Belgium`,`Belize`,`Benin`,`Bermuda`,`Bhutan`,`Bolivia, Plurinational State of`,`Bonaire, Sint Eustatius and Saba`,`Bosnia and Herzegovina`,`Botswana`,`Bouvet Island`,`Brazil`,`British Indian Ocean Territory`,`Brunei Darussalam`,`Bulgaria`,`Burkina Faso`,`Burundi`,`Cabo Verde`,`Cambodia`,`Cameroon`,`Canada`,`Cayman Islands`,`Central African Republic`,`Chad`,`Chile`,`China`,`Christmas Island`,`Cocos (Keeling) Islands`,`Colombia`,`Comoros`,`Congo`,`Congo, The Democratic Republic of the`,`Cook Islands`,`Costa Rica`,`Croatia`,`Cuba`,`Curaçao`,`Cyprus`,`Czechia`,`Côte d'Ivoire`,`Denmark`,`Djibouti`,`Dominica`,`Dominican Republic`,`Ecuador`,`Egypt`,`El Salvador`,`Equatorial Guinea`,`Eritrea`,`Estonia`,`Eswatini`,`Ethiopia`,`Falkland Islands (Malvinas)`,`Faroe Islands`,`Fiji`,`Finland`,`France`,`French Guiana`,`French Polynesia`,`French Southern Territories`,`Gabon`,`Gambia`,`Georgia`,`Germany`,`Ghana`,`Gibraltar`,`Greece`,`Greenland`,`Grenada`,`Guadeloupe`,`Guam`,`Guatemala`,`Guernsey`,`Guinea`,`Guinea-Bissau`,`Guyana`,`Haiti`,`Heard Island and McDonald Islands`,`Holy See (Vatican City State)`,`Honduras`,`Hong Kong`,`Hungary`,`Iceland`,`Indonesia`,`Iran, Islamic Republic of`,`Iraq`,`Ireland`,`Isle of Man`,`Israel`,`Italy`,`Jamaica`,`Japan`,`Jersey`,`Jordan`,`Kazakhstan`,`Kenya`,`Kiribati`,`Korea, Democratic People's Republic of`,`Korea, Republic of`,`Kuwait`,`Kyrgyzstan`,`Lao People's Democratic Republic`,`Latvia`,`Lebanon`,`Lesotho`,`Liberia`,`Libya`,`Liechtenstein`,`Lithuania`,`Luxembourg`,`Macao`,`Madagascar`,`Malawi`,`Malaysia`,`Maldives`,`Mali`,`Malta`,`Marshall Islands`,`Martinique`,`Mauritania`,`Mauritius`,`Mayotte`,`Mexico`,`Micronesia, Federated States of`,`Moldova, Republic of`,`Monaco`,`Mongolia`,`Montenegro`,`Montserrat`,`Morocco`,`Mozambique`,`Myanmar`,`Namibia`,`Nauru`,`Nepal`,`Netherlands`,`New Caledonia`,`New Zealand`,`Nicaragua`,`Niger`,`Nigeria`,`Niue`,`Norfolk Island`,`North Macedonia`,`Northern Mariana Islands`,`Norway`,`Oman`,`Pakistan`,`Palau`,`Palestine, State of`,`Panama`,`Papua New Guinea`,`Paraguay`,`Peru`,`Philippines`,`Pitcairn`,`Poland`,`Portugal`,`Puerto Rico`,`Qatar`,`Romania`,`Russian Federation`,`Rwanda`,`Réunion`,`Saint Barthélemy`,`Saint Helena, Ascension and Tristan da Cunha`,`Saint Kitts and Nevis`,`Saint Lucia`,`Saint Martin (French part)`,`Saint Pierre and Miquelon`,`Saint Vincent and the Grenadines`,`Samoa`,`San Marino`,`Sao Tome and Principe`,`Saudi Arabia`,`Senegal`,`Serbia`,`Seychelles`,`Sierra Leone`,`Singapore`,`Sint Maarten (Dutch part)`,`Slovakia`,`Slovenia`,`Solomon Islands`,`Somalia`,`South Africa`,`South Georgia and the South Sandwich Islands`,`South Sudan`,`Spain`,`Sri Lanka`,`Sudan`,`Suriname`,`Svalbard and Jan Mayen`,`Sweden`,`Switzerland`,`Syrian Arab Republic`,`Taiwan, Province of China`,`Tajikistan`,`Tanzania, United Republic of`,`Thailand`,`Timor-Leste`,`Togo`,`Tokelau`,`Tonga`,`Trinidad and Tobago`,`Tunisia`,`Turkmenistan`,`Turks and Caicos Islands`,`Tuvalu`,`Türkiye`,`Uganda`,`Ukraine`,`United Arab Emirates`,`United Kingdom`,`United States`,`United States Minor Outlying Islands`,`Uruguay`,`Uzbekistan`,`Vanuatu`,`Venezuela, Bolivarian Republic of`,`Viet Nam`,`Virgin Islands, British`,`Virgin Islands, U.S.`,`Wallis and Futuna`,`Western Sahara`,`Yemen`,`Zambia`,`Zimbabwe`,`Åland Islands`];return '<option value="">Select country</option>'+countries.map(c=>`<option>${c}</option>`).join('')}
+
+ function buildReview(){const f=new FormData(form),rows=[];const groups=[['Identity',['customerStatus','name','mobile','email','dob','age','gender','maritalStatus']],['Addresses',['permanentAddress','permanentPincode','permanentPostOffice','permanentCity','permanentDistrict','permanentState','presentAddress','presentPincode','presentPostOffice','presentCity','presentDistrict','presentState']],['Loan',['loanType','loanAmount','purpose']],['Work & income',['employment','monthlyIncome','annualIncome','currentAccount','companyName','currentExperience','totalExperience','pfDeduction','payslips','businessName','businessVintage','monthlyTurnover','annualTurnover']],['Existing EMIs',['hasExistingEmis','emiCount','totalExistingEmi','totalOutstandingEmi']],['CIBIL',['cibilIssue','cibilIssueType','currentOverdue','knownCibilScore','cibilNotes']],['Meeting',['meetingRequired','meetingMode','meetingDate','meetingTime','callbackTime']]];groups.forEach(([title,keys])=>{let h='';keys.forEach(k=>{const v=f.get(k);if(v)h+=`<span><b>${pretty(k)}:</b> ${escapeHtml(v)}</span>`});if(h)rows.push(`<div class="review-section"><h4>${title}</h4><div class="review-list">${h}</div></div>`)});const emis=getEmis();if(emis.length)rows.push(`<div class="review-section"><h4>EMI details (${emis.length})</h4><div class="review-list">${emis.map(e=>`<span><b>EMI ${e.number}:</b> ${escapeHtml(e.bankName)} · ₹${escapeHtml(e.emi)} · ${escapeHtml(e.tenure)} · ₹${escapeHtml(e.outstanding)}</span>`).join('')}</div></div>`);document.getElementById('reviewBox').innerHTML=rows.join('')}
+ function pretty(s){return s.replace(/([A-Z])/g,' $1').replace(/^./,x=>x.toUpperCase())}
+ function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+ async function submitForm(e){e.preventDefault();if(!validateStep(8))return;const f=new FormData(form);f.set('emiDetailsJson',JSON.stringify(getEmis()));f.set('timestamp',new Date().toISOString());f.set('proofs',JSON.stringify([...document.querySelectorAll('input[name="proofs"]:checked')].map(x=>x.value)));f.set('addressProofs',JSON.stringify([...document.querySelectorAll('input[name="addressProofs"]:checked')].map(x=>x.value)));f.set('propertyDetailsJson',JSON.stringify(collectPropertyFields()));const btn=form.querySelector('button[type="submit"]');btn.disabled=true;btn.textContent='Submitting…';try{if(APPS_SCRIPT_URL.includes('PASTE_YOUR'))throw new Error('Apps Script URL is not configured yet.');const r=await fetch(APPS_SCRIPT_URL,{method:'POST',body:f});const data=await r.json();if(!data.ok)throw new Error(data.error||'Submission failed');showSuccess(data.leadId,f)}catch(err){console.error(err);alert('The enquiry could not be submitted right now. Please check your Apps Script Web App URL and deployment, then try again. You can also email hellocustomerfirst@gmail.com.');btn.disabled=false;btn.textContent='Submit My Enquiry →'}}
+ function collectPropertyFields(){const o={};['propertyType','propertyConfirmed','projectName','unitNumber','builderName','builtUpArea','houseArea','propertyAge','occupancy','plotArea','layoutAuthority','plotApproval','commercialArea','commercialOccupancy','propertyUse','propertyValue','landArea','landUse','landLocation'].forEach(k=>{if(form.elements[k])o[k]=form.elements[k].value});return o}
+ function showSuccess(id,f){document.getElementById('loanForm').classList.add('hidden');const box=document.getElementById('successBox');box.classList.remove('hidden');document.getElementById('successText').innerHTML=`Your enquiry has been recorded successfully. <strong>Lead ID: ${escapeHtml(id)}</strong><br>Please send the required documents to <a href="mailto:${BUSINESS_EMAIL}">${BUSINESS_EMAIL}</a> and mention the Lead ID. We have also sent a confirmation email to ${escapeHtml(f.get('email')||'your email address')}.`;const text=`Hello Customer Fintech Solutions – New enquiry\nLead ID: ${id}\nName: ${f.get('name')||''}\nMobile: ${f.get('mobile')||''}\nLoan: ${f.get('loanType')||''}\nAmount: ${f.get('loanAmount')||''}\nEmail: ${f.get('email')||''}\nPlease contact me regarding the submitted enquiry.`;document.getElementById('whatsappCustomer').href=`https://wa.me/${BUSINESS_WHATSAPP}?text=${encodeURIComponent(text)}`;box.scrollIntoView({behavior:'smooth'})}
+}
+function money(v){return new Intl.NumberFormat('en-IN',{style:'currency',currency:'INR',maximumFractionDigits:0}).format(Number(v)||0)}

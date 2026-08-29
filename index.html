@@ -1,194 +1,81 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Hello Customer Fintech Solutions — guided loan assistance for personal, home, business and other financing requirements.">
-  <meta property="og:title" content="Hello Customer Fintech Solutions | Loan Assistance">
-  <meta property="og:description" content="Explore suitable loan options with simple, transparent and guided assistance.">
-  <meta property="og:type" content="website">
-  <title>Hello Customer Fintech Solutions | Loan Assistance</title>
-  <link rel="stylesheet" href="./style.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Hello Customer Fintech Solutions — guided loan assistance, CIBIL support and financial documentation guidance.">
+<meta property="og:title" content="Hello Customer Fintech Solutions | Loan Assistance">
+<meta property="og:description" content="Understand your loan requirement, documentation and next steps with guided assistance.">
+<meta property="og:type" content="website">
+<title>Hello Customer Fintech Solutions | Loans & Financial Assistance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./style.css">
 </head>
 <body>
 <header class="site-header">
   <div class="container nav">
-    <a class="brand" href="#top" aria-label="Hello Customer Fintech Solutions home">
-      <span class="brand-mark">HC</span>
-      <span><strong>Hello Customer</strong><small>FINTECH SOLUTIONS</small></span>
-    </a>
-    <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">☰</button>
+    <a class="brand" href="#top"><span class="brand-mark">HC</span><span><strong>Hello Customer</strong><small>FINTECH SOLUTIONS</small></span></a>
+    <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
     <nav id="navLinks">
-      <a href="#loans">Loans</a>
-      <a href="#calculator">EMI Calculator</a>
-      <a href="#process">Process</a>
-      <a href="#faqs">FAQs</a>
-      <a class="nav-cta" href="#eligibility">Check Options</a>
+      <a href="#loans">Loans</a><a href="#how">How We Help</a><a href="#calculator">Calculator</a><a href="#stories">Stories</a><a href="#faq">FAQ</a><a class="nav-cta" href="#eligibility">Start Enquiry</a>
     </nav>
   </div>
 </header>
-
 <main id="top">
 <section class="hero">
-  <div class="container hero-grid">
-    <div>
-      <div class="pill">A Sundeep's Hub Group Business</div>
-      <h1>Find the right <span>loan option</span> for your needs.</h1>
-      <p class="hero-copy">Simple, transparent and guided assistance to understand loan options, documentation and the next steps.</p>
-      <div class="hero-actions">
-        <a class="btn primary" href="#eligibility">Check My Loan Options →</a>
-        <a class="btn secondary" href="#loans">Explore Loans</a>
-      </div>
-      <div class="trust-row">
-        <span>✓ Eligibility guidance</span><span>✓ Documentation support</span><span>✓ Application assistance</span>
-      </div>
-    </div>
-    <div class="hero-card">
-      <div class="card-top"><span>Quick Loan Check</span><b>2–3 min</b></div>
-      <h3>Start with your requirement</h3>
-      <p>Choose a loan type and answer a few relevant questions.</p>
-      <a class="mini-start" href="#eligibility">Start Now →</a>
-      <div class="notice">Final approval, interest rate, terms and disbursal are decided by the respective lender.</div>
-    </div>
+ <div class="container hero-grid">
+  <div>
+   <div class="eyebrow">A Sundeep's Hub Group Business</div>
+   <h1>Loans are easier to understand when someone <em>stays with you.</em></h1>
+   <p class="lead">Hello Customer Fintech Solutions helps customers organise the requirement, understand the documentation, identify practical next steps and stay supported through the loan process.</p>
+   <div class="hero-actions"><a class="btn primary" href="#eligibility">Start My Loan Enquiry →</a><a class="btn ghost" href="#loans">Explore Loan Solutions</a></div>
+   <div class="trust-row"><span>✓ Guided documentation</span><span>✓ End-to-end coordination</span><span>✓ Lender-dependent decisions</span></div>
   </div>
+  <div class="hero-photo photo-slot" data-photo="IMG-01"><div class="photo-label">IMG-01 · Sandeep / welcome photo</div></div>
+ </div>
 </section>
-
-<section class="section" id="loans">
-  <div class="container">
-    <div class="section-heading"><span>LOAN SOLUTIONS</span><h2>Choose your loan requirement</h2><p>Different needs require different loan paths. Select one to start a guided enquiry.</p></div>
-    <div class="loan-grid">
-      <button class="loan-tile" data-loan="Personal Loan"><i>👤</i><b>Personal Loan</b><small>Personal financial requirements</small></button>
-      <button class="loan-tile" data-loan="Home Loan"><i>🏠</i><b>Home Loan</b><small>Purchase, construction or renovation</small></button>
-      <button class="loan-tile" data-loan="Business Loan"><i>🏢</i><b>Business Loan</b><small>Working capital and expansion</small></button>
-      <button class="loan-tile" data-loan="Loan Against Property"><i>🏦</i><b>Loan Against Property</b><small>Secured funding against eligible property</small></button>
-      <button class="loan-tile" data-loan="Vehicle Loan"><i>🚗</i><b>Vehicle Loan</b><small>New or used vehicle financing</small></button>
-      <button class="loan-tile" data-loan="Education Loan"><i>🎓</i><b>Education Loan</b><small>Education funding in India or abroad</small></button>
-      <button class="loan-tile" data-loan="Loan Balance Transfer"><i>🔄</i><b>Balance Transfer</b><small>Explore transfer options for an existing loan</small></button>
-      <button class="loan-tile" data-loan="EMI Consolidation"><i>📉</i><b>EMI Consolidation</b><small>Review multiple existing obligations</small></button>
-    </div>
-  </div>
-</section>
-
-<section class="section calculator" id="calculator">
-  <div class="container calc-grid">
-    <div><span class="eyebrow">EMI CALCULATOR</span><h2>Plan your monthly repayment.</h2><p>Use the calculator for an estimate. Actual rates and terms depend on the lender and your profile.</p></div>
-    <div class="calc-card">
-      <label>Loan Amount <output id="amountOut">₹5,00,000</output><input id="amount" type="range" min="50000" max="5000000" step="10000" value="500000"></label>
-      <label>Interest Rate <output id="rateOut">12.00%</output><input id="rate" type="range" min="5" max="30" step="0.25" value="12"></label>
-      <label>Tenure <output id="tenureOut">5 Years</output><input id="tenure" type="range" min="1" max="20" step="1" value="5"></label>
-      <div class="emi-result"><small>Estimated monthly EMI</small><strong id="emi">₹11,122</strong><div><span>Principal <b id="principal">₹5,00,000</b></span><span>Interest <b id="interest">₹1,67,304</b></span></div></div>
-    </div>
-  </div>
-</section>
-
-<section class="section flow-section" id="eligibility">
-  <div class="container">
-    <div class="section-heading"><span>SMART LOAN CHECK</span><h2>Explore a suitable loan path in a few simple steps.</h2><p>This is an enquiry-screening tool, not a loan approval or credit-score calculator.</p></div>
-    <div class="progress-wrap"><div><span id="stepLabel">Step 1 of 6</span><span id="progressPercent">17%</span></div><div class="progress"><span id="progressBar"></span></div></div>
-
-    <form id="eligibilityForm" class="flow-card" novalidate>
-      <div class="flow-step active" data-step="1">
-        <span class="kicker">01 / LOAN TYPE</span><h3>What do you need?</h3><p>Select the closest option.</p>
-        <div class="choice-grid">
-          <button type="button" class="choice" data-loan="Personal Loan"><i>👤</i><b>Personal Loan</b><small>Personal needs</small></button>
-          <button type="button" class="choice" data-loan="Home Loan"><i>🏠</i><b>Home Loan</b><small>Property purchase / construction</small></button>
-          <button type="button" class="choice" data-loan="Business Loan"><i>🏢</i><b>Business Loan</b><small>Business funding</small></button>
-          <button type="button" class="choice" data-loan="Loan Against Property"><i>🏦</i><b>Loan Against Property</b><small>Secured funding</small></button>
-          <button type="button" class="choice" data-loan="Vehicle Loan"><i>🚗</i><b>Vehicle Loan</b><small>Vehicle financing</small></button>
-          <button type="button" class="choice" data-loan="Education Loan"><i>🎓</i><b>Education Loan</b><small>Education funding</small></button>
-          <button type="button" class="choice" data-loan="Loan Balance Transfer"><i>🔄</i><b>Balance Transfer</b><small>Existing loan transfer</small></button>
-          <button type="button" class="choice" data-loan="EMI Consolidation"><i>📉</i><b>EMI Consolidation</b><small>Multiple obligations</small></button>
-        </div>
-        <p class="error" id="loanError"></p>
-      </div>
-
-      <div class="flow-step" data-step="2">
-        <span class="kicker">02 / REQUIREMENT</span><h3 id="requirementTitle">Tell us about your requirement.</h3>
-        <div id="dynamicRequirement"></div>
-      </div>
-
-      <div class="flow-step" data-step="3">
-        <span class="kicker">03 / PROFILE</span><h3>Tell us about your income profile.</h3>
-        <div class="form-grid">
-          <label>Employment Type *<select name="employment" required><option value="">Select</option><option>Salaried</option><option>Self-employed / Business</option><option>Professional</option><option>Other</option></select></label>
-          <label>Approx. Monthly Income *<input name="income" type="number" min="0" required placeholder="e.g. 60000"></label>
-          <label id="experienceWrap">Work Experience<select name="experience"><option value="">Select</option><option>Less than 1 year</option><option>1–2 years</option><option>2–5 years</option><option>5+ years</option></select></label>
-          <label id="vintageWrap" class="hide">Business Vintage<select name="businessVintage"><option value="">Select</option><option>Less than 1 year</option><option>1–2 years</option><option>2–5 years</option><option>5+ years</option></select></label>
-        </div>
-      </div>
-
-      <div class="flow-step" data-step="4">
-        <span class="kicker">04 / EXISTING OBLIGATIONS</span><h3>Do you currently have loans or EMIs?</h3>
-        <div class="segmented"><button type="button" data-existing="Yes">Yes</button><button type="button" data-existing="No">No</button></div>
-        <div id="existingFields" class="hide">
-          <div class="form-grid">
-            <label>Total Monthly EMI<input name="existingEmi" type="number" min="0" placeholder="e.g. 15000"></label>
-            <label>Existing Loan Type<select name="existingLoanType"><option value="">Select</option><option>Personal Loan</option><option>Home Loan</option><option>Business Loan</option><option>Vehicle Loan</option><option>Loan Against Property</option><option>Credit Card / Other</option></select></label>
-            <label>Approx. Outstanding Amount<input name="outstanding" type="number" min="0" placeholder="₹"></label>
-            <label>Approx. Remaining Tenure<select name="remainingTenure"><option value="">Select</option><option>Less than 1 year</option><option>1–3 years</option><option>3–5 years</option><option>5+ years</option></select></label>
-          </div>
-        </div>
-      </div>
-
-      <div class="flow-step" data-step="5">
-        <span class="kicker">05 / CONTACT</span><h3>Where can we reach you?</h3>
-        <div class="form-grid">
-          <label>Full Name *<input name="name" required autocomplete="name" placeholder="Your name"></label>
-          <label>Mobile Number *<input name="mobile" required inputmode="numeric" pattern="[0-9]{10}" maxlength="10" placeholder="10-digit mobile"></label>
-          <label>Email<input name="email" type="email" autocomplete="email" placeholder="you@example.com"></label>
-          <label>State *<select name="state" required><option value="">Select</option><option>Telangana</option><option>Andhra Pradesh</option><option>Other</option></select></label>
-          <label>City *<input name="city" required placeholder="e.g. Hyderabad"></label>
-          <label>Preferred Callback Time<select name="callbackTime"><option value="">Any convenient time</option><option>Morning</option><option>Afternoon</option><option>Evening</option></select></label>
-        </div>
-        <label class="full-field">Additional Requirement<textarea name="message" rows="4" placeholder="Anything else you'd like us to know?"></textarea></label>
-        <label class="consent"><input type="checkbox" name="consent" required> I agree to be contacted regarding my enquiry, understand that this screening does not guarantee loan approval, and have read the <a href="./privacy.html" target="_blank" rel="noopener">Privacy Policy</a> and <a href="./terms.html" target="_blank" rel="noopener">Terms &amp; Conditions</a>.</label>
-        <p class="safe-note">Never share OTPs, passwords, card PINs or banking passwords through this form.</p>
-      </div>
-
-      <div class="flow-step" data-step="6">
-        <span class="kicker">06 / SCREENING RESULT</span>
-        <div class="result-card">
-          <div class="check">✓</div><h3>Your enquiry is ready.</h3>
-          <p>Based on the information provided, you may be able to explore loan options. Final eligibility, rate, amount, tenure and approval are determined by the respective lender.</p>
-          <div class="summary" id="resultSummary"></div>
-          <div class="priority"><b>Enquiry priority:</b> <span id="leadPriority">Standard</span><small>Internal lead-priority only; not a credit score or approval.</small></div>
-          <button class="btn primary submit-btn" id="submitLead" type="submit">Submit My Enquiry</button>
-          <p class="form-status" id="formStatus" role="status"></p>
-        </div>
-      </div>
-
-      <div class="flow-actions"><button class="btn secondary" type="button" id="backBtn">← Back</button><button class="btn primary" type="button" id="nextBtn">Continue →</button></div>
-    </form>
-  </div>
-</section>
-
-<section class="section light" id="process">
-  <div class="container"><div class="section-heading"><span>OUR PROCESS</span><h2>Simple. Transparent. Guided.</h2></div>
-    <div class="process-grid"><div><b>01</b><h3>Understand</h3><p>We understand your requirement and basic profile.</p></div><div><b>02</b><h3>Explore</h3><p>We help you understand potentially suitable options.</p></div><div><b>03</b><h3>Documents</h3><p>We guide you on the information and documents generally required.</p></div><div><b>04</b><h3>Apply</h3><p>Application and final decisions remain subject to the lender.</p></div></div>
-  </div>
-</section>
-
-<section class="section" id="faqs">
-  <div class="container faq"><div class="section-heading"><span>FAQ</span><h2>Common questions</h2></div>
-    <details><summary>Does completing the form guarantee a loan?</summary><p>No. It is only an enquiry and preliminary screening. The respective lender decides eligibility, rate, amount, tenure and approval.</p></details>
-    <details><summary>Will you ask for OTPs or banking passwords?</summary><p>No. Never provide OTPs, PINs, passwords or other confidential banking credentials through this website or to anyone claiming to represent us.</p></details>
-    <details><summary>Can I enquire about more than one loan?</summary><p>Yes. Submit a separate enquiry for each requirement, or mention the additional requirement in the message field.</p></details>
-    <details><summary>What happens after I submit?</summary><p>Your enquiry can be reviewed by our team, who may contact you for clarification and discuss the next steps.</p></details>
-  </div>
-</section>
+<section class="single-emi-banner"><div class="container banner-inner"><div><strong>“I want to make a Single EMI instead of Multiple EMIs.”</strong><span>Explore consolidation / balance-transfer possibilities and let us understand your existing commitments.</span></div><button class="btn light" id="singleEmiBtn">Explore Single EMI →</button></div></section>
+<section id="loans" class="section"><div class="container"><div class="section-head"><div><div class="eyebrow">Loan solutions</div><h2>Choose the requirement. We’ll understand the situation.</h2></div><p>Loan availability, rate, tenure, documentation and approval depend on the respective lender and customer profile.</p></div><div class="loan-grid">
+ <article class="loan-card"><span>01</span><h3>Personal Loan</h3><p>For eligible personal, family or financial requirements.</p><button data-loan="Personal Loan">Start enquiry →</button></article>
+ <article class="loan-card"><span>02</span><h3>Home Loan</h3><p>Purchase, construction, renovation, extension or eligible housing needs.</p><button data-loan="Home Loan">Start enquiry →</button></article>
+ <article class="loan-card"><span>03</span><h3>Home Loan Balance Transfer + Top-up</h3><p>For customers considering transfer of an existing home loan with a possible top-up requirement.</p><button data-loan="Home Loan Balance Transfer + Top-up">Explore →</button></article>
+ <article class="loan-card"><span>04</span><h3>Business Loan</h3><p>Understand business vintage, turnover, banking and documentation requirements.</p><button data-loan="Business Loan">Start enquiry →</button></article>
+ <article class="loan-card"><span>05</span><h3>Loan Against Property</h3><p>Explore secured funding against eligible property, subject to lender assessment.</p><button data-loan="Loan Against Property">Start enquiry →</button></article>
+ <article class="loan-card"><span>06</span><h3>Vehicle Loan</h3><p>New or used vehicle finance with vehicle-specific questions.</p><button data-loan="Vehicle Loan">Start enquiry →</button></article>
+ <article class="loan-card"><span>07</span><h3>Education Loan</h3><p>India or overseas education requirements with course and destination details.</p><button data-loan="Education Loan">Start enquiry →</button></article>
+ <article class="loan-card"><span>08</span><h3>Balance Transfer / Consolidation</h3><p>For customers looking to restructure multiple commitments or review an existing loan.</p><button data-loan="Balance Transfer / Consolidation">Start enquiry →</button></article>
+</div></div></section>
+<section id="how" class="section soft"><div class="container"><div class="section-head"><div><div class="eyebrow">Why customers reach out</div><h2>Real problems. Practical conversations.</h2></div></div><div class="problem-grid">
+ <article><h3>“I have too many EMIs.”</h3><p>We map each EMI, outstanding balance and tenure so the situation is visible before discussing possible consolidation options.</p></article>
+ <article><h3>“My CIBIL history has an issue.”</h3><p>We ask what happened, when it happened and whether there are current overdue accounts — without promising a score or approval.</p></article>
+ <article><h3>“The documents are confusing.”</h3><p>We help you organise income, banking, address, employment, property or business documents relevant to the enquiry.</p></article>
+ <article><h3>“I’m not sure which loan fits.”</h3><p>Start with the requirement. The form changes according to the selected loan type so you answer only relevant questions.</p></article>
+</div></div></section>
+<section class="about section"><div class="container about-grid"><div class="photo-slot photo-wide" data-photo="IMG-02"><div class="photo-label">IMG-02 · Sandeep at desk / customer discussion</div></div><div><div class="eyebrow">A more human way to handle finance</div><h2>About Sandeep</h2><p>Hello Customer Fintech Solutions is built around one simple idea: a loan enquiry should not feel like a customer has to solve a maze alone.</p><p>Sandeep focuses on understanding the customer's requirement first — the purpose of the loan, income pattern, existing commitments, documentation, property or business context and any concerns around credit history. From there, the customer gets a clearer view of what information may be needed and what the next practical step could be.</p><p>The service is designed around <strong>listening, organising, explaining and coordinating</strong>. Where a lender's policy, underwriting, legal or technical assessment decides the outcome, that is clearly communicated rather than presenting a website score as an approval.</p><div class="signature">Sandeep · Hello Customer Fintech Solutions</div></div></div></section>
+<section id="calculator" class="section"><div class="container calculator"><div><div class="eyebrow">Simple calculator</div><h2>Understand your approximate EMI</h2><p>This is an illustrative calculation only. Actual rate, tenure, fees and approval are lender-dependent.</p></div><div class="calc-grid"><label>Loan amount<input id="calcAmount" type="number" value="1000000" min="0"></label><label>Annual interest %<input id="calcRate" type="number" value="10.5" step="0.1" min="0"></label><label>Tenure<input id="calcYears" type="number" value="5" min="1" max="40"></label><div class="calc-result"><small>Approx. monthly EMI</small><strong id="calcEmi">₹21,494</strong></div></div></div></section>
+<section class="section photo-band"><div class="container photo-grid"><div class="photo-slot" data-photo="IMG-03"><div class="photo-label">IMG-03 · Customer consultation</div></div><div class="photo-slot" data-photo="IMG-04"><div class="photo-label">IMG-04 · Documentation / paperwork</div></div><div class="photo-slot" data-photo="IMG-05"><div class="photo-label">IMG-05 · Business / professional meeting</div></div></div></section>
+<section id="eligibility" class="section form-section"><div class="container"><div class="section-head"><div><div class="eyebrow">Private enquiry</div><h2>Let’s understand your requirement properly.</h2></div><p>Required fields are marked *. We collect only information needed to understand and process your enquiry.</p></div>
+<form id="loanForm" novalidate>
+<input type="hidden" name="emiDetailsJson" id="emiDetailsJson"><input type="hidden" name="propertyDetailsJson" id="propertyDetailsJson"><input type="hidden" name="source" value="Website"><input type="hidden" name="timestamp" id="timestamp">
+<div class="stepper" id="stepper"></div>
+<div class="form-step active" data-step="1"><div class="step-title"><span>01</span><div><h3>Are you an existing customer?</h3><p>We use this to show the appropriate enquiry path.</p></div></div><div class="choice-grid"><label class="choice"><input type="radio" name="customerStatus" value="Existing Customer" required><span><b>Yes, I am a customer</b><small>I am an existing Hello Customer customer.</small></span></label><label class="choice"><input type="radio" name="customerStatus" value="New / Non-customer"><span><b>No, I am not a customer</b><small>I am enquiring for myself or another person.</small></span></label></div><div id="customerConsentWrap" class="conditional hidden"><label class="check"><input type="checkbox" name="existingCustomerConsent"> <span>I confirm that I am the customer / existing customer and consent to Hello Customer Fintech Solutions using the information I submit to respond to my enquiry.</span></label></div><div class="form-actions"><button type="button" class="btn primary next">Continue →</button></div></div>
+<div class="form-step" data-step="2"><div class="step-title"><span>02</span><div><h3>Basic contact & identity</h3><p>We need enough information to contact you and understand the applicant.</p></div></div><div class="fields two"><label>Full name *<input name="name" required></label><label>Mobile number *<input name="mobile" inputmode="tel" maxlength="15" required></label><label>Email *<input name="email" type="email" required></label><label>Alternative mobile number<input name="alternativeMobile" inputmode="tel"></label><label>Date of birth *<input name="dob" id="dob" type="date" required><small id="ageText" class="auto-note">Age will appear automatically.</small></label><label>Age<input name="age" id="age" readonly></label><label>Gender<select name="gender"><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option><option>Prefer not to say</option></select></label><label>Marital status<select name="maritalStatus"><option value="">Select</option><option>Single</option><option>Married</option><option>Other</option><option>Prefer not to say</option></select></label></div><div id="nonCustomerDynamic" class="dynamic-panel hidden"></div><div class="address-box"><h4>Permanent address</h4><div class="fields two"><label>House / flat / street *<input name="permanentAddress" required></label><label>Pincode *<div class="pin-row"><input name="permanentPincode" class="pincode" maxlength="6" inputmode="numeric" required><button type="button" class="pin-btn" data-target="permanent">Auto-fill</button></div></label><label>Post office<input name="permanentPostOffice" readonly></label><label>City / town<input name="permanentCity" readonly></label><label>District<input name="permanentDistrict" readonly></label><label>State<input name="permanentState" readonly></label></div></div><div class="address-box"><h4>Present address</h4><label class="check"><input type="checkbox" id="sameAddress"> <span>Same as permanent address</span></label><div class="fields two"><label>House / flat / street *<input name="presentAddress" required></label><label>Pincode *<div class="pin-row"><input name="presentPincode" class="pincode" maxlength="6" inputmode="numeric" required><button type="button" class="pin-btn" data-target="present">Auto-fill</button></div></label><label>Post office<input name="presentPostOffice" readonly></label><label>City / town<input name="presentCity" readonly></label><label>District<input name="presentDistrict" readonly></label><label>State<input name="presentState" readonly></label></div></div><div class="form-actions"><button type="button" class="btn ghost prev">← Back</button><button type="button" class="btn primary next">Continue →</button></div></div>
+<div class="form-step" data-step="3"><div class="step-title"><span>03</span><div><h3>Loan requirement</h3><p>Select the loan type and we will reveal relevant questions.</p></div></div><div class="fields two"><label>Loan type *<select name="loanType" id="loanType" required><option value="">Select loan type</option><option>Personal Loan</option><option>Home Loan</option><option>Home Loan Balance Transfer + Top-up</option><option>Business Loan</option><option>Loan Against Property</option><option>Vehicle Loan</option><option>Education Loan</option><option>Balance Transfer / Consolidation</option></select></label><label>Approx. loan amount *<input name="loanAmount" type="number" min="0" required placeholder="e.g. 1000000"></label><label class="full">Purpose / requirement *<textarea name="purpose" required rows="3" placeholder="Tell us briefly what you need the loan for."></textarea></label></div><div id="loanDynamic" class="dynamic-panel"></div><div class="form-actions"><button type="button" class="btn ghost prev">← Back</button><button type="button" class="btn primary next">Continue →</button></div></div>
+<div class="form-step" data-step="4"><div class="step-title"><span>04</span><div><h3>Income, work & banking</h3><p>The questions change based on your work profile.</p></div></div><div class="fields two"><label>What do you do? *<select name="employment" id="employment" required><option value="">Select</option><option>Salaried</option><option>Self-employed / Business</option><option>Self-employed Professional</option><option>Student</option><option>Homemaker</option><option>Retired</option><option>Other</option></select></label><label>Monthly income / average monthly income *<input name="monthlyIncome" type="number" min="0" required></label><label>Annual income<input name="annualIncome" type="number" min="0"></label><label>Current account? *<select name="currentAccount" required><option value="">Select</option><option>Yes</option><option>No</option><option>Not applicable</option></select></label></div><div id="employmentDynamic" class="dynamic-panel"></div><div class="document-box"><h4>Income / vintage proofs you can provide</h4><div class="checks"><label><input type="checkbox" name="proofs" value="ITR"> ITR</label><label><input type="checkbox" name="proofs" value="Form 16"> Form 16</label><label><input type="checkbox" name="proofs" value="Salary slips"> Salary slips</label><label><input type="checkbox" name="proofs" value="Bank statements"> Bank statements</label><label><input type="checkbox" name="proofs" value="GST returns"> GST returns</label><label><input type="checkbox" name="proofs" value="Business registration"> Business registration</label><label><input type="checkbox" name="proofs" value="Audited financials"> Audited financials</label><label><input type="checkbox" name="proofs" value="Other"> Other</label></div><label>Since which year can you provide supporting income / business proof?<input name="proofSinceYear" type="number" min="1950" max="2099" placeholder="e.g. 2021"></label></div><div class="form-actions"><button type="button" class="btn ghost prev">← Back</button><button type="button" class="btn primary next">Continue →</button></div></div>
+<div class="form-step" data-step="5"><div class="step-title"><span>05</span><div><h3>Existing EMIs</h3><p>If you have EMIs, we’ll capture them one by one instead of asking you to type everything into one box.</p></div></div><div class="fields two"><label>Do you have any existing EMIs? *<select name="hasExistingEmis" id="hasExistingEmis" required><option value="">Select</option><option>Yes</option><option>No</option></select></label><label id="emiCountWrap" class="hidden">How many existing EMIs?<select id="emiCount" name="emiCount"><option value="">Select</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">More than 10</option></select></label></div><div id="emiManager" class="emi-manager hidden"></div><div class="fields two"><label>Total monthly EMI<input name="totalExistingEmi" id="totalExistingEmi" type="number" min="0" readonly></label><label>Total outstanding amount<input name="totalOutstandingEmi" id="totalOutstandingEmi" type="number" min="0" readonly></label></div><div class="form-actions"><button type="button" class="btn ghost prev">← Back</button><button type="button" class="btn primary next">Continue →</button></div></div>
+<div class="form-step" data-step="6"><div class="step-title"><span>06</span><div><h3>Address proof & CIBIL</h3><p>These questions help us understand documentation gaps and credit-history concerns.</p></div></div><div class="address-box"><h4>Current address proof</h4><div class="checks"><label><input type="checkbox" name="addressProofs" value="Aadhaar"> Aadhaar</label><label><input type="checkbox" name="addressProofs" value="Passport"> Passport</label><label><input type="checkbox" name="addressProofs" value="Driving Licence"> Driving Licence</label><label><input type="checkbox" name="addressProofs" value="Voter ID"> Voter ID</label><label><input type="checkbox" name="addressProofs" value="Utility bill"> Utility bill</label><label><input type="checkbox" name="addressProofs" value="Bank statement"> Bank statement</label><label><input type="checkbox" name="addressProofs" value="Rent agreement"> Rent agreement</label><label><input type="checkbox" name="addressProofs" value="No current address proof"> No current address proof</label></div><label id="noProofReasonWrap" class="hidden">If no current address proof, please tell us why<textarea name="noAddressProofReason" rows="2"></textarea></label></div><div class="address-box"><h4>CIBIL / credit-history concern</h4><div class="fields two"><label>Any CIBIL issue? *<select name="cibilIssue" id="cibilIssue" required><option value="">Select</option><option>Yes</option><option>No</option><option>Not sure</option></select></label></div><div id="cibilDynamic" class="dynamic-panel"></div></div><div class="form-actions"><button type="button" class="btn ghost prev">← Back</button><button type="button" class="btn primary next">Continue →</button></div></div>
+<div class="form-step" data-step="7"><div class="step-title"><span>07</span><div><h3>Working location & meeting preference</h3><p>Enter a pincode to auto-fill postal information. Street / building details still need to be entered manually.</p></div></div><div class="address-box"><h4>Working location</h4><div class="fields two"><label>Working location pincode<div class="pin-row"><input name="workPincode" class="pincode" maxlength="6" inputmode="numeric"><button type="button" class="pin-btn" data-target="work">Auto-fill</button></div></label><label>Post office<input name="workPostOffice" readonly></label><label>City / town<input name="workCity" readonly></label><label>District<input name="workDistrict" readonly></label><label>State<input name="workState" readonly></label></div></div><div class="meeting-box"><h4>Would you like a meeting if required?</h4><div class="choice-inline"><label><input type="radio" name="meetingRequired" value="Yes"> Yes</label><label><input type="radio" name="meetingRequired" value="No"> No</label></div><div id="meetingDynamic" class="dynamic-panel"></div></div><div class="fields two"><label>Best time to contact<select name="callbackTime"><option value="">Select</option><option>9 AM – 12 PM</option><option>12 PM – 3 PM</option><option>3 PM – 6 PM</option><option>6 PM – 9 PM</option></select></label><label>Additional notes<textarea name="message" rows="3" placeholder="Anything else you want us to understand?"></textarea></label></div><div class="form-actions"><button type="button" class="btn ghost prev">← Back</button><button type="button" class="btn primary next">Review enquiry →</button></div></div>
+<div class="form-step" data-step="8"><div class="step-title"><span>08</span><div><h3>Review & consent</h3><p>Please confirm before submitting.</p></div></div><div id="reviewBox" class="review-box"></div><label class="check consent"><input type="checkbox" name="finalConsent" required> <span>I consent to Hello Customer Fintech Solutions using the information submitted through this form to contact me about my enquiry, documentation and next steps. I understand that submitting this enquiry is not a loan approval or guarantee.</span></label><p class="privacy-note">Please do not enter OTPs, passwords, card PINs, net-banking passwords or other highly sensitive authentication information.</p><div class="form-actions"><button type="button" class="btn ghost prev">← Back</button><button class="btn primary" type="submit">Submit My Enquiry →</button></div></div>
+</form>
+<div id="successBox" class="success-box hidden"><div class="success-icon">✓</div><h2>Thank you — your enquiry has been received.</h2><p id="successText">We have recorded your details. Please send the required documents to <a href="mailto:hellocustomerfirst@gmail.com">hellocustomerfirst@gmail.com</a> and mention your Lead ID.</p><div class="success-actions"><a class="btn primary" id="whatsappCustomer" target="_blank" rel="noopener">Send enquiry details on WhatsApp →</a><a class="btn ghost" href="mailto:hellocustomerfirst@gmail.com?subject=Required%20Documents%20-%20Loan%20Enquiry">Email required documents →</a></div></div>
+</div></section>
+<section id="stories" class="section soft"><div class="container"><div class="section-head"><div><div class="eyebrow">Customer words</div><h2>What customers commonly appreciate</h2></div><p>Illustrative website testimonials. Replace these with verified customer reviews/consents before publishing as actual testimonials.</p></div><div class="testimonial-grid" id="testimonialGrid"></div></div></section>
+<section class="section standards"><div class="container standards-grid"><div><div class="eyebrow">Professional standards</div><h2>Clear communication matters.</h2><p>We explain that lender policies can differ. Rates, fees, tenure, documentation, valuation, legal/technical checks, credit assessment and final approval remain with the respective regulated lender.</p></div><div class="standards-list"><div><b>Privacy</b><span>Information is used to respond to your enquiry and handled according to the published privacy notice.</span></div><div><b>No approval promise</b><span>A website enquiry or internal lead priority is not a credit score, sanction or guarantee.</span></div><div><b>Document safety</b><span>Never share OTPs, passwords, PINs or authentication credentials.</span></div><div><b>Support</b><span>Email: <a href="mailto:hellocustomerfirst@gmail.com">hellocustomerfirst@gmail.com</a></span></div></div></div></section>
+<section id="faq" class="section"><div class="container"><div class="section-head"><div><div class="eyebrow">Questions</div><h2>Frequently asked</h2></div></div><div class="faq-grid"><details><summary>Does the form guarantee loan approval?</summary><p>No. It is an enquiry and information-gathering flow. Final approval and terms are decided by the respective lender.</p></details><details><summary>Why are you asking for existing EMI details?</summary><p>Understanding each EMI can help organise your current commitments and the reason for considering a transfer or consolidation.</p></details><details><summary>Can I request a meeting?</summary><p>Yes. Select the meeting option and your preferred mode/time. The request is captured with your enquiry so a suitable conversation can be arranged.</p></details><details><summary>Can I send documents by email?</summary><p>Yes. After submission, you receive a thank-you message with instructions to send relevant documents to hellocustomerfirst@gmail.com.</p></details><details><summary>Will you show my internal lead priority?</summary><p>No. Any internal lead-priority score is for internal workflow only and is not displayed to the customer and is not a credit score.</p></details><details><summary>What happens if I do not have a current address proof?</summary><p>Select “No current address proof” and provide the reason. The team can then understand the documentation situation before discussing next steps.</p></details></div></div></section>
 </main>
-
-<footer>
-  <div class="container footer-grid">
-    <div><div class="brand footer-brand"><span class="brand-mark">HC</span><span><strong>Hello Customer</strong><small>FINTECH SOLUTIONS</small></span></div><p>Loan assistance business under the Sundeep's Hub group.</p></div>
-    <div><b>Business</b><a href="#loans">Loan Solutions</a><a href="#eligibility">Eligibility Check</a><a href="#calculator">EMI Calculator</a></div>
-    <div><b>Contact</b><a href="tel:+919618321100">+91 96183 21100</a><a href="https://wa.me/919618321100" target="_blank" rel="noopener">WhatsApp</a></div>
-  </div>
-  <div class="container footer-bottom">© <span id="year"></span> Hello Customer Fintech Solutions. All rights reserved. <span>•</span> Part of Sundeep's Hub.
-    <div class="legal-links"><a href="./privacy.html">Privacy Policy</a><a href="./terms.html">Terms &amp; Conditions</a></div>
-  </div>
-</footer>
-
+<footer class="footer"><div class="container footer-grid"><div><div class="brand footer-brand"><span class="brand-mark">HC</span><span><strong>Hello Customer</strong><small>FINTECH SOLUTIONS</small></span></div><p>Loans • CIBIL & financial assistance • Documentation guidance</p><p class="muted">A Sundeep's Hub Group Business</p></div><div><h4>Quick links</h4><a href="#loans">Loans</a><a href="#eligibility">Enquiry</a><a href="#calculator">Calculator</a><a href="#faq">FAQ</a></div><div><h4>Legal & support</h4><a href="./privacy.html">Privacy Policy</a><a href="./terms.html">Terms & Conditions</a><a href="mailto:hellocustomerfirst@gmail.com">Support</a><a href="mailto:hellocustomerfirst@gmail.com">Required Documents</a></div></div><div class="container footer-bottom"><span>© 2026 Hello Customer Fintech Solutions. All rights reserved.</span><span>Loan approval, rate and terms are subject to the respective lender.</span></div></footer>
 <script src="./script.js"></script>
 </body>
 </html>

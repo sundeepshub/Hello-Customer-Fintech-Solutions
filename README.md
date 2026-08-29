@@ -1,81 +1,74 @@
-# Hello Customer Fintech Solutions — Loans Landing Page
+# Hello Customer Fintech Solutions — Professional Loan Landing Page
 
-## Branding
-- Business: **Hello Customer Fintech Solutions**
-- Group: **Sundeep's Hub**
-- The page does NOT present Sundeep's Hub as the loan business. It is shown only as the parent/group reference.
+**Group:** Sundeep's Hub  
+**Loans business:** Hello Customer Fintech Solutions  
+**Business email:** hellocustomerfirst@gmail.com
 
-## IMPORTANT: GitHub Pages upload
-Upload these five website files to the **same directory** in your repository:
-- index.html
-- style.css
-- script.js
-- privacy.html
-- terms.html
+## GitHub Pages structure
+Upload these files directly into the root of your `main` branch:
 
-The Google Apps Script file is for Google Sheets setup and does not need to be hosted by GitHub Pages.
+- `index.html`
+- `style.css`
+- `script.js`
+- `privacy.html`
+- `terms.html`
 
-The previous "plain HTML" problem happens when `style.css` or `script.js` is missing, renamed, or placed in another folder. This package uses explicit relative paths:
-`./style.css`
-`./script.js`
+`google-apps-script.gs` is backend code and should be pasted into Google Apps Script, not served as the website.
 
-## Google Sheets
+GitHub Pages setting:
+**Settings → Pages → Deploy from a branch → `main` → `/(root)`**
+
+## Google Sheets backend
 1. Create a Google Sheet.
 2. Extensions → Apps Script.
 3. Paste `google-apps-script.gs`.
-4. Save.
-5. Run `setup()` once and authorize it.
+4. If the script is bound to the Sheet, leave `SPREADSHEET_ID` blank. Otherwise enter the spreadsheet ID.
+5. Run `setup()` once and approve permissions.
 6. Deploy → New deployment → Web app.
-7. Execute as: Me.
-8. Who has access: Anyone.
+7. Execute as: **Me**.
+8. Who has access: **Anyone**.
 9. Copy the Web App URL.
 10. Open `script.js` and replace:
-   `const APPS_SCRIPT_URL = "";`
-   with your Web App URL.
-11. Upload the updated `script.js` to GitHub.
 
-## GitHub Pages
-Settings → Pages → Deploy from branch → `main` → `/ (root)` → Save.
+`const APPS_SCRIPT_URL = 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE';`
+
+with your Web App URL.
+
+## Sheets created
+- **Loan Leads:** summary of each lead and internal workflow priority/score.
+- **All Form Data:** every submitted field as Lead ID / Field / Value, so dynamic fields are not lost.
+- **EMI Details:** one row per existing EMI.
+
+## Customer email
+After a successful submission, the customer receives a thank-you email at the email they entered. It asks them to send required documents to:
+
+**hellocustomerfirst@gmail.com**
+
+The internal business email also receives a detailed notification.
 
 ## WhatsApp
-The page is configured for +91 96183 21100. Change `WHATSAPP_NUMBER` in script.js — it now actually drives every WhatsApp link on the page (footer link + the floating WhatsApp button), so this one edit is all you need.
+The website provides a customer-side WhatsApp button after submission. It opens WhatsApp with a prefilled enquiry message.
 
-## Privacy Policy & Terms
-`privacy.html` and `terms.html` are **draft placeholders**, linked from the footer and the consent checkbox. They are not finished legal documents — every [bracketed] section needs your specific details (retention period, DSA/lender disclosures if applicable, contact details, etc.) before you advertise this page. Review with a legal/compliance advisor if you use one.
+For automatic business-side WhatsApp notifications, configure the WhatsApp Cloud API values inside `CONFIG.WHATSAPP` in Apps Script. Never put an access token in `script.js` or GitHub.
 
-## A note on the submit button's "success" message
-The form submits to Apps Script using `mode: "no-cors"` (required because Apps Script Web Apps don't return CORS headers). This means the page cannot actually read whether your Apps Script call succeeded — it will show "Thank you, submitted" as long as the network request didn't outright fail, even if `APPS_SCRIPT_URL` is misconfigured. **After deploying, test with one real submission and confirm the row actually appears in your Google Sheet** — don't rely on the on-page message alone.
+## Pincode lookup
+The website uses the India Post Pincode API endpoint to retrieve postal metadata from a 6-digit Indian pincode. It can fill post office, city/block, district and state. Street/house details must still be entered by the customer.
 
-## Lead scoring
-The score is only an internal lead-priority mechanism:
-- High
-- Medium
-- Standard
+## Customer-facing priority
+Internal lead priority is deliberately hidden from the customer. It is not a CIBIL score, credit score or approval decision.
 
-It is NOT a credit score, lender score, loan approval, eligibility guarantee, or promise of rate/amount/disbursal.
+## Photo placeholders
+The page includes named placeholders:
+- `IMG-01` — Sandeep / welcome photo
+- `IMG-02` — Sandeep at desk / customer discussion
+- `IMG-03` — Customer consultation
+- `IMG-04` — Documentation / paperwork
+- `IMG-05` — Business / professional meeting
 
-## Before advertising
-Add your final Privacy Policy, Terms, applicable DSA/lender/channel-partner disclosures, and verify all product/lender claims.
+Replace each placeholder with the corresponding approved photo while keeping the same ID/name for easy mapping.
 
+## Testimonials
+The page contains 30+ clearly labelled **illustrative website testimonial drafts** across personal loan, home loan, education loan, business loan, CIBIL and consolidation. Before publishing them as real customer testimonials, replace them with genuine reviews and appropriate customer permission.
 
-## Email + WhatsApp submission flow
-
-When the live form is submitted:
-1. The lead is captured in the `Loan Leads` Google Sheet with every form field.
-2. An internal notification email is sent to **hellocustomerfirst@gmail.com**.
-3. A customer confirmation email is sent to the email address entered in the form.
-4. The customer email asks the customer to send the required documents to **hellocustomerfirst@gmail.com** and quote the Lead ID.
-5. The thank-you screen contains a **Send Details on WhatsApp** button with the submitted enquiry details prefilled.
-6. Optional: Google Apps Script can automatically send the lead details through the Meta WhatsApp Cloud API if the API configuration is enabled.
-
-### Important about WhatsApp
-A normal `wa.me` link cannot silently send a WhatsApp message. The customer must press Send. If you want the business to receive the lead automatically without customer action, use the optional WhatsApp Cloud API configuration in `google-apps-script.gs`.
-
-For automatic WhatsApp:
-- Create/configure a Meta WhatsApp Business Cloud API setup.
-- Put the Phone Number ID, permanent/access token and recipient number in Apps Script.
-- Set `CONFIG.WHATSAPP.ENABLED = true`.
-- Keep all tokens ONLY in Apps Script; never put them in GitHub `script.js`.
-
-### Required customer email
-Email is now a required field because the workflow promises a confirmation email and document-submission instructions.
+## Important compliance note
+The website is an enquiry/assistance interface. It must not represent the internal workflow score as a CIBIL/credit score or guarantee approval. Final eligibility, rates, fees, documentation and approval are decided by the respective lender.
