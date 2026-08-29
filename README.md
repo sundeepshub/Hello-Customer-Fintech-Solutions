@@ -56,3 +56,26 @@ It is NOT a credit score, lender score, loan approval, eligibility guarantee, or
 
 ## Before advertising
 Add your final Privacy Policy, Terms, applicable DSA/lender/channel-partner disclosures, and verify all product/lender claims.
+
+
+## Email + WhatsApp submission flow
+
+When the live form is submitted:
+1. The lead is captured in the `Loan Leads` Google Sheet with every form field.
+2. An internal notification email is sent to **hellocustomerfirst@gmail.com**.
+3. A customer confirmation email is sent to the email address entered in the form.
+4. The customer email asks the customer to send the required documents to **hellocustomerfirst@gmail.com** and quote the Lead ID.
+5. The thank-you screen contains a **Send Details on WhatsApp** button with the submitted enquiry details prefilled.
+6. Optional: Google Apps Script can automatically send the lead details through the Meta WhatsApp Cloud API if the API configuration is enabled.
+
+### Important about WhatsApp
+A normal `wa.me` link cannot silently send a WhatsApp message. The customer must press Send. If you want the business to receive the lead automatically without customer action, use the optional WhatsApp Cloud API configuration in `google-apps-script.gs`.
+
+For automatic WhatsApp:
+- Create/configure a Meta WhatsApp Business Cloud API setup.
+- Put the Phone Number ID, permanent/access token and recipient number in Apps Script.
+- Set `CONFIG.WHATSAPP.ENABLED = true`.
+- Keep all tokens ONLY in Apps Script; never put them in GitHub `script.js`.
+
+### Required customer email
+Email is now a required field because the workflow promises a confirmation email and document-submission instructions.

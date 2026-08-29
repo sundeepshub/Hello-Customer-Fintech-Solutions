@@ -2,7 +2,7 @@
    Set APPS_SCRIPT_URL to your deployed Google Apps Script Web App URL.
 */
 const APPS_SCRIPT_URL = "";
-const WHATSAPP_NUMBER = "919618321100";
+const WHATSAPP_NUMBER = "919618321100"; // Hello Customer Fintech Solutions business WhatsApp
 const WHATSAPP_DEFAULT_MESSAGE = "Hi, I'd like to know more about loan options.";
 const whatsappLink = (msg) => `https://wa.me/${WHATSAPP_NUMBER}${msg ? "?text=" + encodeURIComponent(msg) : ""}`;
 
@@ -104,14 +104,78 @@ function result(){
   const esc=v=>String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
   $("#resultSummary").innerHTML=[["Loan type",S.loan],["Approx. amount",money(amount)],["Employment",a.employment||"—"],["Monthly income",money(income)],["Existing EMI",money(emi)],["City",a.city||"—"]].map(x=>`<div><span>${esc(x[0])}</span><b>${esc(x[1])}</b></div>`).join("");
 }
+function buildLeadMessage(payload){
+  const lines=[
+    "Hello Customer Fintech Solutions — New Loan Enquiry",
+    "----------------------------------------",
+    `Lead Priority: ${payload.leadPriority || "Standard"}`,
+    `Loan Type: ${payload.loanType || "—"}`,
+    `Name: ${payload.name || "—"}`,
+    `Mobile: ${payload.mobile || "—"}`,
+    `Email: ${payload.email || "—"}`,
+    `State: ${payload.state || "—"}`,
+    `City: ${payload.city || "—"}`,
+    `Callback: ${payload.callbackTime || "—"}`,
+    `Loan Amount: ${payload.loanAmount ? money(payload.loanAmount) : "—"}`,
+    `Purpose: ${payload.purpose || "—"}`,
+    `Employment: ${payload.employment || "—"}`,
+    `Monthly Income: ${payload.income ? money(payload.income) : "—"}`,
+    `Existing Loans: ${payload.hasExistingLoans || "—"}`,
+    `Existing EMI: ${(payload.existingEmi || payload.currentEmi) ? money(payload.existingEmi || payload.currentEmi) : "—"}`,
+    `Outstanding: ${payload.outstanding ? money(payload.outstanding) : "—"}`,
+    "",
+    `Message: ${payload.message || "—"}`
+  ];
+  return lines.join("\n");
+}
+
+function showThankYou(payload){
+  const msg=buildLeadMessage(payload);
+  const wa=whatsappLink(msg);
+  $("#resultSummary").innerHTML=`
+    <div><span>Loan type</span><b>${String(payload.loanType||"—")}</b></div>
+    <div><span>Lead ID</span><b>${String(payload.leadId||"Pending")}</b></div>
+    <div><span>Customer email</span><b>${String(payload.email||"—")}</b></div>
+    <div><span>Status</span><b>Enquiry submitted ✓</b></div>`;
+  $(".result-card").innerHTML=`
+    <div class="check">✓</div>
+    <h3>Thank you, ${String(payload.name||"Customer")}!</h3>
+    <p>Your loan enquiry has been received successfully.</p>
+    <div class="thankyou-box">
+      <strong>What happens next?</strong>
+      <p>Our team will review your enquiry and contact you regarding the next steps.</p>
+      <p><strong>Please send the required documents by email to:</strong><br>
+      <a href="mailto:hellocustomerfirst@gmail.com">hellocustomerfirst@gmail.com</a></p>
+      <p class="doc-note">Please do not send OTPs, passwords, card PINs or banking passwords.</p>
+    </div>
+    <div class="summary" id="resultSummary"></div>
+    <div class="priority"><b>Enquiry priority:</b> <span>${String(payload.leadPriority||"Standard")}</span>
+      <small>Internal lead-priority only; not a credit score or loan approval.</small></div>
+    <div class="thankyou-actions">
+      <a class="btn primary" href="${wa}" target="_blank" rel="noopener">Send Details on WhatsApp →</a>
+      <a class="btn secondary" href="mailto:hellocustomerfirst@gmail.com?subject=Loan%20Documents%20-%20${encodeURIComponent(payload.name||"Customer")}&body=Hello%20Hello%20Customer%20Fintech%20Solutions%2C%0A%0APlease%20find%20my%20required%20loan%20documents%20attached.%0A%0AName%3A%20${encodeURIComponent(payload.name||"")}%0AMobile%3A%20${encodeURIComponent(payload.mobile||"")}%0A">Email Documents</a>
+    </div>
+    <p class="form-status success">Thank you! A confirmation email has been requested for your email address.</p>`;
+}
+
 $("#eligibilityForm").addEventListener("submit",async e=>{
   e.preventDefault();collect();if(!valid())return;result();
   const payload={...S.a,loanType:S.loan,leadScore:S.score,leadPriority:S.priority,source:"Hello Customer Fintech Solutions - Loans Landing Page",timestamp:new Date().toISOString()};
   const btn=$("#submitLead");btn.disabled=true;btn.textContent="Submitting...";
   try{
-    if(!APPS_SCRIPT_URL){console.log("Demo lead:",payload);$("#formStatus").textContent="Demo mode: configure APPS_SCRIPT_URL in script.js to save leads to Google Sheets.";btn.disabled=false;btn.textContent="Submit My Enquiry";return}
-    await fetch(APPS_SCRIPT_URL,{method:"POST",mode:"no-cors",body:new URLSearchParams(payload)});
-    $("#formStatus").textContent="Thank you. Your enquiry has been submitted.";btn.textContent="Enquiry Submitted ✓";
-  }catch(err){console.error(err);$("#formStatus").textContent="Unable to submit right now. Please try again.";btn.disabled=false;btn.textContent="Submit My Enquiry"}
+    if(!APPS_SCRIPT_URL){
+      $("#formStatus").textContent="Please configure the Google Apps Script Web App URL in script.js before accepting live enquiries.";
+      btn.disabled=false;btn.textContent="Submit My Enquiry";
+      return;
+    }
+    await fetch(APPS_SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"},body:new URLSearchParams(payload).toString()});
+    showThankYou(payload);
+    $("#nextBtn").style.display="none";
+    $("#backBtn").style.display="none";
+  }catch(err){
+    console.error(err);
+    $("#formStatus").textContent="Unable to submit right now. Please call or WhatsApp us.";
+    btn.disabled=false;btn.textContent="Submit My Enquiry";
+  }
 });
 $("#year").textContent=new Date().getFullYear();
