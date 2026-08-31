@@ -46,3 +46,14 @@ The backend creates:
 The internal lead priority/score is for internal workflow only. It is not a CIBIL score, credit score, sanction decision or approval guarantee.
 
 Never collect or request OTPs, passwords, card PINs or net-banking credentials.
+
+
+## Revision 6 updates
+- CIBIL issue count now generates a dedicated concern field and explanation for every affected account.
+- Mobile and alternative mobile inputs are digits-only with shared phone validation.
+- Project Funds hides Loan requirement focus and shows project-type-specific banker-style questions.
+- Hospital, real-estate, building-construction, warehouse/godown and Other project sections have tailored questions.
+- Project photo upload slots change by project type (optional, max 2 MB each, JPG/PNG/WEBP). Uploaded images are saved to the Apps Script Google Drive folder `HelloCustomer Project Photos`.
+- Separate loan pages are included for all 9 loan types, with a Loans dropdown menu.
+- Referrals redirect to `referral-thankyou.html` after successful submission; the referrer email acknowledgement remains supported.
+- After changing Apps Script code, run `setup()` and redeploy the Web App.
