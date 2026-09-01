@@ -57,3 +57,5 @@ Never collect or request OTPs, passwords, card PINs or net-banking credentials.
 - Separate loan pages are included for all 9 loan types, with a Loans dropdown menu.
 - Referrals redirect to `referral-thankyou.html` after successful submission; the referrer email acknowledgement remains supported.
 - After changing Apps Script code, run `setup()` and redeploy the Web App.
+
+Revision 7 additions: dedicated home.html and referral.html pages; dynamic CIBIL issue add/remove; Project Funds loan-focus hiding; phone/pincode input sanitisation; 30+ real-world stories.

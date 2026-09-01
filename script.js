@@ -146,3 +146,21 @@ function initReferral(){const rf=document.getElementById('referralForm');if(!rf)
 function renderRefPropertyDetail(v){const d=document.getElementById('refPropertyDetail');if(!d)return;const needs=['Buy Property','Sell Property','Residential Property','Commercial Property','Land / Plot','Rental Property','Property Documentation','Property Investment','Other Property'].includes(v);d.classList.toggle('hidden',!needs);if(needs)d.innerHTML=`<div class="fields two"><label>Property type / sub-category *<select name="refPropertyType" required><option value="">Select</option><option>Residential</option><option>Commercial</option><option>Land / Plot</option><option>Apartment</option><option>Independent House</option><option>Office</option><option>Shop</option><option>Warehouse / Godown</option><option>Other</option></select></label><label>Property location / area<input name="refPropertyLocation" maxlength="200"></label><label>Approximate property value<input name="refPropertyValue" type="number" min="0"></label><label class="full">Additional property details<textarea name="refPropertyDetails" rows="3" maxlength="1000"></textarea></label></div>`}
 function renderRefProjectDetail(){const d=document.getElementById('refPropertyDetail');if(!d)return;d.classList.remove('hidden');d.innerHTML=`<div class="fields two"><label>Project category *<select name="refProjectType" required><option value="">Select</option><option>Real Estate</option><option>Hospital</option><option>Building Construction</option><option>Godown / Warehouse</option><option>Other</option></select></label><label>Funding required<input name="refProjectFunding" type="number" min="0"></label><label class="full">Project details<textarea name="refProjectDetails" rows="3" maxlength="1000"></textarea></label></div>`}
 function showFormError(message){let b=document.getElementById('formError');if(!b){b=document.createElement('div');b.id='formError';b.className='form-error';document.getElementById('loanForm')?.prepend(b)}b.textContent=message}
+
+function initR7Enhancements(){
+  document.addEventListener('input',function(e){
+    const t=e.target;
+    if(t.matches('input[name="mobile"],input[name="alternativeMobile"],input[name="customerMobile"],input[name="refPhone"],input[name="referrerPhone"]')){
+      t.value=t.value.replace(/[^0-9]/g,'').slice(0,15);
+    }
+    if(t.matches('input.pincode')) t.value=t.value.replace(/\D/g,'').slice(0,6);
+  });
+  document.addEventListener('change',function(e){
+    if(e.target.id==='loanType'){
+      const w=document.getElementById('loanFocusWrap'); if(w) w.classList.toggle('hidden',e.target.value==='Project Funds');
+    }
+  });
+  const rf=document.getElementById('referralForm');
+  if(rf && !rf.dataset.r7){rf.dataset.r7='1';}
+}
+document.addEventListener('DOMContentLoaded',initR7Enhancements);
