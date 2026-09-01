@@ -59,3 +59,9 @@ Never collect or request OTPs, passwords, card PINs or net-banking credentials.
 - After changing Apps Script code, run `setup()` and redeploy the Web App.
 
 Revision 7 additions: dedicated home.html and referral.html pages; dynamic CIBIL issue add/remove; Project Funds loan-focus hiding; phone/pincode input sanitisation; 30+ real-world stories.
+
+
+## Revision 9 — Product-specific lender directory
+The project now includes `lenders.js`, a central lender master database. The enquiry form dynamically filters preferred lender categories and institutions by selected loan type. Individual loan pages also display their relevant lender categories. Banks, HFCs, NBFC/finance companies, RRBs and co-operative categories are kept separate.
+
+The lender directory is intended for enquiry guidance, not a guarantee of product availability or approval. Product availability, regulatory status, lender names and policies can change. Verify current details before publishing specific offers. The Home Loan/HFC directory was cross-checked against National Housing Bank's 2026 HFC information.
