@@ -1,13 +1,167 @@
 window.HC_SCHEMES=[
-{category:"Education",name:"PM-Vidyalaxmi",purpose:"Central Sector scheme supporting eligible students admitted on merit to identified Quality Higher Education Institutions (QHEIs).",eligibility:"Students with merit-based admission to covered QHEIs; separate income conditions apply for interest-subvention benefits.",benefit:"Collateral-free and guarantor-free education loan support under the scheme; eligible families with annual income up to ₹8 lakh may receive 3% interest subvention on loans up to ₹10 lakh, subject to current rules and annual limits.",dos:"Check the current QHEI list, income conditions and application process on the official PM-Vidyalaxmi portal before advising the customer.",donts:"Do not assume every college, overseas course or student automatically qualifies.",official:"https://pmvidyalaxmi.co.in/",verified:"Verified 02-Sep-2026 from Government/PIB scheme information"},
-{category:"Housing",name:"PMAY-U 2.0 — Interest Subsidy Scheme (ISS)",purpose:"Housing support for eligible urban EWS/LIG/MIG households under PMAY-U 2.0.",eligibility:"Current PMAY-U 2.0 income, property, beneficiary-family, loan and house-value conditions apply.",benefit:"Current scheme material provides 4% interest subsidy on the first ₹8 lakh of eligible home loan for up to 12 years, with maximum subsidy up to ₹1.80 lakh, subject to scheme conditions.",dos:"Verify beneficiary income category, house value, loan amount, sanction/disbursement date and current PMAY-U 2.0 guidelines.",donts:"Do not use old PMAY-U/CLSS parameters as if they are the current PMAY-U 2.0 rules.",official:"https://pmay-urban.gov.in/pmay-u-2.0-guidelines",verified:"Verified 02-Sep-2026 from PMAY-U 2.0 official material"},
-{category:"Food Processing",name:"PM Formalisation of Micro Food Processing Enterprises (PMFME)",purpose:"Support for eligible micro food-processing enterprises, groups, common infrastructure and formalisation.",eligibility:"Applicant type, activity, project cost, state implementation and current scheme rules apply.",benefit:"Official PMFME material lists 35% credit-linked capital subsidy on eligible project cost for individual units, with scheme ceilings, plus separate support for groups/common infrastructure and eligible SHGs.",dos:"Confirm current application availability, eligible activity, DPR and state nodal requirements on the official portal.",donts:"Do not quote a subsidy amount without checking the current ceiling and applicant category.",official:"https://pmfme.mofpi.gov.in/",verified:"Verified 02-Sep-2026 from MoFPI PMFME portal"},
-{category:"MSME / Business",name:"Pradhan Mantri Mudra Yojana (PMMY)",purpose:"Institutional credit support for eligible non-corporate, non-farm micro enterprises through participating lenders.",eligibility:"Activity, borrower profile, loan category and lender assessment apply under current PMMY rules.",benefit:"Loan categories and limits are governed by the current PMMY framework and participating-lender policy.",dos:"Use the official MUDRA/lender channel and verify the current Shishu/Kishor/Tarun/Tarun Plus conditions.",donts:"Do not promise sanction merely because the business falls within a MUDRA category.",official:"https://www.mudra.org.in/",verified:"Re-verify current category limits before publication"},
-{category:"MSME / Business",name:"Prime Minister's Employment Generation Programme (PMEGP)",purpose:"Credit-linked support for eligible new micro-enterprises.",eligibility:"Applicant, project, activity, new-unit and implementing-agency conditions apply under current guidelines.",benefit:"Margin-money subsidy depends on beneficiary category, project location and current PMEGP rules.",dos:"Check KVIC/KVIB/DIC eligibility, project ceiling and current portal instructions.",donts:"Do not assume an existing unit or every activity is eligible.",official:"https://www.kviconline.gov.in/pmegpeportal/",verified:"Re-verify current guidelines before publication"},
-{category:"MSME / Business",name:"CGTMSE Credit Guarantee",purpose:"Credit-guarantee framework that supports eligible MSE credit facilities through Member Lending Institutions.",eligibility:"Eligible borrower, lender and credit-facility conditions apply under current CGTMSE scheme documents.",benefit:"Guarantee cover is provided to eligible lending institutions and varies by borrower/facility category and current rules.",dos:"Ask the lender whether the proposed facility is eligible for CGTMSE cover and what guarantee fee/conditions apply.",donts:"Do not describe CGTMSE as a direct cash subsidy paid to the borrower.",official:"https://www.cgtmse.in/",verified:"Re-verify current guarantee coverage before publication"},
-{category:"Entrepreneurship",name:"Stand-Up India",purpose:"Bank finance support for eligible greenfield enterprises promoted by women and/or SC/ST entrepreneurs.",eligibility:"Current ownership/control, promoter category, greenfield-business and lender conditions apply.",benefit:"Composite-loan assistance is subject to participating-bank appraisal and current scheme parameters.",dos:"Check current scheme validity, promoter shareholding and bank requirements on the official portal.",donts:"Do not promise approval based only on social-category eligibility.",official:"https://www.standupmitra.in/",verified:"Re-verify current scheme window before publication"},
-{category:"Street Vendors",name:"PM SVANidhi",purpose:"Working-capital support and incentives for eligible street vendors under the current scheme framework.",eligibility:"Vendor identification/certificate, urban-local-body records and current scheme rules apply.",benefit:"Working-capital and incentive structure depend on the current PM SVANidhi guidelines.",dos:"Verify eligibility with the official portal/ULB and use approved application channels.",donts:"Do not collect unofficial fees or promise automatic approval.",official:"https://pmsvanidhi.mohua.gov.in/",verified:"Re-verify current tranche/benefit rules before publication"},
-{category:"Artisans",name:"PM Vishwakarma",purpose:"Support for eligible traditional artisans and craftspeople through recognition, skills, toolkit support, digital incentives and credit components.",eligibility:"Trade/category, age, family and other current scheme conditions apply.",benefit:"Benefits are component-specific and subject to current PM Vishwakarma guidelines and verification.",dos:"Confirm the applicant's eligible trade and registration status through the official portal.",donts:"Do not promise the credit component without lender and scheme assessment.",official:"https://pmvishwakarma.gov.in/",verified:"Re-verify current benefit limits before publication"},
-{category:"Agriculture",name:"Agriculture Infrastructure Fund (AIF)",purpose:"Financing support for eligible post-harvest management infrastructure and community farming assets.",eligibility:"Eligible beneficiary, project/activity and participating-lender conditions apply.",benefit:"Interest-subvention/credit-guarantee support is subject to current AIF operational guidelines.",dos:"Check the eligible project list, borrower category and current portal guidance.",donts:"Do not treat every agricultural land or crop loan as an AIF project.",official:"https://agriinfra.dac.gov.in/",verified:"Re-verify current operational guidelines before publication"},
-{category:"Agriculture",name:"Kisan Credit Card (KCC)",purpose:"Short-term and allied-activity credit support for eligible farmers and other covered agricultural borrowers through participating banks.",eligibility:"Landholding/activity, borrower category, scale of finance and lender requirements apply.",benefit:"Credit limit, interest support and repayment terms depend on the current KCC/interest-subvention rules and lender assessment.",dos:"Use bank/agriculture-department records and verify current interest-subvention conditions.",donts:"Do not quote a universal limit without checking crop/activity and lender rules.",official:"https://www.myscheme.gov.in/",verified:"Use MyScheme/participating bank for current conditions"}
+  {
+    "category": "Education",
+    "name": "PM-Vidyalaxmi",
+    "purpose": "Education-loan support for merit-based admissions to identified Quality Higher Education Institutions (QHEIs).",
+    "eligibility": "Student must meet current PM-Vidyalaxmi/QHEI and lender conditions. Income limits apply to interest-subvention benefits.",
+    "benefit": "Collateral-free/guarantor-free product under the scheme; 3% moratorium-period interest subvention for eligible families up to ₹8 lakh annual income, subject to scheme limits. Full interest subvention applies to specified lower-income cases under current rules.",
+    "dos": "Check the current QHEI list, family-income criteria and bank rate before advising.",
+    "donts": "Do not assume every institution, management-quota admission or overseas course is eligible.",
+    "official": "https://pmvidyalaxmi.co.in/",
+    "verified": "Reviewed Sep-2026"
+  },
+  {
+    "category": "Housing",
+    "name": "PMAY-U 2.0 — Interest Subsidy Scheme",
+    "purpose": "Urban housing assistance for eligible EWS/LIG/MIG beneficiary families.",
+    "eligibility": "Current beneficiary-family, income, property-value, loan and house-value conditions apply.",
+    "benefit": "Home-loan interest subsidy under PMAY-U 2.0 up to the current scheme ceiling (official guidelines state actual release up to ₹1.80 lakh per eligible unit).",
+    "dos": "Verify the latest PMAY-U 2.0 guidelines and beneficiary eligibility.",
+    "donts": "Do not apply old CLSS parameters to current PMAY-U 2.0 cases.",
+    "official": "https://pmay-urban.gov.in/pmay-u-2.0-guidelines",
+    "verified": "Reviewed Sep-2026"
+  },
+  {
+    "category": "MSME / Business",
+    "name": "Pradhan Mantri Mudra Yojana (PMMY)",
+    "purpose": "Credit for eligible micro enterprises and income-generating non-farm activities through participating lenders.",
+    "eligibility": "Borrower/activity and participating lender policy apply; product categories and ceilings may change.",
+    "benefit": "MUDRA-linked micro-enterprise credit under current Shishu/Kishor/Tarun/Tarun Plus framework where applicable.",
+    "dos": "Check the latest MUDRA category/limit and lender eligibility before quoting.",
+    "donts": "Do not promise sanction merely because the activity is a micro enterprise.",
+    "official": "https://www.mudra.org.in/",
+    "verified": "Review live before use"
+  },
+  {
+    "category": "MSME / Business",
+    "name": "PMEGP — Prime Minister's Employment Generation Programme",
+    "purpose": "Credit-linked support for eligible new micro-enterprises under KVIC/KVIB/DIC implementation.",
+    "eligibility": "Applicant, project, activity, own contribution and subsidy category rules apply.",
+    "benefit": "Margin-money subsidy is category/location dependent under current PMEGP guidelines.",
+    "dos": "Use the current KVIC PMEGP portal/guidelines and prepare a realistic project report.",
+    "donts": "Do not state one subsidy percentage for every applicant/location.",
+    "official": "https://www.kviconline.gov.in/pmegpeportal/pmegphome/index.jsp",
+    "verified": "Review live before use"
+  },
+  {
+    "category": "MSME / Business",
+    "name": "CGTMSE Credit Guarantee",
+    "purpose": "Credit-guarantee framework supporting eligible collateral-free/partly secured credit facilities to MSE borrowers through member lenders.",
+    "eligibility": "Eligible borrower, lender, facility and current guarantee-cover rules apply.",
+    "benefit": "Guarantee cover to participating lenders, which may help eligible MSE credit proposals subject to lender sanction.",
+    "dos": "Confirm lender membership, borrower/activity eligibility and current guarantee limits/fees.",
+    "donts": "Do not describe CGTMSE as a direct cash subsidy to the borrower.",
+    "official": "https://www.cgtmse.in/",
+    "verified": "Review live before use"
+  },
+  {
+    "category": "MSME / Business",
+    "name": "Stand-Up India",
+    "purpose": "Bank loans for eligible SC/ST and women entrepreneurs for greenfield enterprises.",
+    "eligibility": "Promoter category, ownership/control and greenfield-enterprise rules apply.",
+    "benefit": "Composite bank-loan support within current scheme limits through eligible scheduled commercial banks.",
+    "dos": "Verify current eligibility and handholding/application route on the official portal.",
+    "donts": "Do not assume an existing business automatically qualifies as greenfield.",
+    "official": "https://www.standupmitra.in/",
+    "verified": "Review live before use"
+  },
+  {
+    "category": "Artisans / Micro Enterprise",
+    "name": "PM Vishwakarma",
+    "purpose": "Support to eligible traditional artisans/craftspeople through recognition, skilling, toolkit support and concessional enterprise credit.",
+    "eligibility": "Applicant must belong to an eligible notified trade and meet current scheme conditions.",
+    "benefit": "Scheme includes concessional credit and other support components under current guidelines.",
+    "dos": "Verify eligible trade, registration and current credit tranches/conditions.",
+    "donts": "Do not promise benefit before successful scheme verification/registration.",
+    "official": "https://pmvishwakarma.gov.in/",
+    "verified": "Review live before use"
+  },
+  {
+    "category": "Food Processing",
+    "name": "PMFME",
+    "purpose": "Formalisation/upgradation of eligible micro food-processing enterprises and common infrastructure.",
+    "eligibility": "Eligible unit/group/activity, project-cost and state implementation rules apply.",
+    "benefit": "Official PMFME portal states 35% credit-linked capital subsidy for eligible individual projects, subject to ceiling; separate provisions exist for groups/common infrastructure.",
+    "dos": "Confirm current application window, ODOP/activity and DPR requirements.",
+    "donts": "Do not quote subsidy without checking applicant category and ceiling.",
+    "official": "https://pmfme.mofpi.gov.in/",
+    "verified": "Reviewed Sep-2026"
+  },
+  {
+    "category": "Street Vendors",
+    "name": "PM SVANidhi",
+    "purpose": "Working-capital support and incentives for eligible street vendors.",
+    "eligibility": "Vendor eligibility/identification and current scheme rules apply.",
+    "benefit": "Working-capital loans with current scheme incentives subject to repayment/digital-transaction conditions.",
+    "dos": "Verify current tranche amounts, eligibility and application status on the official portal.",
+    "donts": "Do not treat it as an unrestricted personal loan.",
+    "official": "https://pmsvanidhi.mohua.gov.in/",
+    "verified": "Review live before use"
+  },
+  {
+    "category": "Agriculture",
+    "name": "Kisan Credit Card (KCC)",
+    "purpose": "Short-term and working-capital credit for eligible agriculture/allied activities through participating banks.",
+    "eligibility": "Farmer/activity/land or allied-activity and bank rules apply.",
+    "benefit": "Revolving/working-capital agricultural credit with applicable government interest-support provisions where eligible.",
+    "dos": "Verify current crop/activity scale of finance, documentation and interest-support rules with the bank.",
+    "donts": "Do not quote a universal limit or subsidy for every farmer.",
+    "official": "https://www.myscheme.gov.in/",
+    "verified": "Use MyScheme/participating bank for current rules"
+  },
+  {
+    "category": "Agriculture",
+    "name": "Agriculture Infrastructure Fund (AIF)",
+    "purpose": "Financing for eligible post-harvest management infrastructure and community farming assets.",
+    "eligibility": "Eligible beneficiary/entity and project category under current AIF guidelines.",
+    "benefit": "Interest-subvention/credit-guarantee support is available for eligible projects subject to current limits and scheme conditions.",
+    "dos": "Verify eligible project type and current portal guidelines before structuring funding.",
+    "donts": "Do not assume all agricultural land purchases qualify.",
+    "official": "https://agriinfra.dac.gov.in/",
+    "verified": "Review live before use"
+  },
+  {
+    "category": "Animal Husbandry",
+    "name": "Animal Husbandry Infrastructure Development Fund (AHIDF)",
+    "purpose": "Support for eligible dairy, meat processing, animal-feed and related infrastructure projects.",
+    "eligibility": "Eligible entity/project and current Department of Animal Husbandry rules apply.",
+    "benefit": "Credit-linked support including interest subvention/credit guarantee where applicable under current guidelines.",
+    "dos": "Check current project categories, promoter contribution and lender conditions.",
+    "donts": "Do not quote benefit without current guideline verification.",
+    "official": "https://dahd.nic.in/",
+    "verified": "Review live before use"
+  },
+  {
+    "category": "Startup",
+    "name": "Startup India Seed Fund Scheme (SISFS)",
+    "purpose": "Seed support through selected incubators for eligible DPIIT-recognised startups under scheme rules.",
+    "eligibility": "Startup recognition, age, prior funding and incubator-selection criteria apply.",
+    "benefit": "Seed support for proof of concept/prototype/market entry/commercialisation through approved incubators, subject to current scheme availability.",
+    "dos": "Check whether the scheme/window/incubator is currently accepting applications.",
+    "donts": "Do not describe seed support as guaranteed bank finance.",
+    "official": "https://seedfund.startupindia.gov.in/",
+    "verified": "Review live before use"
+  },
+  {
+    "category": "Women / SHG",
+    "name": "DAY-NRLM SHG Bank Linkage / Interest Support",
+    "purpose": "Financial inclusion and livelihood credit support for eligible rural Self Help Groups.",
+    "eligibility": "SHG/NRLM eligibility and state/bank implementation rules apply.",
+    "benefit": "Bank linkage and applicable interest-subvention support under current NRLM provisions.",
+    "dos": "Confirm SHG grading, bank linkage and State Rural Livelihood Mission process.",
+    "donts": "Do not present it as an individual unsecured consumer loan.",
+    "official": "https://nrlm.gov.in/",
+    "verified": "Review live before use"
+  },
+  {
+    "category": "General Discovery",
+    "name": "MyScheme — Government Scheme Discovery Portal",
+    "purpose": "Official discovery portal to search Central/State schemes by applicant profile and need.",
+    "eligibility": "Depends on the individual scheme selected.",
+    "benefit": "Helps identify schemes across business, education, housing, agriculture, social welfare and other categories.",
+    "dos": "Use MyScheme to check additional schemes not yet curated in this website and verify the official implementing department.",
+    "donts": "Do not treat the website catalogue as an exhaustive list of every Central/State/local scheme.",
+    "official": "https://www.myscheme.gov.in/",
+    "verified": "Official scheme discovery route"
+  }
 ];
