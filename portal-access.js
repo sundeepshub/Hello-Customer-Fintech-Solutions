@@ -1,11 +1,1 @@
-(function(){
-  async function currentContext(){
-    if(!window.HCAuth||!HCAuth.ready)return {user:null,profile:null};
-    return new Promise(resolve=>HCAuth.auth.onAuthStateChanged(async u=>{if(!u)return resolve({user:null,profile:null});try{const s=await HCAuth.db.collection('users').doc(u.uid).get();resolve({user:u,profile:s.exists?s.data():null})}catch(_){resolve({user:u,profile:null})}}));
-  }
-  async function featureSettings(){
-    try{const s=await HCAuth.db.collection('settings').doc('features').get();return s.exists?s.data():{loanRates:{telecaller:true,connector:true,admin:true,public:false},schemes:{public:true,telecaller:true,connector:true,admin:true}}}catch(_){return {loanRates:{telecaller:true,connector:true,admin:true,public:false},schemes:{public:true,telecaller:true,connector:true,admin:true}}}
-  }
-  async function allow(feature){const [ctx,set]=await Promise.all([currentContext(),featureSettings()]);const role=ctx.profile?.role||'public';const cfg=set[feature]||{};return {allowed:role==='admin'?cfg.admin!==false:Boolean(cfg[role]),role,ctx,settings:set}}
-  window.HCPortalAccess={currentContext,featureSettings,allow};
-})();
+(function(){async function currentContext(){if(!HCAuth?.ready)return{user:null,profile:null};const u=HCAuth.auth.currentUser||await new Promise(r=>{const o=HCAuth.auth.onAuthStateChanged(x=>{o();r(x)})});if(!u)return{user:null,profile:null};try{return{user:u,profile:(await HCAuth.api('getProfile')).profile}}catch{return{user:u,profile:null}}}async function featureSettings(){try{return(await HCAuth.api('featureSettings',{},false)).settings}catch{return{loanRates:{public:false,telecaller:true,connector:true,admin:true},schemes:{public:true,telecaller:true,connector:true,admin:true}}}}async function allow(feature){const ctx=await currentContext(),s=await featureSettings(),role=ctx.profile?.role||'public',cfg=s[feature]||{};return{allowed:role==='admin'?cfg.admin!==false:!!cfg[role],role,ctx,settings:s}}window.HCPortalAccess={currentContext,featureSettings,allow};})();

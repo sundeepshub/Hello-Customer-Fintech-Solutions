@@ -74,10 +74,10 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-functions-compat.js"></script>
-<script src="firebase-config.js"></script><script src="auth.js"></script><script src="portal-access.js"></script>
+
+
+
+<script src="firebase-config.js"></script><script src="portal-config.js"></script><script src="auth.js"></script><script src="portal-access.js"></script>
 <script>
 const ROI_NEWS_API='https://script.google.com/macros/s/AKfycbwXcFXo-rdrcxWBqkzSWXhU_KYUShb3wwq7wNjV3bMThjHiCg7ELSoDU0cqqIj3atXZmQ/exec';
 const loanLabels={home_loan:'Home Loan',personal_loan:'Personal Loan',car_loan:'Car / Vehicle Loan',loan_against_property:'Loan Against Property'};
@@ -90,17 +90,13 @@ const formatDate=s=>{if(!s)return 'Date not provided';const d=new Date(s);return
   if(!access.allowed){gate.innerHTML='<div class="access-denied"><h2>Access not enabled</h2><p>The administrator has not enabled Loan Rates for your role.</p><a class="btn ghost" href="executive-dashboard.html">Back to Dashboard</a></div>';return}
   gate.hidden=true;content.hidden=false;
   try{
-    const res=await fetch(ROI_NEWS_API+'?t='+Date.now(),{cache:'no-store'});
-    if(!res.ok)throw new Error('HTTP '+res.status);
-    const payload=await res.json();
+    const payload=await HCAuth.api('ratesNews');
     if(payload.status!=='success')throw new Error(payload.message||'API returned an error');
     renderRates(Array.isArray(payload.rates)?payload.rates:[],payload);
     renderNews(Array.isArray(payload.news)?payload.news:[]);
   }catch(err){
     document.getElementById('roiLoading').hidden=true;document.getElementById('newsLoading').hidden=true;
-    const staticData=(window.HC_RATE_DATA||[]).map(x=>({bank_id:x.lender,bank_name:x.lender,loan_type:({'Home Loan':'home_loan','Personal Loan':'personal_loan','Vehicle Loan':'car_loan','Loan Against Property':'loan_against_property'}[x.loanType]||''),roi_min:x.roiFrom,roi_max:x.roiTo,benchmark:'Verify current lender benchmark',processing_fee:x.processingFee,tenure_max_years:parseFloat(x.maxTenure)||null})).filter(x=>x.loan_type);
-    if(staticData.length){renderRates(staticData,{disclaimer:'Live Google Sheet API could not be reached. Showing the packaged fallback reference only; verify all current lender terms before use.',last_updated:'Fallback data'});document.getElementById('roiError').hidden=false;document.getElementById('roiError').textContent='Live ROI API unavailable. Fallback reference loaded.'}
-    else{document.getElementById('roiError').hidden=false;document.getElementById('roiError').textContent='Unable to load the live ROI data: '+err.message}
+    document.getElementById('roiError').hidden=false;document.getElementById('roiError').textContent='Unable to load the protected live ROI data: '+err.message;
     document.getElementById('newsError').hidden=false;document.getElementById('newsError').textContent='Unable to load the live RSS feed. Please retry later.';
   }
 })();
@@ -135,5 +131,5 @@ function renderNews(news){
   grid.innerHTML=news.map(n=>`<a class="news-card" href="${esc(n.link)}" target="_blank" rel="noopener noreferrer"><strong>${esc(n.title)}</strong><div class="news-meta">${esc(n.source||'Source')} · ${esc(formatDate(n.pubDate))}</div></a>`).join('');
 }
 </script>
-<script src="data/rate-data.js"></script>
+
 </body></html>

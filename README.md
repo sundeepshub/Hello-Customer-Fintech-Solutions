@@ -1,155 +1,85 @@
-# Hello Customer Fintech Solutions — Revision 10 Complete Build
+# Hello Customer Fintech Solutions — Revision 11
 
-This package upgrades Revision 9 into a customer website + role-based executive CRM architecture.
+## Architecture
 
-## Public customer flow
-Home → Loan information → Loan Rates & Eligibility → Government Schemes → Enquiry → Google Sheets → Lead ID → separate Thank You page.
+Revision 11 removes the Firestore/Cloud Functions dependency from the CRM.
 
-## Executive flow
-Signup → pending approval → Admin approval → username/password login → role dashboard → Add Lead / My Leads → Lead Details → stage/status/follow-up/activity → Profile.
+- **Firebase Authentication**: email/password credentials only.
+- **Google Apps Script**: trusted portal API, role checks, Firebase ID-token verification, signup profile registration, admin operations, CRM access enforcement, ROI/news API and emails.
+- **Google Sheets**: Executive Users, CRM Leads, Lead Activities, Admin Settings, Loan Rates, public enquiry sheets and reports.
+- **Google Drive**: executive profile photos.
+- **GitHub Pages**: front-end hosting.
 
-Roles:
-- Telecaller: maximum 100 accounts
-- Connector: maximum 200 accounts
-- Admin: full platform administration
+Passwords are never stored in Google Sheets, Google Drive, GitHub or Apps Script. The `Executive Users` sheet stores only the credential-store label `Firebase Authentication`, the Firebase UID and audit metadata.
 
-Each executive can read only leads created by or assigned to that account. Admin can read/assign all leads.
+## First-time setup
 
-## Main Revision 10 requirements implemented
-- Separate `thank-you.html` after successful enquiry.
-- Expanded Project Funds, Business Loan and Balance Transfer / Consolidation options.
-- Loan hook/education sections with configurable image/video slots.
-- `loan-rates.html` with source, last-updated date, eligibility and lender conditions.
-- `government-schemes.html` with eligibility, benefits, Do/Don't and official-source links.
-- Education Loan dynamic country → course → institution flow with Other fields.
-- Student-specific family income instead of generic individual monthly income.
-- Father/Guardian/co-borrower profile and occupation-specific questions.
-- Student qualification/admission/cost/document checklist.
-- Executive signup/login/reset-password/profile-photo flow.
-- Backend-enforced username uniqueness and 100/200 role capacity.
-- Admin approval and active/inactive controls.
-- Executive ID assignment (`TC001...TC100`, `CN001...CN200`).
-- Executive dashboard, My Leads, Add Lead, Lead Details and activity timeline.
-- Lead ownership/isolation enforced by Firestore rules.
-- Separate Google reporting spreadsheet provisioning helper for each executive.
-- Optional Apps Script → Firebase public-lead bridge so public website enquiries can enter the CRM unassigned and be assigned by Admin.
+1. In Firebase project `hcfintechsolutions`, enable **Authentication → Sign-in method → Email/Password**.
+2. Create the first Admin user in **Authentication → Users** and copy the UID.
+3. Open the master Google Sheet → **Extensions → Apps Script**.
+4. Replace the Apps Script code with the root `google-apps-script.gs`.
+5. Run `setup()` once and approve permissions. It creates/updates:
+   - Loan Leads
+   - All Form Data
+   - EMI Details
+   - Referrals
+   - CIBIL Enquiries
+   - Executive Users
+   - CRM Leads
+   - Lead Activities
+   - Admin Settings
+   - Loan Rates
+6. In Apps Script, run this once with your real values:
+   `setupAdminUser('yourAdminUsername','your-admin-email@example.com','Administrator Name','FIREBASE_AUTH_UID')`
+7. Deploy Apps Script as **Web app**:
+   - Execute as: **Me**
+   - Who has access: **Anyone**
+   - Update the existing deployment so its URL stays the same.
+8. Open `admin-login.html` and log in using the Admin username from step 6 and the password you created in Firebase Authentication.
 
-## Security architecture
-Passwords are NEVER stored in Google Sheets or GitHub files.
+## Executive signup
 
-Use:
-- Firebase Authentication — passwords/recovery
-- Firestore — users, roles, CRM leads, activities
-- Firebase Storage — profile photos
-- Cloud Functions — secure signup capacity, username lookup, admin approval/status, public-lead ingestion
-- Google Apps Script / Sheets — public enquiry capture, operational reporting, emails, optional individual executive reporting workbooks
+Telecaller/Connector signup:
+1. Front end validates role, email, 10-digit mobile, username and strong password.
+2. Firebase Authentication creates the credential.
+3. Front end obtains a Firebase ID token.
+4. Apps Script verifies the token with Firebase Identity Toolkit.
+5. Apps Script writes the profile to `Executive Users` with status `pending`.
+6. Optional profile photo is stored in Google Drive.
+7. Apps Script sends a signup-received email.
+8. Admin approves the user from Admin Dashboard.
+9. Approval assigns `TC001...TC100` or `CN001...CN200` and creates a separate reporting Google Spreadsheet.
+10. Activation email is sent.
 
-## Firebase deployment
-1. Create a Firebase project.
-2. Enable Authentication → Email/Password.
-3. Create Firestore database.
-4. Enable Firebase Storage.
-5. Create a Firebase Web App and copy its public web config into `firebase-config.js`.
-6. Install Firebase CLI and log in.
-7. From this project folder run:
-   - `firebase use --add`
-   - `cd functions && npm install && cd ..`
-   - `firebase functions:secrets:set INGEST_SECRET`
-   - `firebase deploy --only functions,firestore:rules,storage`
-8. Copy the deployed HTTPS URL for `ingestPublicLead`.
+## Password standard
 
-## Create the first Admin
-Create the admin user securely in Firebase Authentication, then create Firestore document:
-`users/{ADMIN_UID}`
+12–64 characters with at least one uppercase letter, one lowercase letter, one number and one special character. Password change requires the current password and Firebase reauthentication. The new password must differ from the old password. Only the password-change timestamp is saved in Sheets.
 
-Recommended fields:
-```json
-{
-  "uid": "ADMIN_UID",
-  "username": "admin",
-  "email": "your-admin-email",
-  "fullName": "Administrator",
-  "mobile": "",
-  "role": "admin",
-  "status": "active",
-  "executiveId": "ADMIN"
-}
-```
+## Access control
 
-The admin logs in through `executive-login.html`. For username login, also create a trusted `usernames/admin` document containing the admin UID and email, or use Firebase Console/Cloud Function tooling to seed it.
+Every protected Apps Script action verifies the Firebase ID token and then checks `Executive Users`.
 
-## Google Apps Script deployment
-1. Open the Google Sheet used for website enquiries.
-2. Extensions → Apps Script.
-3. Paste `google-apps-script.gs`.
-4. Run `setup()` once.
-5. Deploy → Web App → Execute as Me → Anyone.
-6. Keep the existing `/exec` URL in `script.js` and `cibil.js`.
+- Admin: all CRM leads and administration.
+- Telecaller/Connector: only leads they created or that are assigned to their Firebase UID.
+- Loan Rates: authenticated and role-visible only.
+- Schemes: visibility controlled from `Admin Settings`.
 
-The backend creates/uses:
-- Loan Leads
-- All Form Data
-- EMI Details
-- Referrals
-- CIBIL Enquiries
-- Executive Users
+Public website enquiries are mirrored into `CRM Leads` as unassigned leads and can be assigned from the Admin Dashboard.
 
-## Optional public-lead CRM mirror
-To make public website enquiries appear automatically in Admin Dashboard:
-1. Deploy Firebase Functions.
-2. Put the deployed `ingestPublicLead` HTTPS URL in `CONFIG.FIREBASE_INGEST_URL` in `google-apps-script.gs`.
-3. In Apps Script → Project Settings → Script Properties, add:
-   - Key: `FIREBASE_INGEST_SECRET`
-   - Value: the SAME value used by `firebase functions:secrets:set INGEST_SECRET`
-4. Redeploy Apps Script.
+## Profile photos
 
-Public leads then enter Firestore with no executive assignment. Admin assigns them from `admin-dashboard.html`.
+Profile images are stored in the Google Drive folder:
+`HelloCustomer Executive Profile Photos`
 
-## Individual executive Google reporting workbooks
-The Apps Script includes:
-- `createExecutiveReportingSpreadsheet(executiveId, fullName, role, email)`
-- `provisionExecutiveReportingSheetsFromUsers()`
+The Executive Users sheet stores the Drive file ID and display URL.
 
-Populate `Executive Users` with active approved users and run the provisioning helper. It creates a separate Google spreadsheet for each executive. Passwords are never copied to these sheets.
+## Loan rates & news
 
-## Loan media
-Place images under `assets/loans/` and videos under `assets/videos/` according to `data/loan-data.js`.
+`Loan Rates` sheet headers:
+`bank_id, bank_name, loan_type, roi_min, roi_max, benchmark, processing_fee, tenure_max_years`
 
-## Rates
-Edit `data/rate-data.js` only with official, source-verified lender information. Every record should include `updatedOn` and `source`.
+The protected `ratesNews` action returns ROI data plus RSS headlines to authorised users.
 
-## Government schemes
-Edit `data/scheme-data.js`. Scheme windows/benefits can change, so keep official links and re-verification dates.
+## Important
 
-## Important limitation
-The source code is complete, but a live secure login cannot work until your Firebase project config and deployment are supplied. Do not replace this with hard-coded usernames/passwords in JavaScript or Google Sheets.
-
-## Firebase project now configured
-The web client is configured for Firebase project `hcfintechsolutions` in `firebase-config.js` and `.firebaserc`.
-
-### Remaining live deployment actions
-These actions require access to the Firebase project/account and therefore must be run by an authorized project owner/operator:
-
-1. Enable **Email/Password** under Firebase Authentication → Sign-in method.
-2. Create the Firestore database and Cloud Storage bucket if they are not already created.
-3. Install Firebase CLI and authenticate: `firebase login`.
-4. From this project directory run: `firebase deploy --only firestore:rules,storage,functions`.
-5. Set the public-lead ingest secret when Firebase CLI prompts for `INGEST_SECRET`. Keep that secret server-side only.
-6. Create the first Admin using `scripts/bootstrap-admin.js` from a trusted machine with Firebase Admin credentials. Do not put the admin password or service-account JSON in GitHub.
-7. Configure the Google Apps Script properties described in the Apps Script section so public website leads can be mirrored into Firestore.
-8. Perform the production test: executive signup → admin approval → username login → create/view own lead → lead assignment → profile photo → password reset.
-
-### First admin bootstrap
-The repository includes `scripts/bootstrap-admin.js`. Run it only from a trusted admin machine. Example environment variables are documented inside the script. It creates/updates the Authentication user, `users/{uid}` profile, username lookup, and Admin custom claims.
-
-
-## Revision 10.1 security/configuration notes
-- In Firebase Authentication, enable Email/Password and configure the password policy to match the application: minimum 12 characters, require uppercase, lowercase, numeric and non-alphanumeric characters where your Firebase plan/console exposes those controls.
-- The application also enforces 12–64 characters in Signup and Change Password UI.
-- Do **not** store plaintext or recoverable passwords in Google Sheets, Google Drive or GitHub. Firebase Authentication is the credential store. Sheets may contain username, role, mobile, contact email, status and password-last-changed audit date only.
-- Profile photos are stored in Firebase Storage under `profiles/{uid}/...`; this is preferred over a public GitHub assets folder.
-- Loan Rates are gated to authenticated Telecaller/Connector/Admin roles and Admin visibility settings. Because this is a static GitHub Pages project, treat the data file as reference content, not a secret.
-- After changing `firestore.rules` or `storage.rules`, redeploy them before testing.
-
-## Revision 10.2 — Live ROI + Banking News
-The Loan Rates module now reads lender slabs live from the `Loan Rates` Google Sheet through the existing Apps Script Web App. It also shows server-side RSS banking/finance updates from official RBI and PIB feeds. See `apps-script-roi-news/README.md` for the exact sheet headers and deployment steps.
+Do not publish passwords, OTPs, Firebase service-account keys or private tokens in GitHub or Sheets.

@@ -1,82 +1,15 @@
 (function(){
-  const cfg=window.HC_FIREBASE_CONFIG||{};
-  const ready=Boolean(cfg.apiKey&&cfg.apiKey!=="REPLACE_ME"&&cfg.projectId&&cfg.projectId!=="REPLACE_ME");
-  function msg(t,ok=false){const e=document.getElementById('authMessage');if(e){e.textContent=t;e.className='auth-message '+(ok?'ok':'')}}
-  function friendly(err){
-    const code=err?.code||'';
-    if(code.includes('wrong-password')||code.includes('invalid-credential')||code.includes('user-not-found')||code.includes('not-found')) return 'Invalid username or password.';
-    if(code.includes('too-many-requests')) return 'Too many attempts. Please wait and try again.'; if(code.includes('internal')) return 'Signup service is not fully deployed or configured. Please contact the administrator and quote: SIGNUP-SERVICE.'; if(code.includes('functions/unavailable')) return 'Signup service is temporarily unavailable. Please try again shortly.';
-    return String(err?.message||'Something went wrong.').replace(/^Firebase:\s*/,'');
-  }
-  window.HCAuth={ready,friendly};
-  if(!ready){document.addEventListener('DOMContentLoaded',()=>msg('Authentication setup is not active yet. Add your Firebase web configuration in firebase-config.js.'));return}
-  if(!firebase.apps.length)firebase.initializeApp(cfg);
-  const auth=firebase.auth(),db=firebase.firestore(),storage=firebase.storage(),functions=firebase.functions();
-  Object.assign(HCAuth,{auth,db,storage,functions});
-
-  HCAuth.signup=async function(form){
-    const role=form.role.value,email=form.email.value.trim().toLowerCase(),username=form.username.value.trim().toLowerCase(),password=form.password.value;
-    const fullName=form.fullName.value.trim(),mobile=form.mobile.value.replace(/\D/g,'');
-    if(!['telecaller','connector'].includes(role))throw Error('Select Telecaller or Connector.');
-    if(!/^[6-9]\d{9}$/.test(mobile))throw Error('Enter a valid 10-digit Indian mobile number.');
-    if(!/^[a-zA-Z0-9._-]{4,30}$/.test(username))throw Error('Username must be 4–30 characters using letters, numbers, dot, underscore or hyphen.');
-    if(password.length<12||password.length>64||!/[A-Z]/.test(password)||!/[a-z]/.test(password)||!/[0-9]/.test(password)||!/[^A-Za-z0-9]/.test(password))throw Error('Use 12–64 characters with uppercase, lowercase, number and special character.');
-    if(password!==form.confirmPassword.value)throw Error('Passwords do not match.');
-    const register=functions.httpsCallable('registerExecutive');
-    await register({role,email,username,password,fullName,mobile});
-    const cred=await auth.signInWithEmailAndPassword(email,password); const uid=cred.user.uid; try{await cred.user.sendEmailVerification({url:new URL('executive-login.html',location.href).href})}catch(_){/* account still created; email template/provider may need console configuration */}
-    const file=form.profilePhoto.files[0];
-    if(file){
-      if(file.size>3*1024*1024)throw Error('Profile photo must be 3 MB or less.');
-      if(!/^image\/(jpeg|png|webp)$/.test(file.type))throw Error('Profile photo must be JPG, PNG or WEBP.');
-      const ref=storage.ref(`profiles/${uid}/${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`);await ref.put(file,{contentType:file.type});
-      const photoURL=await ref.getDownloadURL(); await db.collection('users').doc(uid).update({photoURL,updatedAt:firebase.firestore.FieldValue.serverTimestamp()});
-    }
-    await auth.signOut(); msg('Signup completed successfully. A verification message has been requested to your email. Your account will remain pending until administrator activation.',true);
-  };
-
-  HCAuth.login=async function(form){
-    const username=form.username.value.trim().toLowerCase();
-    const lookup=functions.httpsCallable('resolveExecutiveLogin');
-    let email;
-    try{const r=await lookup({username});email=r.data.email;}catch(e){throw Error('Invalid username or password.');}
-    const cred=await auth.signInWithEmailAndPassword(email,form.password.value);
-    const profile=await db.collection('users').doc(cred.user.uid).get();
-    if(!profile.exists){await auth.signOut();throw Error('Account profile not found.');}
-    const d=profile.data();
-    if(d.status!=='active'){await auth.signOut();throw Error(d.status==='pending'?'Your account is pending administrator activation.':'Your account is inactive. Please contact the administrator.');}
-    location.href=d.role==='admin'?'admin-dashboard.html':'executive-dashboard.html';
-  };
-
-  HCAuth.adminLogin=async function(form){
-    const username=form.username.value.trim().toLowerCase(); const lookup=functions.httpsCallable('resolveExecutiveLogin'); let email;
-    try{const r=await lookup({username});email=r.data.email;}catch(e){throw Error('Invalid admin username or password.');}
-    const cred=await auth.signInWithEmailAndPassword(email,form.password.value); const snap=await db.collection('users').doc(cred.user.uid).get();
-    if(!snap.exists||snap.data().role!=='admin'||snap.data().status!=='active'){await auth.signOut();throw Error('Administrator access is not authorised for this account.');}
-    location.href='admin-dashboard.html';
-  };
-  HCAuth.changePassword=async function(currentPassword,newPassword,confirmPassword){
-    const user=auth.currentUser;if(!user||!user.email)throw Error('Please sign in again.'); if(newPassword!==confirmPassword)throw Error('New passwords do not match.'); if(newPassword===currentPassword)throw Error('New password must be different from your current password.');
-    if(newPassword.length<12||newPassword.length>64||!/[A-Z]/.test(newPassword)||!/[a-z]/.test(newPassword)||!/\d/.test(newPassword)||!/[^A-Za-z0-9]/.test(newPassword))throw Error('Use 12–64 characters with uppercase, lowercase, number and special character.');
-    const c=firebase.auth.EmailAuthProvider.credential(user.email,currentPassword); await user.reauthenticateWithCredential(c); await user.updatePassword(newPassword); await db.collection('users').doc(user.uid).update({passwordLastChangedAt:firebase.firestore.FieldValue.serverTimestamp(),updatedAt:firebase.firestore.FieldValue.serverTimestamp()});
-  };
-  HCAuth.guard=async function(options={}){return new Promise((resolve,reject)=>auth.onAuthStateChanged(async user=>{
-    try{
-      if(!user){location.href=options.adminOnly?'admin-login.html':'executive-login.html';return}
-      const p=await db.collection('users').doc(user.uid).get();
-      if(!p.exists||p.data().status!=='active'){await auth.signOut();location.href=options.adminOnly?'admin-login.html':'executive-login.html';return}
-      const profile=p.data();
-      if(options.adminOnly&&profile.role!=='admin'){location.href='executive-dashboard.html';return}
-      resolve({user,profile});
-    }catch(e){reject(e)}
-  }))};
-  HCAuth.logout=()=>auth.signOut().then(()=>location.href='executive-login.html');
-  HCAuth.resetPassword=async email=>{await auth.sendPasswordResetEmail(email);};
-  HCAuth.updateProfile=async({fullName,mobile,photoFile})=>{
-    const user=auth.currentUser;if(!user)throw Error('Please sign in again.');
-    const update={fullName:String(fullName||'').trim(),mobile:String(mobile||'').replace(/\D/g,''),updatedAt:firebase.firestore.FieldValue.serverTimestamp()};
-    if(!update.fullName)throw Error('Full name is required.'); if(!/^[6-9]\d{9}$/.test(update.mobile))throw Error('Enter a valid 10-digit Indian mobile number.');
-    if(photoFile){if(photoFile.size>3*1024*1024)throw Error('Profile photo must be 3 MB or less.');if(!/^image\/(jpeg|png|webp)$/.test(photoFile.type))throw Error('Profile photo must be JPG, PNG or WEBP.');const ref=storage.ref(`profiles/${user.uid}/${Date.now()}-${photoFile.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`);await ref.put(photoFile,{contentType:photoFile.type});update.photoURL=await ref.getDownloadURL();}
-    await db.collection('users').doc(user.uid).update(update);return update;
-  };
+ const fcfg=window.HC_FIREBASE_CONFIG||{},pcfg=window.HC_PORTAL_CONFIG||{},ready=!!(fcfg.apiKey&&fcfg.authDomain&&pcfg.appsScriptUrl);
+ const friendly=e=>{const c=String(e?.code||'');if(/invalid-credential|wrong-password|user-not-found/.test(c))return'Invalid username or password.';if(c.includes('email-already-in-use'))return'An account already exists for this email.';if(c.includes('too-many-requests'))return'Too many attempts. Please wait and try again.';return String(e?.message||e||'Something went wrong.').replace(/^Firebase:\s*/,'')};
+ window.HCAuth={ready,friendly}; if(!ready)return;if(!firebase.apps.length)firebase.initializeApp(fcfg);const auth=firebase.auth();HCAuth.auth=auth;
+ async function api(action,data={},secured=true){const fd=new FormData();fd.set('action',action);Object.entries(data).forEach(([k,v])=>fd.set(k,v==null?'':String(v)));if(secured){if(!auth.currentUser)throw Error('Please sign in again.');fd.set('idToken',await auth.currentUser.getIdToken(true))}const r=await fetch(pcfg.appsScriptUrl,{method:'POST',body:fd});const t=await r.text();let d;try{d=JSON.parse(t)}catch{throw Error('Invalid backend response. Redeploy the Google Apps Script Web App.')}if(!d.ok)throw Error(d.error||d.message||'Request failed.');return d}HCAuth.api=api;
+ const photo=async f=>{if(!f)return'';if(f.size>3*1024*1024)throw Error('Profile photo must be 3 MB or less.');if(!/^image\/(jpeg|png|webp)$/.test(f.type))throw Error('Profile photo must be JPG, PNG or WEBP.');return new Promise((res,rej)=>{const x=new FileReader();x.onload=()=>res(x.result);x.onerror=()=>rej(Error('Unable to read profile photo.'));x.readAsDataURL(f)})};
+ HCAuth.signup=async form=>{const role=form.role.value,fullName=form.fullName.value.trim(),mobile=form.mobile.value.replace(/\D/g,''),email=form.email.value.trim().toLowerCase(),username=form.username.value.trim().toLowerCase(),password=form.password.value;if(!['telecaller','connector'].includes(role))throw Error('Select Telecaller or Connector.');if(!fullName)throw Error('Full name is required.');if(!/^[6-9]\d{9}$/.test(mobile))throw Error('Enter a valid 10-digit Indian mobile number.');if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw Error('Enter a valid email address.');if(!/^[a-zA-Z0-9._-]{4,30}$/.test(username))throw Error('Username must be 4–30 characters using letters, numbers, dot, underscore or hyphen.');if(password.length<12||password.length>64||!/[A-Z]/.test(password)||!/[a-z]/.test(password)||!/\d/.test(password)||!/[^A-Za-z0-9]/.test(password))throw Error('Use 12–64 characters with uppercase, lowercase, number and special character.');if(password!==form.confirmPassword.value)throw Error('Passwords do not match.');if((await api('checkUsername',{username},false)).taken)throw Error('That username is already in use.');let cred;try{cred=await auth.createUserWithEmailAndPassword(email,password);const pf=form.profilePhoto.files[0];await api('registerExecutiveProfile',{role,fullName,mobile,email,username,photoData:await photo(pf),photoName:pf?.name||''});try{await cred.user.sendEmailVerification({url:new URL('executive-login.html',location.href).href})}catch(_){}await auth.signOut();const m=document.getElementById('authMessage');if(m){m.textContent='Signup completed. A confirmation email has been sent. Your account is pending administrator approval.';m.className='auth-message ok'}}catch(e){try{if(cred?.user)await cred.user.delete()}catch(_){}throw e}};
+ async function sign(username,password){const r=await api('resolveUsername',{username:username.trim().toLowerCase()},false);if(!r.email)throw Error('Invalid username or password.');return auth.signInWithEmailAndPassword(r.email,password)}
+ HCAuth.login=async f=>{await sign(f.username.value,f.password.value);const p=(await api('getProfile')).profile;if(p.status!=='active'){await auth.signOut();throw Error(p.status==='pending'?'Your account is pending administrator approval.':'Your account is inactive.')}location.href=p.role==='admin'?'admin-dashboard.html':'executive-dashboard.html'};
+ HCAuth.adminLogin=async f=>{await sign(f.username.value,f.password.value);const p=(await api('getProfile')).profile;if(p.role!=='admin'||p.status!=='active'){await auth.signOut();throw Error('Administrator access is not authorised for this account.')}location.href='admin-dashboard.html'};
+ HCAuth.guard=async o=>{o=o||{};const u=await new Promise(res=>{const off=auth.onAuthStateChanged(x=>{off();res(x)})});if(!u){location.href=o.adminOnly?'admin-login.html':'executive-login.html';return new Promise(()=>{})}try{const p=(await api('getProfile')).profile;if(p.status!=='active')throw Error('inactive');if(o.adminOnly&&p.role!=='admin'){location.href='executive-dashboard.html';return new Promise(()=>{})}return{user:u,profile:p}}catch(e){await auth.signOut();location.href=o.adminOnly?'admin-login.html':'executive-login.html';return new Promise(()=>{})}};
+ HCAuth.logout=()=>auth.signOut().then(()=>location.href='login.html');HCAuth.resetPassword=e=>auth.sendPasswordResetEmail(String(e||'').trim().toLowerCase());
+ HCAuth.changePassword=async(c,n,cf)=>{const u=auth.currentUser;if(!u||!u.email)throw Error('Please sign in again.');if(n!==cf)throw Error('New passwords do not match.');if(n===c)throw Error('New password must be different from your current password.');if(n.length<12||n.length>64||!/[A-Z]/.test(n)||!/[a-z]/.test(n)||!/\d/.test(n)||!/[^A-Za-z0-9]/.test(n))throw Error('Use 12–64 characters with uppercase, lowercase, number and special character.');await u.reauthenticateWithCredential(firebase.auth.EmailAuthProvider.credential(u.email,c));await u.updatePassword(n);await api('passwordChanged')};
+ HCAuth.updateProfile=async({fullName,mobile,photoFile})=>{fullName=String(fullName||'').trim();mobile=String(mobile||'').replace(/\D/g,'');if(!fullName)throw Error('Full name is required.');if(!/^[6-9]\d{9}$/.test(mobile))throw Error('Enter a valid 10-digit Indian mobile number.');return(await api('updateProfile',{fullName,mobile,photoData:await photo(photoFile),photoName:photoFile?.name||''})).profile};
 })();
