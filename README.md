@@ -141,3 +141,15 @@ These actions require access to the Firebase project/account and therefore must 
 
 ### First admin bootstrap
 The repository includes `scripts/bootstrap-admin.js`. Run it only from a trusted admin machine. Example environment variables are documented inside the script. It creates/updates the Authentication user, `users/{uid}` profile, username lookup, and Admin custom claims.
+
+
+## Revision 10.1 security/configuration notes
+- In Firebase Authentication, enable Email/Password and configure the password policy to match the application: minimum 12 characters, require uppercase, lowercase, numeric and non-alphanumeric characters where your Firebase plan/console exposes those controls.
+- The application also enforces 12–64 characters in Signup and Change Password UI.
+- Do **not** store plaintext or recoverable passwords in Google Sheets, Google Drive or GitHub. Firebase Authentication is the credential store. Sheets may contain username, role, mobile, contact email, status and password-last-changed audit date only.
+- Profile photos are stored in Firebase Storage under `profiles/{uid}/...`; this is preferred over a public GitHub assets folder.
+- Loan Rates are gated to authenticated Telecaller/Connector/Admin roles and Admin visibility settings. Because this is a static GitHub Pages project, treat the data file as reference content, not a secret.
+- After changing `firestore.rules` or `storage.rules`, redeploy them before testing.
+
+## Revision 10.2 — Live ROI + Banking News
+The Loan Rates module now reads lender slabs live from the `Loan Rates` Google Sheet through the existing Apps Script Web App. It also shows server-side RSS banking/finance updates from official RBI and PIB feeds. See `apps-script-roi-news/README.md` for the exact sheet headers and deployment steps.

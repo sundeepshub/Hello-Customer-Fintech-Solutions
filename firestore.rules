@@ -32,6 +32,11 @@ service cloud.firestore {
       allow read, write: if admin();
     }
 
+    match /settings/{docId} {
+      allow read: if true; // feature-visibility booleans only; no secrets
+      allow create, update, delete: if admin();
+    }
+
     match /leads/{leadId} {
       allow create: if active()
         && request.resource.data.createdByUserId == request.auth.uid

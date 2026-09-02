@@ -24,3 +24,22 @@ This build was re-audited against the 23 requested requirements.
 
 ## Production note
 Code is configured for Firebase project `hcfintechsolutions`, but Firebase Authentication/Firestore/Storage/Functions and Google Apps Script deployment still need to be enabled/deployed in the account before the secure executive workflow can operate live.
+
+
+## Revision 10.1 — Additional 23-point UI/Admin/Validation update
+- Grouped Latest Offers, Loan Rates, Schemes, How We Help and Stories under **Explore** navigation where the full public nav is used.
+- Expanded Government Schemes into category/filter cards with official-source links and Know More sections.
+- Loan Rates now require authenticated Telecaller/Connector/Admin access and respect Admin visibility settings; selected lender shows an indicative verified range or an explicit not-verified note.
+- Removed the Telecaller/Connector capacity/password-storage implementation notice from the public signup UI.
+- Added Admin configuration page and feature-visibility controls.
+- Added separate Login choice page, Executive/Employee login and Admin login.
+- Signup now requests a Firebase email-verification message on successful account creation and gives more useful deployment error text.
+- Added password show/hide UI, 12–64 character standards, strength checklist, reauthentication-based Change Password flow, and password-last-changed audit timestamp.
+- Profile photos remain in Firebase Storage under profiles/{uid}; they are intentionally not placed in public GitHub.
+- Plaintext passwords are intentionally NOT stored in Google Sheets. Executive metadata can be synced/stored, while the credential remains exclusively in Firebase Authentication.
+- Enforced 10-digit mobile rules and primary/alternative number inequality in browser and Apps Script validation.
+- Renamed Loan requirement focus to Reason for Loan; General Loan Requirement/Other makes Purpose / requirement mandatory.
+- Reconfirmed country/course/Other-course dynamic Education Loan logic.
+- Strengthened email, pincode, address and meeting-date validation.
+- Selected checkbox/radio controls now have a visible selected-state colour.
+- Editing a Review section now retains Continue and also adds Review Enquiry so the user can return to the review after validating the edited section.

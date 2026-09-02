@@ -1,1 +1,139 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Loan Rates & Eligibility | Hello Customer Fintech Solutions</title><link rel="stylesheet" href="style.css"></head><body><header class="site-header"><div class="container nav"><a class="brand" href="home.html"><span class="brand-mark">HC</span><span><strong>Hello Customer</strong><small>FINTECH SOLUTIONS</small></span></a><nav><a href="home.html">Home</a><a href="loan-rates.html">Loan Rates</a><a href="government-schemes.html">Schemes</a><a href="index.html#eligibility">Start Enquiry</a><a class="nav-cta" href="executive-login.html">Executive Login</a></nav></div></header><main><section class="hero"><div class="container"><div class="eyebrow">Loan intelligence</div><h1>Compare Loan Rates, Eligibility & Lender Conditions</h1><p class="lead">Interest rate is only one part of a loan. Review indicative pricing, eligibility, fees, tenure and lender conditions before choosing an option.</p></div></section><section class="section"><div class="container"><div class="notice"><b>Important:</b> Rates, fees, eligibility and lender policies are indicative and may change. Final terms are subject to lender assessment, documentation, credit profile and applicable policy. No approval or rate is guaranteed.</div><div class="filter-bar"><label>Loan Type<select id="rateLoan"><option value="">All Loans</option><option>Personal Loan</option><option>Home Loan</option><option>Home Loan Balance Transfer + Top-up</option><option>Business Loan</option><option>Loan Against Property</option><option>Vehicle Loan</option><option>Education Loan</option><option>Balance Transfer / Consolidation</option><option>Project Funds</option></select></label><label>Search lender<input id="rateSearch" placeholder="Bank / NBFC / HFC"></label><label>Sort<select id="rateSort"><option value="">Default</option><option value="roi">Lowest indicative ROI</option><option value="tenure">Longest tenure</option></select></label></div><div id="rateResults"></div><div id="rateEmpty" class="empty-state"><h3>Only source-verified rate records are shown.</h3><p>Add or update lender records only after checking the lender’s official source. Every displayed record should carry a last-updated date and source link.</p></div><section class="section soft embedded"><div class="section-head"><div><div class="eyebrow">What lenders commonly assess</div><h2>Eligibility is broader than ROI.</h2></div></div><div class="problem-grid"><article><h3>Income & repayment</h3><p>Income stability, existing EMIs, FOIR/repayment capacity and banking behaviour.</p></article><article><h3>Credit profile</h3><p>Credit history, overdues, enquiries and lender-internal policy.</p></article><article><h3>Employment / business</h3><p>Employment stability, business vintage, turnover, GST/ITR/financials where applicable.</p></article><article><h3>Property / project</h3><p>Title, valuation, LTV, legal/technical checks, approvals and viability where relevant.</p></article></div></section></div></section></main><footer class="footer"><div class="container footer-bottom"><span>© 2026 Hello Customer Fintech Solutions</span><span>Rates, schemes, eligibility and approval remain subject to the respective lender/authority.</span></div></footer><script src="data/rate-data.js"></script><script>(function(){const out=document.getElementById('rateResults'),empty=document.getElementById('rateEmpty');function render(){let a=[...(window.HC_RATE_DATA||[])],loan=document.getElementById('rateLoan').value,q=document.getElementById('rateSearch').value.toLowerCase();if(loan)a=a.filter(x=>x.loanType===loan);if(q)a=a.filter(x=>(x.lender||'').toLowerCase().includes(q));if(document.getElementById('rateSort').value==='roi')a.sort((x,y)=>(+x.roiFrom||999)-(+y.roiFrom||999));if(!a.length){out.innerHTML='';empty.hidden=false;return}empty.hidden=true;out.innerHTML=`<div class="rate-table-wrap"><table class="rate-table"><thead><tr><th>Lender</th><th>Loan</th><th>Indicative ROI</th><th>Processing Fee</th><th>Tenure</th><th>Eligibility / Conditions</th><th>Updated</th><th>Source</th></tr></thead><tbody>${a.map(x=>`<tr><td><b>${x.lender||''}</b></td><td>${x.loanType||''}</td><td>${x.roiFrom||'—'}${x.roiTo?' – '+x.roiTo:''}</td><td>${x.processingFee||'—'}</td><td>${x.maxTenure||'—'}</td><td>${[x.creditCriteria,x.employmentCriteria,x.propertyRequirement,x.conditions].filter(Boolean).join(' · ')||'Refer current lender policy'}</td><td>${x.updatedOn||'Verify'}</td><td>${x.source?`<a href="${x.source}" target="_blank" rel="noopener">Official source →</a>`:'—'}</td></tr>`).join('')}</tbody></table></div>`}['rateLoan','rateSearch','rateSort'].forEach(id=>document.getElementById(id).addEventListener('input',render));const qp=new URLSearchParams(location.search).get('loan');if(qp)document.getElementById('rateLoan').value=qp;render()})();</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Loan Rates & Banking News | Hello Customer Fintech Solutions</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.roi-shell{display:grid;grid-template-columns:1fr;gap:22px}
+.roi-panel{background:#fff;border:1px solid #e1e7ef;border-radius:18px;padding:22px;box-shadow:0 10px 28px rgba(20,37,61,.06)}
+.roi-filters{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:18px 0}
+.roi-filters label{font-weight:700;color:#24364d} .roi-filters select{width:100%;margin-top:7px}
+.roi-result-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:16px}
+.roi-stat{padding:16px;background:#f7f9fc;border:1px solid #e4eaf2;border-radius:14px;min-height:95px}
+.roi-stat small{display:block;color:#667487;margin-bottom:7px} .roi-stat strong{font-size:1.08rem;color:#14253d}
+.news-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}
+.news-card{display:block;border:1px solid #e4eaf2;border-radius:14px;padding:16px;background:#fff;text-decoration:none;color:#14253d;transition:.18s}
+.news-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(20,37,61,.09)} .news-meta{font-size:.82rem;color:#6c7888;margin-top:10px}
+.live-badge{display:inline-flex;gap:7px;align-items:center;border-radius:999px;background:#edf8f1;color:#196b3c;padding:6px 10px;font-size:.82rem;font-weight:700}
+.live-dot{width:8px;height:8px;background:#2ca66f;border-radius:50%}
+.api-status{font-size:.9rem;color:#617084;margin-top:8px}
+.loader{display:flex;align-items:center;gap:10px;padding:15px 0;color:#5d6b7d} .spinner{width:20px;height:20px;border:3px solid #dce4ee;border-top-color:#14253d;border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.error-box{background:#fff5f4;border:1px solid #f0c8c3;color:#8a3329;border-radius:12px;padding:14px}
+.rate-note{font-size:.9rem;color:#667487;margin-top:12px}
+@media(max-width:800px){.roi-filters,.news-grid{grid-template-columns:1fr}.roi-result-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.roi-result-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="container nav"><a class="brand" href="home.html"><span class="brand-mark">HC</span><span><strong>Hello Customer</strong><small>FINTECH SOLUTIONS</small></span></a><nav><a href="executive-dashboard.html">Dashboard</a><a href="government-schemes.html">Schemes</a><a href="login.html">Login</a></nav></div></header>
+<main>
+<section class="hero"><div class="container"><div class="eyebrow">Internal lender intelligence</div><h1>Live Bank ROI Finder & Banking Updates</h1><p class="lead">Live rate data is read from the authorised Google Sheet. Banking updates are fetched server-side from official RSS sources.</p></div></section>
+<section class="section"><div class="container"><div id="rateGate">Checking access…</div>
+<div id="rateContent" hidden class="roi-shell">
+  <section class="roi-panel">
+    <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap">
+      <div><h2 style="margin:0">Bank ROI Finder</h2><p style="margin:.45rem 0 0;color:#667487">Choose a bank and loan type to view the current Sheet-based reference slab.</p></div>
+      <span class="live-badge"><span class="live-dot"></span> Google Sheet live data</span>
+    </div>
+    <div id="roiLoading" class="loader"><span class="spinner"></span>Loading current lender data…</div>
+    <div id="roiError" class="error-box" hidden></div>
+    <div id="roiApp" hidden>
+      <div class="roi-filters">
+        <label>Bank / Lender<select id="bankSelect"><option value="">Select bank</option></select></label>
+        <label>Loan Type<select id="loanSelect"><option value="">Select loan type</option></select></label>
+      </div>
+      <div id="roiEmpty" class="notice">Select a bank and loan type.</div>
+      <div id="roiResult" hidden>
+        <div class="roi-result-grid">
+          <div class="roi-stat"><small>Interest Rate</small><strong id="roiRange">—</strong></div>
+          <div class="roi-stat"><small>Benchmark</small><strong id="benchmark">—</strong></div>
+          <div class="roi-stat"><small>Processing Fee</small><strong id="processingFee">—</strong></div>
+          <div class="roi-stat"><small>Max Tenure</small><strong id="tenure">—</strong></div>
+          <div class="roi-stat"><small>Lender</small><strong id="lenderName">—</strong></div>
+        </div>
+        <p class="rate-note">The displayed slab is indicative. It is not a sanction, approval, guaranteed rate or personalised offer.</p>
+      </div>
+      <div class="notice" style="margin-top:18px"><b>Important:</b> <span id="disclaimer"></span></div>
+      <div class="api-status">API last updated: <span id="lastUpdated">—</span></div>
+    </div>
+  </section>
+
+  <section class="roi-panel">
+    <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap">
+      <div><h2 style="margin:0">Live Banking & Finance Updates</h2><p style="margin:.45rem 0 0;color:#667487">Headline links open the original publisher page. We do not republish article bodies.</p></div>
+      <span class="live-badge"><span class="live-dot"></span> RSS</span>
+    </div>
+    <div id="newsLoading" class="loader"><span class="spinner"></span>Loading latest banking updates…</div>
+    <div id="newsError" class="error-box" hidden></div>
+    <div id="newsGrid" class="news-grid"></div>
+  </section>
+</div></div></section>
+</main>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-functions-compat.js"></script>
+<script src="firebase-config.js"></script><script src="auth.js"></script><script src="portal-access.js"></script>
+<script>
+const ROI_NEWS_API='https://script.google.com/macros/s/AKfycbwXcFXo-rdrcxWBqkzSWXhU_KYUShb3wwq7wNjV3bMThjHiCg7ELSoDU0cqqIj3atXZmQ/exec';
+const loanLabels={home_loan:'Home Loan',personal_loan:'Personal Loan',car_loan:'Car / Vehicle Loan',loan_against_property:'Loan Against Property'};
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const formatDate=s=>{if(!s)return 'Date not provided';const d=new Date(s);return isNaN(d)?s:d.toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})};
+(async()=>{
+  const gate=document.getElementById('rateGate'),content=document.getElementById('rateContent');
+  const access=await HCPortalAccess.allow('loanRates');
+  if(!access.ctx.user){gate.innerHTML='<div class="access-denied"><h2>Login required</h2><p>Loan Rates are available only to authorised employees/executives and administrators.</p><a class="btn primary" href="login.html">Go to Login →</a></div>';return}
+  if(!access.allowed){gate.innerHTML='<div class="access-denied"><h2>Access not enabled</h2><p>The administrator has not enabled Loan Rates for your role.</p><a class="btn ghost" href="executive-dashboard.html">Back to Dashboard</a></div>';return}
+  gate.hidden=true;content.hidden=false;
+  try{
+    const res=await fetch(ROI_NEWS_API+'?t='+Date.now(),{cache:'no-store'});
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const payload=await res.json();
+    if(payload.status!=='success')throw new Error(payload.message||'API returned an error');
+    renderRates(Array.isArray(payload.rates)?payload.rates:[],payload);
+    renderNews(Array.isArray(payload.news)?payload.news:[]);
+  }catch(err){
+    document.getElementById('roiLoading').hidden=true;document.getElementById('newsLoading').hidden=true;
+    const staticData=(window.HC_RATE_DATA||[]).map(x=>({bank_id:x.lender,bank_name:x.lender,loan_type:({'Home Loan':'home_loan','Personal Loan':'personal_loan','Vehicle Loan':'car_loan','Loan Against Property':'loan_against_property'}[x.loanType]||''),roi_min:x.roiFrom,roi_max:x.roiTo,benchmark:'Verify current lender benchmark',processing_fee:x.processingFee,tenure_max_years:parseFloat(x.maxTenure)||null})).filter(x=>x.loan_type);
+    if(staticData.length){renderRates(staticData,{disclaimer:'Live Google Sheet API could not be reached. Showing the packaged fallback reference only; verify all current lender terms before use.',last_updated:'Fallback data'});document.getElementById('roiError').hidden=false;document.getElementById('roiError').textContent='Live ROI API unavailable. Fallback reference loaded.'}
+    else{document.getElementById('roiError').hidden=false;document.getElementById('roiError').textContent='Unable to load the live ROI data: '+err.message}
+    document.getElementById('newsError').hidden=false;document.getElementById('newsError').textContent='Unable to load the live RSS feed. Please retry later.';
+  }
+})();
+
+function renderRates(rates,payload){
+  document.getElementById('roiLoading').hidden=true;document.getElementById('roiApp').hidden=false;
+  const bank=document.getElementById('bankSelect'),loan=document.getElementById('loanSelect');
+  const banks=[...new Map(rates.map(r=>[r.bank_id||r.bank_name,r.bank_name])).entries()].sort((a,b)=>a[1].localeCompare(b[1]));
+  banks.forEach(([id,name])=>bank.add(new Option(name,id)));
+  const types=[...new Set(rates.map(r=>r.loan_type).filter(Boolean))].sort();
+  types.forEach(t=>loan.add(new Option(loanLabels[t]||t.replaceAll('_',' '),t)));
+  function syncLoans(){const current=loan.value;const allowed=[...new Set(rates.filter(r=>!bank.value||(r.bank_id||r.bank_name)===bank.value).map(r=>r.loan_type))];[...loan.options].forEach((o,i)=>{if(i)o.hidden=!allowed.includes(o.value)});if(current&&!allowed.includes(current))loan.value='';show()}
+  function show(){
+    const rec=rates.find(r=>(!bank.value||(r.bank_id||r.bank_name)===bank.value)&&(!loan.value||r.loan_type===loan.value)&&bank.value&&loan.value);
+    document.getElementById('roiEmpty').hidden=!!rec;document.getElementById('roiResult').hidden=!rec;
+    if(!rec)return;
+    const min=rec.roi_min, max=rec.roi_max;
+    document.getElementById('roiRange').textContent=(min!=null&&max!=null)?Number(min).toFixed(2)+'% – '+Number(max).toFixed(2)+'% p.a.':min!=null?'From '+Number(min).toFixed(2)+'% p.a.':'Verify current official range';
+    document.getElementById('benchmark').textContent=rec.benchmark||'Verify with lender';
+    document.getElementById('processingFee').textContent=rec.processing_fee||'Verify with lender';
+    document.getElementById('tenure').textContent=rec.tenure_max_years?rec.tenure_max_years+' years':'Verify with lender';
+    document.getElementById('lenderName').textContent=rec.bank_name||'—';
+  }
+  bank.onchange=syncLoans;loan.onchange=show;syncLoans();
+  document.getElementById('disclaimer').textContent=payload.disclaimer||'Rates are indicative and subject to lender underwriting.';
+  document.getElementById('lastUpdated').textContent=formatDate(payload.last_updated);
+}
+function renderNews(news){
+  document.getElementById('newsLoading').hidden=true;
+  const grid=document.getElementById('newsGrid');
+  if(!news.length){grid.innerHTML='<div class="notice">No banking RSS items are available right now. Please retry later.</div>';return}
+  grid.innerHTML=news.map(n=>`<a class="news-card" href="${esc(n.link)}" target="_blank" rel="noopener noreferrer"><strong>${esc(n.title)}</strong><div class="news-meta">${esc(n.source||'Source')} · ${esc(formatDate(n.pubDate))}</div></a>`).join('');
+}
+</script>
+<script src="data/rate-data.js"></script>
+</body></html>

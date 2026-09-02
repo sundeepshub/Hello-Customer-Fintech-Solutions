@@ -52,3 +52,6 @@
 - Added `.firebaserc` so Firebase CLI defaults to `hcfintechsolutions`.
 - Added `scripts/bootstrap-admin.js` for creating the first administrator securely from a trusted local environment.
 - No service-account private key, admin password, ingest secret, or other server secret is stored in the project files.
+
+## Revision 10.1 — 02-Sep-2026
+Added grouped Explore navigation, scheme categories/catalogue, role-gated Loan Rates with lender summaries, Admin configuration/visibility controls, separate Admin login, improved signup/email-verification flow, password-change standards/UI, 10-digit mobile + inequality validation, Reason for Loan conditional-purpose logic, checkbox selected-state styling, future-date meeting validation, and Review-after-edit actions. Plaintext password storage in Google Sheets was intentionally rejected in favour of Firebase Authentication.
