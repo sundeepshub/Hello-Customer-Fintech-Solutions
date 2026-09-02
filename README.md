@@ -65,3 +65,35 @@ Revision 7 additions: dedicated home.html and referral.html pages; dynamic CIBIL
 The project now includes `lenders.js`, a central lender master database. The enquiry form dynamically filters preferred lender categories and institutions by selected loan type. Individual loan pages also display their relevant lender categories. Banks, HFCs, NBFC/finance companies, RRBs and co-operative categories are kept separate.
 
 The lender directory is intended for enquiry guidance, not a guarantee of product availability or approval. Product availability, regulatory status, lender names and policies can change. Verify current details before publishing specific offers. The Home Loan/HFC directory was cross-checked against National Housing Bank's 2026 HFC information.
+
+
+# Revision 10 — End-to-End Role-Based Platform
+
+## Customer flow
+Home → loan information → rates/eligibility → enquiry → Google Sheets lead → separate `thank-you.html`.
+
+## Revision 10 additions
+- Separate thank-you page and redirect after successful loan enquiry.
+- Expanded Business Loan, Project Funds and Balance Transfer/Consolidation purposes.
+- Loan hook/education/media blocks on every loan page. Upload media into `assets/loans/` and `assets/videos/` using the filenames in `data/loan-data.js`.
+- `loan-rates.html` + `data/rate-data.js` for source-verified ROI, fees, tenure, eligibility and conditions. No fabricated/current rates are hard-coded.
+- `government-schemes.html` + `data/scheme-data.js`; scheme records must be re-verified before publishing.
+- Education Loan: country dropdown, country-dependent course/institution selector with Other text entry, qualification, cost breakdown, family/co-borrower profile, guardian occupation logic, monthly-family-income logic for Students, and expanded student/guardian document checklist.
+- Executive signup/login architecture for Telecallers (max 100) and Connectors (max 200), profile photo, password rules, individual dashboard, My Leads and profile pages.
+- Firestore security rules enforce own-lead access; authentication/passwords are not stored in Google Sheets.
+- Apps Script helper can create one separate Google reporting spreadsheet for each approved executive.
+
+## Executive authentication setup (required before login works)
+1. Create a Firebase project.
+2. Enable Email/Password Authentication, Firestore and Storage.
+3. Paste the Firebase Web App config into `firebase-config.js`.
+4. Deploy `firestore.rules` in Firebase Console/CLI.
+5. Create the first admin user securely in Firebase, then create `/users/{uid}` with `role: admin`, `status: active`.
+6. New Telecaller/Connector signups are created with `status: pending`; activate only after review.
+7. Set Firebase Storage rules so each authenticated user can write only under `profiles/{uid}/...` and approved readers can view required profile images.
+
+## Important security notes
+GitHub Pages is a static frontend. Do not place API secrets, admin credentials or passwords in HTML/JS. Firebase Web config is public by design; authorization must be enforced by Firestore/Storage rules. For production, implement admin-controlled custom claims or a trusted backend/Cloud Function for stronger role administration and server-side capacity enforcement.
+
+## Executive reporting Sheets
+Passwords are never copied to Sheets. After an executive is approved, administrators may use `createExecutiveReportingSpreadsheet()` or `provisionExecutiveReportingSheetsFromUsers()` in Apps Script to create a separate reporting workbook for that executive.
