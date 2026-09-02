@@ -1,4 +1,4 @@
-const APPS_SCRIPT_URL='https://script.google.com/macros/s/AKfycbzkoa_wXH4QKtEfHu--vYQlfF3oI27W-9YFG5VJcZ-g6Hh4BxGopGfyg3JCS1FwVZHh9w/exec';
+const APPS_SCRIPT_URL='https://script.google.com/macros/s/AKfycbzBDOlSwHcrwKpPQuzez_Dw_QkWzOkn1c21_GTpPzr2BuXI-0dWWg_qBjMIuR8DEY5cdw/exec';
 const WA='919618321100';
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const months=['January','February','March','April','May','June','July','August','September','October','November','December'];

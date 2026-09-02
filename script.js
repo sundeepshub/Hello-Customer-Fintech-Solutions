@@ -2,7 +2,7 @@
    Front-end validation, conditional enquiry flow, pincode lookup, review/edit,
    dynamic EMI/CIBIL/project/property/referral logic.
 */
-const APPS_SCRIPT_URL='https://script.google.com/macros/s/AKfycbzkoa_wXH4QKtEfHu--vYQlfF3oI27W-9YFG5VJcZ-g6Hh4BxGopGfyg3JCS1FwVZHh9w/exec';
+const APPS_SCRIPT_URL='https://script.google.com/macros/s/AKfycbzBDOlSwHcrwKpPQuzez_Dw_QkWzOkn1c21_GTpPzr2BuXI-0dWWg_qBjMIuR8DEY5cdw/exec';
 const BUSINESS_EMAIL='hellocustomerfirst@gmail.com';
 const BUSINESS_WHATSAPP='919618321100';
 const CURRENT_YEAR=new Date().getFullYear();
