@@ -79,7 +79,7 @@
 
 <script src="firebase-config.js"></script><script src="portal-config.js"></script><script src="auth.js"></script><script src="portal-access.js"></script>
 <script>
-const ROI_NEWS_API='https://script.google.com/macros/s/AKfycbwXcFXo-rdrcxWBqkzSWXhU_KYUShb3wwq7wNjV3bMThjHiCg7ELSoDU0cqqIj3atXZmQ/exec';
+const ROI_NEWS_API='https://script.google.com/macros/s/AKfycbzkoa_wXH4QKtEfHu--vYQlfF3oI27W-9YFG5VJcZ-g6Hh4BxGopGfyg3JCS1FwVZHh9w/exec';
 const loanLabels={home_loan:'Home Loan',personal_loan:'Personal Loan',car_loan:'Car / Vehicle Loan',loan_against_property:'Loan Against Property'};
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const formatDate=s=>{if(!s)return 'Date not provided';const d=new Date(s);return isNaN(d)?s:d.toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})};
