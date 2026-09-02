@@ -1,0 +1,17 @@
+bank_id,bank_name,loan_type,roi_min,roi_max,benchmark,processing_fee,tenure_max_years
+sbi,State Bank of India (SBI),home_loan,8.50,9.75,EBLR (Repo Linked),0.35% + GST (Min ₹2000),30
+sbi,State Bank of India (SBI),personal_loan,11.15,14.30,2-Yr MCLR,1.50% + GST,7
+sbi,State Bank of India (SBI),car_loan,8.75,9.80,1-Yr MCLR,Nil to 0.50% + GST,7
+sbi,State Bank of India (SBI),loan_against_property,10.10,11.35,EBLR,1.00% + GST,15
+hdfc,HDFC Bank,home_loan,8.70,9.80,Policy Repo Linked,0.50% or ₹3000 + GST,30
+hdfc,HDFC Bank,personal_loan,10.75,15.00,Fixed / Floating,Up to ₹4999 + GST,6
+hdfc,HDFC Bank,car_loan,8.85,10.25,Fixed,0.50% of loan amount,7
+hdfc,HDFC Bank,loan_against_property,9.50,11.25,Repo Linked,1.00% + GST,15
+icici,ICICI Bank,home_loan,8.75,9.85,I-PRLR (Repo Linked),0.50% + GST,30
+icici,ICICI Bank,personal_loan,10.85,16.00,Fixed,Up to 2.50% + GST,6
+icici,ICICI Bank,car_loan,8.90,10.50,Fixed,Up to ₹5000 + GST,7
+icici,ICICI Bank,loan_against_property,9.75,11.50,Repo Linked,1.00% + GST,15
+axis,Axis Bank,home_loan,8.75,9.90,Repo Linked,Up to 1.00% + GST,30
+axis,Axis Bank,personal_loan,10.99,15.50,Fixed,Up to 2.00% + GST,5
+axis,Axis Bank,car_loan,9.00,10.75,Fixed,Up to ₹4500 + GST,7
+axis,Axis Bank,loan_against_property,10.00,11.75,Repo Linked,1.00% + GST,15
