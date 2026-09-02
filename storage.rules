@@ -1,0 +1,19 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function signedIn(){ return request.auth != null; }
+    function me(){ return firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data; }
+    function active(){ return signedIn() && me().status == 'active'; }
+    function admin(){ return active() && me().role == 'admin'; }
+
+    match /profiles/{uid}/{fileName} {
+      allow read: if signedIn() && (request.auth.uid == uid || admin());
+      allow write: if signedIn() && request.auth.uid == uid
+        && request.resource.size < 3 * 1024 * 1024
+        && request.resource.contentType.matches('image/(jpeg|png|webp)');
+    }
+    match /lead-documents/{leadId}/{fileName} {
+      allow read, write: if active();
+    }
+  }
+}

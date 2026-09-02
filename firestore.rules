@@ -2,23 +2,55 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     function signedIn(){ return request.auth != null; }
-    function me(){ return get(/databases/$(database)/documents/users/$(request.auth.uid)).data; }
-    function active(){ return signedIn() && me().status == 'active'; }
-    function admin(){ return active() && me().role == 'admin'; }
+    function userDoc(){ return get(/databases/$(database)/documents/users/$(request.auth.uid)); }
+    function active(){ return signedIn() && userDoc().data.status == 'active'; }
+    function admin(){ return active() && userDoc().data.role == 'admin'; }
+    function canAccessLead(leadId){
+      let l = get(/databases/$(database)/documents/leads/$(leadId)).data;
+      return admin() || (active() && (l.createdByUserId == request.auth.uid || l.assignedToUserId == request.auth.uid));
+    }
+
     match /users/{uid} {
-      allow create: if signedIn() && request.auth.uid == uid && request.resource.data.role in ['telecaller','connector'] && request.resource.data.status == 'pending';
+      allow create: if false; // account creation is handled by a trusted Cloud Function
       allow read: if signedIn() && (request.auth.uid == uid || admin());
-      allow update: if signedIn() && (admin() || (request.auth.uid == uid && request.resource.data.role == resource.data.role && request.resource.data.status == resource.data.status));
+      allow update: if admin() || (
+        signedIn() && request.auth.uid == uid &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['fullName','mobile','photoURL','updatedAt']) &&
+        request.resource.data.role == resource.data.role &&
+        request.resource.data.status == resource.data.status &&
+        request.resource.data.username == resource.data.username &&
+        request.resource.data.email == resource.data.email
+      );
       allow delete: if admin();
     }
+
+    match /usernames/{username} {
+      allow read, write: if false; // trusted Cloud Functions only
+    }
+
+    match /system/{docId} {
+      allow read, write: if admin();
+    }
+
     match /leads/{leadId} {
-      allow create: if active() && request.resource.data.createdByUserId == request.auth.uid;
-      allow read, update: if active() && (resource.data.createdByUserId == request.auth.uid || resource.data.assignedToUserId == request.auth.uid || admin());
+      allow create: if active()
+        && request.resource.data.createdByUserId == request.auth.uid
+        && request.resource.data.assignedToUserId == request.auth.uid;
+      allow read: if admin() || (active() && (resource.data.createdByUserId == request.auth.uid || resource.data.assignedToUserId == request.auth.uid));
+      allow update: if admin() || (
+        active() && (resource.data.createdByUserId == request.auth.uid || resource.data.assignedToUserId == request.auth.uid)
+        && request.resource.data.createdByUserId == resource.data.createdByUserId
+        && request.resource.data.assignedToUserId == resource.data.assignedToUserId
+      );
       allow delete: if admin();
     }
+
     match /leadActivities/{activityId} {
-      allow create: if active() && request.resource.data.userId == request.auth.uid;
-      allow read: if active() && (resource.data.userId == request.auth.uid || admin());
+      allow create: if active()
+        && request.resource.data.createdByUserId == request.auth.uid
+        && canAccessLead(request.resource.data.leadId);
+      allow read: if active() && canAccessLead(resource.data.leadId);
+      allow update, delete: if admin();
     }
   }
 }

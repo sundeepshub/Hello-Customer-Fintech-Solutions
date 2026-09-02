@@ -1,99 +1,143 @@
-# Hello Customer Fintech Solutions — Revision 4
+# Hello Customer Fintech Solutions — Revision 10 Complete Build
 
-## Website files
-- `index.html` — main landing page, dynamic enquiry form, services, referral flow
-- `offers.html` — separate Latest Offers library with loan-type sections and image-size placeholders
-- `style.css` — responsive professional theme and Revision 4 UI
-- `script.js` — dynamic form logic, validation, CIBIL issues, EMI manager, review/edit, referral UX
-- `privacy.html` / `terms.html` — legal pages
-- `google-apps-script.gs` — Google Sheets backend
+This package upgrades Revision 9 into a customer website + role-based executive CRM architecture.
 
-## Revision 4 highlights
-1. Salaried applicants do not see or submit the Current Account question.
-2. Salaried applicants are not shown business-only proof choices such as GST returns, business registration or audited financials.
-3. Supporting proof year/month is shown only when relevant.
-4. Existing EMIs support selected count and `+ Add another EMI`, with a maximum of 50 entries.
-5. Client-side validation includes datatype, required fields, ranges and boundary checks; server-side validation is also included.
-6. CIBIL section appears before address/meeting. Selecting issue count creates Issue 1..Issue N with loan account type, explanation, current overdue, score, issue type and since-year/month.
-7. Preferred meeting time appears only for Saturday/Sunday. Weekday meeting time is arranged by mutual understanding. Phone and WhatsApp remain available.
-8. Final Review has section-level Edit controls.
-9. Submission errors are clearer and no longer claim that the enquiry was received when it was not.
-10. Latest Offers is a separate page with loan-specific sections and creative-size guidance.
-11. Testimonials are explicitly treated as illustrative customer scenarios until genuine, permission-based reviews are supplied.
-12. Business documentation/registration and CIBIL support are highlighted on the main page.
-13. Referral form captures referred person, referrer, service category, requirement and private-finance collateral/non-collateral preference. Referral submissions do not send SMS/email; the screen shows a thank-you message.
-14. Professional, restrained animation is used only for important CTAs.
+## Public customer flow
+Home → Loan information → Loan Rates & Eligibility → Government Schemes → Enquiry → Google Sheets → Lead ID → separate Thank You page.
 
-## Apps Script deployment
-1. Create/open the Google Sheet.
+## Executive flow
+Signup → pending approval → Admin approval → username/password login → role dashboard → Add Lead / My Leads → Lead Details → stage/status/follow-up/activity → Profile.
+
+Roles:
+- Telecaller: maximum 100 accounts
+- Connector: maximum 200 accounts
+- Admin: full platform administration
+
+Each executive can read only leads created by or assigned to that account. Admin can read/assign all leads.
+
+## Main Revision 10 requirements implemented
+- Separate `thank-you.html` after successful enquiry.
+- Expanded Project Funds, Business Loan and Balance Transfer / Consolidation options.
+- Loan hook/education sections with configurable image/video slots.
+- `loan-rates.html` with source, last-updated date, eligibility and lender conditions.
+- `government-schemes.html` with eligibility, benefits, Do/Don't and official-source links.
+- Education Loan dynamic country → course → institution flow with Other fields.
+- Student-specific family income instead of generic individual monthly income.
+- Father/Guardian/co-borrower profile and occupation-specific questions.
+- Student qualification/admission/cost/document checklist.
+- Executive signup/login/reset-password/profile-photo flow.
+- Backend-enforced username uniqueness and 100/200 role capacity.
+- Admin approval and active/inactive controls.
+- Executive ID assignment (`TC001...TC100`, `CN001...CN200`).
+- Executive dashboard, My Leads, Add Lead, Lead Details and activity timeline.
+- Lead ownership/isolation enforced by Firestore rules.
+- Separate Google reporting spreadsheet provisioning helper for each executive.
+- Optional Apps Script → Firebase public-lead bridge so public website enquiries can enter the CRM unassigned and be assigned by Admin.
+
+## Security architecture
+Passwords are NEVER stored in Google Sheets or GitHub files.
+
+Use:
+- Firebase Authentication — passwords/recovery
+- Firestore — users, roles, CRM leads, activities
+- Firebase Storage — profile photos
+- Cloud Functions — secure signup capacity, username lookup, admin approval/status, public-lead ingestion
+- Google Apps Script / Sheets — public enquiry capture, operational reporting, emails, optional individual executive reporting workbooks
+
+## Firebase deployment
+1. Create a Firebase project.
+2. Enable Authentication → Email/Password.
+3. Create Firestore database.
+4. Enable Firebase Storage.
+5. Create a Firebase Web App and copy its public web config into `firebase-config.js`.
+6. Install Firebase CLI and log in.
+7. From this project folder run:
+   - `firebase use --add`
+   - `cd functions && npm install && cd ..`
+   - `firebase functions:secrets:set INGEST_SECRET`
+   - `firebase deploy --only functions,firestore:rules,storage`
+8. Copy the deployed HTTPS URL for `ingestPublicLead`.
+
+## Create the first Admin
+Create the admin user securely in Firebase Authentication, then create Firestore document:
+`users/{ADMIN_UID}`
+
+Recommended fields:
+```json
+{
+  "uid": "ADMIN_UID",
+  "username": "admin",
+  "email": "your-admin-email",
+  "fullName": "Administrator",
+  "mobile": "",
+  "role": "admin",
+  "status": "active",
+  "executiveId": "ADMIN"
+}
+```
+
+The admin logs in through `executive-login.html`. For username login, also create a trusted `usernames/admin` document containing the admin UID and email, or use Firebase Console/Cloud Function tooling to seed it.
+
+## Google Apps Script deployment
+1. Open the Google Sheet used for website enquiries.
 2. Extensions → Apps Script.
 3. Paste `google-apps-script.gs`.
-4. If bound to the Sheet, leave `SPREADSHEET_ID` blank.
-5. Run `setup()` once.
-6. Deploy → New deployment → Web app.
-7. Execute as: Me.
-8. Who has access: Anyone.
-9. Put the Web App `/exec` URL into `script.js` as `APPS_SCRIPT_URL`.
-10. Redeploy after backend code changes.
+4. Run `setup()` once.
+5. Deploy → Web App → Execute as Me → Anyone.
+6. Keep the existing `/exec` URL in `script.js` and `cibil.js`.
 
-The backend creates:
+The backend creates/uses:
 - Loan Leads
 - All Form Data
 - EMI Details
 - Referrals
+- CIBIL Enquiries
+- Executive Users
 
-## Important
-The internal lead priority/score is for internal workflow only. It is not a CIBIL score, credit score, sanction decision or approval guarantee.
+## Optional public-lead CRM mirror
+To make public website enquiries appear automatically in Admin Dashboard:
+1. Deploy Firebase Functions.
+2. Put the deployed `ingestPublicLead` HTTPS URL in `CONFIG.FIREBASE_INGEST_URL` in `google-apps-script.gs`.
+3. In Apps Script → Project Settings → Script Properties, add:
+   - Key: `FIREBASE_INGEST_SECRET`
+   - Value: the SAME value used by `firebase functions:secrets:set INGEST_SECRET`
+4. Redeploy Apps Script.
 
-Never collect or request OTPs, passwords, card PINs or net-banking credentials.
+Public leads then enter Firestore with no executive assignment. Admin assigns them from `admin-dashboard.html`.
 
+## Individual executive Google reporting workbooks
+The Apps Script includes:
+- `createExecutiveReportingSpreadsheet(executiveId, fullName, role, email)`
+- `provisionExecutiveReportingSheetsFromUsers()`
 
-## Revision 6 updates
-- CIBIL issue count now generates a dedicated concern field and explanation for every affected account.
-- Mobile and alternative mobile inputs are digits-only with shared phone validation.
-- Project Funds hides Loan requirement focus and shows project-type-specific banker-style questions.
-- Hospital, real-estate, building-construction, warehouse/godown and Other project sections have tailored questions.
-- Project photo upload slots change by project type (optional, max 2 MB each, JPG/PNG/WEBP). Uploaded images are saved to the Apps Script Google Drive folder `HelloCustomer Project Photos`.
-- Separate loan pages are included for all 9 loan types, with a Loans dropdown menu.
-- Referrals redirect to `referral-thankyou.html` after successful submission; the referrer email acknowledgement remains supported.
-- After changing Apps Script code, run `setup()` and redeploy the Web App.
+Populate `Executive Users` with active approved users and run the provisioning helper. It creates a separate Google spreadsheet for each executive. Passwords are never copied to these sheets.
 
-Revision 7 additions: dedicated home.html and referral.html pages; dynamic CIBIL issue add/remove; Project Funds loan-focus hiding; phone/pincode input sanitisation; 30+ real-world stories.
+## Loan media
+Place images under `assets/loans/` and videos under `assets/videos/` according to `data/loan-data.js`.
 
+## Rates
+Edit `data/rate-data.js` only with official, source-verified lender information. Every record should include `updatedOn` and `source`.
 
-## Revision 9 — Product-specific lender directory
-The project now includes `lenders.js`, a central lender master database. The enquiry form dynamically filters preferred lender categories and institutions by selected loan type. Individual loan pages also display their relevant lender categories. Banks, HFCs, NBFC/finance companies, RRBs and co-operative categories are kept separate.
+## Government schemes
+Edit `data/scheme-data.js`. Scheme windows/benefits can change, so keep official links and re-verification dates.
 
-The lender directory is intended for enquiry guidance, not a guarantee of product availability or approval. Product availability, regulatory status, lender names and policies can change. Verify current details before publishing specific offers. The Home Loan/HFC directory was cross-checked against National Housing Bank's 2026 HFC information.
+## Important limitation
+The source code is complete, but a live secure login cannot work until your Firebase project config and deployment are supplied. Do not replace this with hard-coded usernames/passwords in JavaScript or Google Sheets.
 
+## Firebase project now configured
+The web client is configured for Firebase project `hcfintechsolutions` in `firebase-config.js` and `.firebaserc`.
 
-# Revision 10 — End-to-End Role-Based Platform
+### Remaining live deployment actions
+These actions require access to the Firebase project/account and therefore must be run by an authorized project owner/operator:
 
-## Customer flow
-Home → loan information → rates/eligibility → enquiry → Google Sheets lead → separate `thank-you.html`.
+1. Enable **Email/Password** under Firebase Authentication → Sign-in method.
+2. Create the Firestore database and Cloud Storage bucket if they are not already created.
+3. Install Firebase CLI and authenticate: `firebase login`.
+4. From this project directory run: `firebase deploy --only firestore:rules,storage,functions`.
+5. Set the public-lead ingest secret when Firebase CLI prompts for `INGEST_SECRET`. Keep that secret server-side only.
+6. Create the first Admin using `scripts/bootstrap-admin.js` from a trusted machine with Firebase Admin credentials. Do not put the admin password or service-account JSON in GitHub.
+7. Configure the Google Apps Script properties described in the Apps Script section so public website leads can be mirrored into Firestore.
+8. Perform the production test: executive signup → admin approval → username login → create/view own lead → lead assignment → profile photo → password reset.
 
-## Revision 10 additions
-- Separate thank-you page and redirect after successful loan enquiry.
-- Expanded Business Loan, Project Funds and Balance Transfer/Consolidation purposes.
-- Loan hook/education/media blocks on every loan page. Upload media into `assets/loans/` and `assets/videos/` using the filenames in `data/loan-data.js`.
-- `loan-rates.html` + `data/rate-data.js` for source-verified ROI, fees, tenure, eligibility and conditions. No fabricated/current rates are hard-coded.
-- `government-schemes.html` + `data/scheme-data.js`; scheme records must be re-verified before publishing.
-- Education Loan: country dropdown, country-dependent course/institution selector with Other text entry, qualification, cost breakdown, family/co-borrower profile, guardian occupation logic, monthly-family-income logic for Students, and expanded student/guardian document checklist.
-- Executive signup/login architecture for Telecallers (max 100) and Connectors (max 200), profile photo, password rules, individual dashboard, My Leads and profile pages.
-- Firestore security rules enforce own-lead access; authentication/passwords are not stored in Google Sheets.
-- Apps Script helper can create one separate Google reporting spreadsheet for each approved executive.
-
-## Executive authentication setup (required before login works)
-1. Create a Firebase project.
-2. Enable Email/Password Authentication, Firestore and Storage.
-3. Paste the Firebase Web App config into `firebase-config.js`.
-4. Deploy `firestore.rules` in Firebase Console/CLI.
-5. Create the first admin user securely in Firebase, then create `/users/{uid}` with `role: admin`, `status: active`.
-6. New Telecaller/Connector signups are created with `status: pending`; activate only after review.
-7. Set Firebase Storage rules so each authenticated user can write only under `profiles/{uid}/...` and approved readers can view required profile images.
-
-## Important security notes
-GitHub Pages is a static frontend. Do not place API secrets, admin credentials or passwords in HTML/JS. Firebase Web config is public by design; authorization must be enforced by Firestore/Storage rules. For production, implement admin-controlled custom claims or a trusted backend/Cloud Function for stronger role administration and server-side capacity enforcement.
-
-## Executive reporting Sheets
-Passwords are never copied to Sheets. After an executive is approved, administrators may use `createExecutiveReportingSpreadsheet()` or `provisionExecutiveReportingSheetsFromUsers()` in Apps Script to create a separate reporting workbook for that executive.
+### First admin bootstrap
+The repository includes `scripts/bootstrap-admin.js`. Run it only from a trusted admin machine. Example environment variables are documented inside the script. It creates/updates the Authentication user, `users/{uid}` profile, username lookup, and Admin custom claims.
