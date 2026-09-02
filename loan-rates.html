@@ -53,10 +53,10 @@
           <div class="roi-stat"><small>Max Tenure</small><strong id="tenure">—</strong></div>
           <div class="roi-stat"><small>Lender</small><strong id="lenderName">—</strong></div>
         </div>
-        <p class="rate-note">The displayed slab is indicative. It is not a sanction, approval, guaranteed rate or personalised offer.</p>
+        <p class="rate-note"><b>Important:</b> All rates are subject to the lender only. We try to show as much current information as possible as approximate ranges and details. Once you complete the enquiry, we can explain the available options more precisely according to your requirement and profile. Final rate, eligibility and approval are decided by the lender.</p>
       </div>
       <div class="notice" style="margin-top:18px"><b>Important:</b> <span id="disclaimer"></span></div>
-      <div class="api-status">API last updated: <span id="lastUpdated">—</span></div>
+      <div class="api-status">API last updated: <span id="lastUpdated">—</span></div><div id="rateSource" class="rate-note"></div>
     </div>
   </section>
 
@@ -80,7 +80,7 @@
 <script src="firebase-config.js"></script><script src="portal-config.js"></script><script src="auth.js"></script><script src="portal-access.js"></script>
 <script>
 const ROI_NEWS_API='https://script.google.com/macros/s/AKfycbzkoa_wXH4QKtEfHu--vYQlfF3oI27W-9YFG5VJcZ-g6Hh4BxGopGfyg3JCS1FwVZHh9w/exec';
-const loanLabels={home_loan:'Home Loan',personal_loan:'Personal Loan',car_loan:'Car / Vehicle Loan',loan_against_property:'Loan Against Property'};
+const loanLabels={home_loan:'Home Loan',personal_loan:'Personal Loan',business_loan:'Business Loan',car_loan:'Car / Vehicle Loan',education_loan:'Education Loan',loan_against_property:'Loan Against Property',home_loan_bt_topup:'Home Loan BT + Top-up',balance_transfer_consolidation:'Balance Transfer / Consolidation',project_funds:'Project Funds'};
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const formatDate=s=>{if(!s)return 'Date not provided';const d=new Date(s);return isNaN(d)?s:d.toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})};
 (async()=>{
@@ -118,7 +118,7 @@ function renderRates(rates,payload){
     document.getElementById('benchmark').textContent=rec.benchmark||'Verify with lender';
     document.getElementById('processingFee').textContent=rec.processing_fee||'Verify with lender';
     document.getElementById('tenure').textContent=rec.tenure_max_years?rec.tenure_max_years+' years':'Verify with lender';
-    document.getElementById('lenderName').textContent=rec.bank_name||'—';
+    document.getElementById('lenderName').textContent=rec.bank_name||'—';document.getElementById('rateSource').textContent='Reference source: '+(rec.source||'Lender/public comparison source')+(rec.source_updated?' · updated '+rec.source_updated:'')+(rec.notes?' · '+rec.notes:'');
   }
   bank.onchange=syncLoans;loan.onchange=show;syncLoans();
   document.getElementById('disclaimer').textContent=payload.disclaimer||'Rates are indicative and subject to lender underwriting.';
@@ -132,4 +132,4 @@ function renderNews(news){
 }
 </script>
 
-</body></html>
+<script src="nav-shared.js"></script></body></html>

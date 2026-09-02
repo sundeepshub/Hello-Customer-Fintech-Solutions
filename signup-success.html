@@ -1,0 +1,13 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Signup Submitted | Hello Customer Fintech Solutions</title><link rel="stylesheet" href="style.css"></head>
+<body class="portal-body"><header class="site-header"><div class="container nav"><a class="brand" href="home.html"><span class="brand-mark">HC</span><span><strong>Hello Customer</strong><small>FINTECH SOLUTIONS</small></span></a><nav><a href="home.html">Home</a><a href="login.html">Login</a></nav></div></header>
+<main class="portal-main"><section class="section"><div class="container"><div class="success-card portal-card">
+<div class="success-icon">✓</div><div class="eyebrow">Registration received</div><h1>Signup submitted successfully</h1>
+<p id="roleText" class="lead">Your account request has been received.</p>
+<div class="code-panel"><span>Your Executive Code</span><strong id="execCode">—</strong></div>
+<p>Your account is currently <b>pending administrator approval</b>. Please also check your email-verification message. You can sign in only after the administrator activates your account.</p>
+<div class="success-meta"><div><span>Name</span><b id="name">—</b></div><div><span>Username</span><b id="username">—</b></div><div><span>Role</span><b id="role">—</b></div></div>
+<p class="notice"><b>Keep your Executive Code safely.</b> It will be used for lead assignment, reporting and tracking. Your password remains only in Firebase Authentication and is never stored in Google Sheets.</p>
+<div class="dashboard-actions"><a class="btn primary" href="login.html">Go to Login</a><a class="btn ghost" href="home.html">Back to Home</a></div>
+</div></div></section></main>
+<script>const q=new URLSearchParams(location.search),role=q.get('role')||'executive';execCode.textContent=q.get('code')||'Pending';name.textContent=q.get('name')||'—';username.textContent=q.get('username')||'—';document.getElementById('role').textContent=role==='connector'?'Connector':'Telecaller';roleText.textContent=(role==='connector'?'Connector':'Telecaller')+' registration has been received successfully.';</script><script src="nav-shared.js"></script></body></html>

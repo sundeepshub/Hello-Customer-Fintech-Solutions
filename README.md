@@ -83,3 +83,7 @@ The protected `ratesNews` action returns ROI data plus RSS headlines to authoris
 ## Important
 
 Do not publish passwords, OTPs, Firebase service-account keys or private tokens in GitHub or Sheets.
+
+
+## Revision 12
+See `REVISION12_CRM_AUDIT.md` for signup success codes, Google Sheet bulk lead queue, per-user masking/permissions, expanded admin dashboard, professional portal UI, and the expanded lender-rate dataset.
