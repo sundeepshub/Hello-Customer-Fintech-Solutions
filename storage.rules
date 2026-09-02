@@ -5,6 +5,10 @@ service firebase.storage {
     function me(){ return firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data; }
     function active(){ return signedIn() && me().status == 'active'; }
     function admin(){ return active() && me().role == 'admin'; }
+    function canAccessLead(leadId){
+      let lead = firestore.get(/databases/(default)/documents/leads/$(leadId)).data;
+      return admin() || (active() && (lead.createdByUserId == request.auth.uid || lead.assignedToUserId == request.auth.uid));
+    }
 
     match /profiles/{uid}/{fileName} {
       allow read: if signedIn() && (request.auth.uid == uid || admin());
@@ -13,7 +17,10 @@ service firebase.storage {
         && request.resource.contentType.matches('image/(jpeg|png|webp)');
     }
     match /lead-documents/{leadId}/{fileName} {
-      allow read, write: if active();
+      allow read: if canAccessLead(leadId);
+      allow create, update: if canAccessLead(leadId)
+        && request.resource.size < 10 * 1024 * 1024;
+      allow delete: if canAccessLead(leadId);
     }
   }
 }
