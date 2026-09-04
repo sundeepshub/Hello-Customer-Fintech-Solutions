@@ -1,39 +1,19 @@
+
 (function(){
 function bind(){
   document.querySelectorAll('.menu-btn').forEach(m=>{if(m.dataset.hcBound)return;m.dataset.hcBound='1';const n=document.getElementById(m.getAttribute('aria-controls')||'pageNav')||m.parentElement?.querySelector('nav');m.addEventListener('click',()=>{n?.classList.toggle('open');m.setAttribute('aria-expanded',n?.classList.contains('open')?'true':'false')})});
-  document.querySelectorAll('.nav-dropdown').forEach(d=>{const b=d.querySelector('.nav-drop-btn');if(!b||b.dataset.hcBound)return;b.dataset.hcBound='1';b.addEventListener('click',e=>{e.preventDefault();document.querySelectorAll('.nav-dropdown.open').forEach(x=>{if(x!==d)x.classList.remove('open')});d.classList.toggle('open');b.setAttribute('aria-expanded',d.classList.contains('open')?'true':'false')})});
+  document.querySelectorAll('.nav-dropdown').forEach(bindDrop);
   document.addEventListener('click',e=>{if(!e.target.closest('.nav-dropdown'))document.querySelectorAll('.nav-dropdown.open').forEach(x=>x.classList.remove('open'))},{passive:true});
-  addPublicLinksToPortal();
-  addMissingPublicOptions();
-  applyPortalPermissions();
+  addPortalPublicMenu();addPublicExplore();ensureLogin();ensurePortalLogout();interceptGuestFeatures();applyPortalPermissions();
 }
-function addPublicLinksToPortal(){
-  document.querySelectorAll('nav.portal-nav').forEach(n=>{
-    if(n.querySelector('[data-public-menu]'))return;
-    const d=document.createElement('div');d.className='nav-dropdown';d.dataset.publicMenu='1';
-    d.innerHTML='<button type="button" class="nav-drop-btn">Public Site ▾</button><div class="nav-dropdown-menu"><a href="home.html">Home</a><a href="personal-loan.html">Personal Loan</a><a href="home-loan.html">Home Loan</a><a href="business-loan.html">Business Loan</a><a href="lap-loan.html">Loan Against Property</a><a href="vehicle-loan.html">Vehicle Loan</a><a href="education-loan.html">Education Loan</a><a href="offers.html">Latest Offers</a><a href="how-we-help.html">How We Help</a><a href="cibil.html">CIBIL & Credit</a><a href="stories.html">Stories</a><a href="faq.html">FAQ</a><a href="referral.html">Refer Someone</a><a href="index.html#eligibility">Start Enquiry</a></div>';
-    n.insertBefore(d,n.firstChild);
-    const b=d.querySelector('.nav-drop-btn');b.addEventListener('click',e=>{e.preventDefault();d.classList.toggle('open')});
-  });
-}
-
-function addMissingPublicOptions(){
-  document.querySelectorAll('header nav:not(.portal-nav)').forEach(n=>{
-    if(n.querySelector('a[href="referral.html"]'))return;
-    const d=document.createElement('div');d.className='nav-dropdown';
-    d.innerHTML='<button type="button" class="nav-drop-btn">Explore ▾</button><div class="nav-dropdown-menu"><a href="home.html">Home</a><a href="personal-loan.html">Personal Loan</a><a href="home-loan.html">Home Loan</a><a href="business-loan.html">Business Loan</a><a href="lap-loan.html">Loan Against Property</a><a href="vehicle-loan.html">Vehicle Loan</a><a href="education-loan.html">Education Loan</a><a href="offers.html">Latest Offers</a><a href="loan-rates.html">Loan Rates</a><a href="government-schemes.html">Schemes</a><a href="how-we-help.html">How We Help</a><a href="cibil.html">CIBIL & Credit</a><a href="stories.html">Stories</a><a href="faq.html">FAQ</a><a href="referral.html">Refer Someone</a><a href="index.html#eligibility">Start Enquiry</a><a href="login.html">Login</a></div>';
-    n.insertBefore(d,n.firstChild);const b=d.querySelector('.nav-drop-btn');b.addEventListener('click',e=>{e.preventDefault();d.classList.toggle('open')});
-  });
-}
-
-async function applyPortalPermissions(){
-  if(!window.HCAuth?.ready||!HCAuth.auth)return;
-  const u=HCAuth.auth.currentUser||await new Promise(res=>{const off=HCAuth.auth.onAuthStateChanged(x=>{off();res(x)})});if(!u)return;
-  try{
-    const profile=(await HCAuth.api('getProfile')).profile||{},p=profile.permissions||{};
-    const map={'new-lead.html':'addLead','lead-queue.html':'queue','loan-rates.html':'loanRates','government-schemes.html':'schemes','executive-profile.html':'profile','executive-dashboard.html':'dashboard'};
-    document.querySelectorAll('nav.portal-nav a').forEach(a=>{const file=(a.getAttribute('href')||'').split('?')[0].split('#')[0];const key=map[file];if(profile.role!=='admin'&&key&&p[key]===false)a.hidden=true});
-  }catch(_){}
-}
+function bindDrop(d){const b=d.querySelector('.nav-drop-btn');if(!b||b.dataset.hcBound)return;b.dataset.hcBound='1';b.addEventListener('click',e=>{e.preventDefault();document.querySelectorAll('.nav-dropdown.open').forEach(x=>{if(x!==d)x.classList.remove('open')});d.classList.toggle('open')})}
+function menuHtml(){return '<a href="home.html">Home</a><a href="personal-loan.html">Personal Loan</a><a href="home-loan.html">Home Loan</a><a href="business-loan.html">Business Loan</a><a href="lap-loan.html">Loan Against Property</a><a href="vehicle-loan.html">Vehicle Loan</a><a href="education-loan.html">Education Loan</a><a href="offers.html">Latest Offers</a><a href="loan-rates.html" data-guest-feature="1">Loan Rates</a><a href="government-schemes.html" data-guest-feature="1">Schemes</a><a href="how-we-help.html">How We Help</a><a href="cibil.html">CIBIL & Credit</a><a href="stories.html">Stories</a><a href="faq.html">FAQ</a><a href="referral.html">Refer Someone</a><a href="index.html#eligibility">Start Enquiry</a><a href="login.html">Login</a>'}
+function addPortalPublicMenu(){document.querySelectorAll('nav.portal-nav').forEach(n=>{if(n.querySelector('[data-public-menu]'))return;const d=document.createElement('div');d.className='nav-dropdown';d.dataset.publicMenu='1';d.innerHTML='<button type="button" class="nav-drop-btn">Public Site ▾</button><div class="nav-dropdown-menu">'+menuHtml()+'</div>';n.insertBefore(d,n.firstChild);bindDrop(d)})}
+function addPublicExplore(){document.querySelectorAll('header nav:not(.portal-nav)').forEach(n=>{if(n.querySelector('[data-hc-explore]'))return;const d=document.createElement('div');d.className='nav-dropdown';d.dataset.hcExplore='1';d.innerHTML='<button type="button" class="nav-drop-btn">Explore ▾</button><div class="nav-dropdown-menu">'+menuHtml()+'</div>';n.insertBefore(d,n.firstChild);bindDrop(d)})}
+function ensureLogin(){document.querySelectorAll('header nav:not(.portal-nav)').forEach(n=>{const direct=[...n.children].some(x=>x.matches&&x.matches('a[href="login.html"]'));if(!direct){const a=document.createElement('a');a.href='login.html';a.textContent='Login';a.className='nav-cta';n.appendChild(a)}})}
+function ensurePortalLogout(){document.querySelectorAll('nav.portal-nav').forEach(n=>{if(n.querySelector('#logout,[data-hc-logout]'))return;const b=document.createElement('button');b.type='button';b.className='btn primary small';b.dataset.hcLogout='1';b.textContent='Logout';b.onclick=()=>window.HCAuth?.logout?.();n.appendChild(b)})}
+function hasGuest(){try{const g=JSON.parse(sessionStorage.getItem('hcGuestSession')||'null');return !!(g?.token&&new Date(g.expiresAt)>new Date())}catch{return false}}
+function interceptGuestFeatures(){document.addEventListener('click',e=>{const a=e.target.closest('a[data-guest-feature],a[href="loan-rates.html"],a[href="government-schemes.html"]');if(!a)return;if(window.HCAuth?.auth?.currentUser||hasGuest())return;const href=(a.getAttribute('href')||'loan-rates.html').split('#')[0];e.preventDefault();location.href='guest-login.html?return='+encodeURIComponent(href)})}
+async function applyPortalPermissions(){if(!window.HCAuth?.ready||!HCAuth.auth)return;const u=HCAuth.auth.currentUser||await new Promise(res=>{const off=HCAuth.auth.onAuthStateChanged(x=>{off();res(x)})});if(!u)return;try{const profile=(await HCAuth.api('getProfile')).profile||{},p=profile.permissions||{};const map={'new-lead.html':'addLead','lead-queue.html':'queue','loan-rates.html':'loanRates','government-schemes.html':'schemes','executive-profile.html':'profile','executive-dashboard.html':'dashboard','social-publisher.html':'socialPublisher'};document.querySelectorAll('nav.portal-nav a').forEach(a=>{const file=(a.getAttribute('href')||'').split('?')[0].split('#')[0],key=map[file];if(profile.role!=='admin'&&key&&p[key]===false)a.hidden=true})}catch(_){}}
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',bind):bind();
 })();

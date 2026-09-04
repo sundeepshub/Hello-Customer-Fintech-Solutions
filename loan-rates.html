@@ -29,13 +29,13 @@
 <body>
 <header class="site-header"><div class="container nav"><a class="brand" href="home.html"><span class="brand-mark">HC</span><span><strong>Hello Customer</strong><small>FINTECH SOLUTIONS</small></span></a><nav><a href="executive-dashboard.html">Dashboard</a><a href="government-schemes.html">Schemes</a><a href="login.html">Login</a></nav></div></header>
 <main>
-<section class="hero"><div class="container"><div class="eyebrow">Internal lender intelligence</div><h1>Live Bank ROI Finder & Banking Updates</h1><p class="lead">Live rate data is read from the authorised Google Sheet. Banking updates are fetched server-side from official RSS sources.</p></div></section>
+<section class="hero"><div class="container"><div class="eyebrow">Internal lender intelligence</div><h1>Live Bank ROI Finder & Banking Updates</h1><p class="lead">Reference lender ranges and current banking updates in one place.</p></div></section>
 <section class="section"><div class="container"><div id="rateGate">Checking access…</div>
 <div id="rateContent" hidden class="roi-shell">
   <section class="roi-panel">
     <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap">
       <div><h2 style="margin:0">Bank ROI Finder</h2><p style="margin:.45rem 0 0;color:#667487">Choose a bank and loan type to view the current Sheet-based reference slab.</p></div>
-      <span class="live-badge"><span class="live-dot"></span> Google Sheet live data</span>
+      
     </div>
     <div id="roiLoading" class="loader"><span class="spinner"></span>Loading current lender data…</div>
     <div id="roiError" class="error-box" hidden></div>
@@ -63,7 +63,7 @@
   <section class="roi-panel">
     <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap">
       <div><h2 style="margin:0">Live Banking & Finance Updates</h2><p style="margin:.45rem 0 0;color:#667487">Headline links open the original publisher page. We do not republish article bodies.</p></div>
-      <span class="live-badge"><span class="live-dot"></span> RSS</span>
+      
     </div>
     <div id="newsLoading" class="loader"><span class="spinner"></span>Loading latest banking updates…</div>
     <div id="newsError" class="error-box" hidden></div>
@@ -77,28 +77,23 @@
 
 
 
-<script src="firebase-config.js"></script><script src="portal-config.js"></script><script src="auth.js"></script><script src="portal-access.js"></script>
+<script src="firebase-config.js"></script><script src="portal-config.js"></script><script src="auth.js"></script><script src="portal-access.js"></script><script src="ui.js"></script>
 <script>
-const ROI_NEWS_API='https://script.google.com/macros/s/AKfycbzBDOlSwHcrwKpPQuzez_Dw_QkWzOkn1c21_GTpPzr2BuXI-0dWWg_qBjMIuR8DEY5cdw/exec';
 const loanLabels={home_loan:'Home Loan',personal_loan:'Personal Loan',business_loan:'Business Loan',car_loan:'Car / Vehicle Loan',education_loan:'Education Loan',loan_against_property:'Loan Against Property',home_loan_bt_topup:'Home Loan BT + Top-up',balance_transfer_consolidation:'Balance Transfer / Consolidation',project_funds:'Project Funds'};
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const formatDate=s=>{if(!s)return 'Date not provided';const d=new Date(s);return isNaN(d)?s:d.toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})};
+function guestSession(){try{const x=JSON.parse(sessionStorage.getItem('hcGuestSession')||'null');return x&&x.token&&new Date(x.expiresAt)>new Date()?x:null}catch{return null}}
+async function publicApi(action,token){const fd=new FormData();fd.set('action',action);fd.set('guestToken',token);const r=await fetch(HC_PORTAL_CONFIG.appsScriptUrl,{method:'POST',body:fd,cache:'no-store'});const raw=await r.text();let d;try{d=JSON.parse(raw)}catch{throw Error('Please check with support for access issue.')}if(!d.ok)throw Error(d.error||'Unable to load data.');return d}
 (async()=>{
-  const gate=document.getElementById('rateGate'),content=document.getElementById('rateContent');
-  const access=await HCPortalAccess.allow('loanRates');
-  if(!access.ctx.user){gate.innerHTML='<div class="access-denied"><h2>Login required</h2><p>Loan Rates are available only to authorised employees/executives and administrators.</p><a class="btn primary" href="login.html">Go to Login →</a></div>';return}
-  if(!access.allowed){gate.innerHTML='<div class="access-denied"><h2>Access not enabled</h2><p>The administrator has not enabled Loan Rates for your role.</p><a class="btn ghost" href="executive-dashboard.html">Back to Dashboard</a></div>';return}
-  gate.hidden=true;content.hidden=false;
-  try{
-    const payload=await HCAuth.api('ratesNews');
-    if(payload.status!=='success')throw new Error(payload.message||'API returned an error');
-    renderRates(Array.isArray(payload.rates)?payload.rates:[],payload);
-    renderNews(Array.isArray(payload.news)?payload.news:[]);
-  }catch(err){
-    document.getElementById('roiLoading').hidden=true;document.getElementById('newsLoading').hidden=true;
-    document.getElementById('roiError').hidden=false;document.getElementById('roiError').textContent='Unable to load the protected live ROI data: '+err.message;
-    document.getElementById('newsError').hidden=false;document.getElementById('newsError').textContent='Unable to load the live RSS feed. Please retry later.';
-  }
+ const gate=document.getElementById('rateGate'),content=document.getElementById('rateContent'),g=guestSession();
+ let access=null;try{access=await HCPortalAccess.allow('loanRates')}catch{}
+ if(!access?.ctx?.user&&!g){location.href='guest-login.html?return='+encodeURIComponent('loan-rates.html');return}
+ if(access?.ctx?.user&&!access.allowed){gate.innerHTML='<div class="access-denied"><h2>Access not enabled</h2><p>Loan Rates are not enabled for your account.</p><a class="btn ghost" href="executive-dashboard.html">Back to Dashboard</a></div>';return}
+ gate.hidden=true;content.hidden=false;
+ const ratePromise=access?.ctx?.user?HCAuth.api('ratesOnly'):publicApi('guestRatesOnly',g.token);
+ const newsPromise=access?.ctx?.user?HCAuth.api('newsOnly'):publicApi('guestNewsOnly',g.token);
+ ratePromise.then(payload=>{renderRates(Array.isArray(payload.rates)?payload.rates:[],payload)}).catch(err=>{roiLoading.hidden=true;roiError.hidden=false;roiError.textContent='Unable to load lender information right now. Please try again later.'});
+ newsPromise.then(payload=>renderNews(Array.isArray(payload.news)?payload.news:[])).catch(err=>{newsLoading.hidden=true;newsError.hidden=false;newsError.textContent='Unable to load banking updates right now. Please try again later.'});
 })();
 
 function renderRates(rates,payload){
@@ -132,4 +127,4 @@ function renderNews(news){
 }
 </script>
 
-<script src="nav-shared.js"></script></body></html>
+<script src="nav-shared.js"></script><script src="site-ads.js"></script></body></html>
