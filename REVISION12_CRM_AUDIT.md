@@ -75,7 +75,7 @@ After replacing Code.gs:
 10. Use the resulting `/exec` URL in `portal-config.js`, `script.js`, `cibil.js`, `loan-rates.html` and the standalone ROI page.
 
 Current configured Web App URL:
-https://script.google.com/macros/s/AKfycbzBDOlSwHcrwKpPQuzez_Dw_QkWzOkn1c21_GTpPzr2BuXI-0dWWg_qBjMIuR8DEY5cdw/exec
+https://script.google.com/macros/s/AKfycbx95Gm18F65uzfSDa5BNceoh9xDi7PeDj0RWgHS1QpY-aq3yHjmw_neF6c8OLk-0Sd9Gw/exec
 
 ## First admin
 Username: `sandeepadmin`
