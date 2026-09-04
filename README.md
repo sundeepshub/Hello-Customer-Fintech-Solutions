@@ -91,3 +91,6 @@ See `REVISION12_CRM_AUDIT.md` for signup success codes, Google Sheet bulk lead q
 
 ## Revision 13
 See `REVISION13_CRM_AUDIT.md`, `SECURITY.md`, and `SOCIAL_PUBLISHING.md`. This revision adds guest access, faster split Loan Rates/News loading, Salesforce-style CRM ownership/queues, lead reassignment, field masking, 3 professional themes, Social Publisher, application Ad Manager, and an Admin-only public webpage Marketing Research Lab.
+
+## Revision 14
+Revision 14 adds universal loading UX, fixed navigation/logout/theme behavior, configurable idle timeout, tracked Guest/CIBIL capture, source-aware leads, deeper access policies, improved reassignment/pipeline drill-down, Marketing AI, expanded campaigns/social publishing, per-user social connections, advanced Ad Manager, and controlled shared media/Guest branding. See `REVISION14_CRM_MARKETING_AUDIT.md`.

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Offer Creative Manager | Hello Customer</title><link rel="stylesheet" href="style.css"></head>
+<body class="portal-body"><div id="hcPageLoader" class="page-loader"><div class="page-loader-card"><span class="page-loader-spinner"></span><b>Loading…</b><small>Please wait</small></div></div>
+<header class="site-header"><div class="container nav"><a class="brand" href="admin-dashboard.html"><span class="brand-mark">HC</span><span><strong>Hello Customer</strong><small>FINTECH SOLUTIONS</small></span></a>
+<nav class="portal-nav"><a href="admin-dashboard.html">Dashboard</a><a href="offers.html">Offer Library</a><a href="media-library.html">Media Library</a><a href="ad-manager.html">Ad Manager</a><a href="admin-settings.html">Settings</a><button class="btn primary small" id="logout">Logout</button></nav></div></header>
+<main class="portal-main"><section class="section"><div class="container">
+<div class="dashboard-head"><div><div class="eyebrow">Admin control</div><h1>Offer Creative Manager</h1><p>Upload, replace, enable or disable the image used for every Offer Library template.</p></div></div>
+
+<div class="dashboard-panel admin-note"><b>Creative placement note — Admin only</b><p>Recommended sizes: Hero 1920×600, campaign 1200×400, offer card 600×400, compact card 400×300. Keep important text away from edges and publish only verified offer/eligibility information. Avoid approval guarantees.</p></div>
+
+<div class="dashboard-panel"><div class="section-head"><div><h2>Offer Templates</h2><p class="muted">Images can be uploaded here or selected from the Admin Media Library.</p></div><button id="refreshOffers" class="btn ghost">Refresh</button></div>
+<div id="offerManagerGrid" class="offer-manager-grid">Loading…</div></div>
+</div></section></main>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script src="firebase-config.js"></script><script src="portal-config.js"></script><script src="auth.js"></script><script src="crm.js"></script><script src="ui.js"></script>
+<script>
+(async()=>{
+  await HCAuth.guard({adminOnly:true}); logout.onclick=HCAuth.logout;
+  const esc=HCCRM.esc;
+  let offers=[],media=[];
+  const fallback={
+    'personal-loan-offers':'assets/offer-library/IMG-03-customer-consultation.png',
+    'home-loan-offers':'assets/offer-library/IMG-04-documentation-paperwork.png',
+    'business-loan-offers':'assets/offer-library/IMG-05-business-professional-meeting.png'
+  };
+  function readFile(file){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(file)})}
+  async function load(){
+    const [o,m]=await Promise.all([HCCRM.api('adminListOfferCreatives'),HCCRM.api('mediaLibrary')]);
+    offers=o.offers||[];media=(m.media||[]).filter(x=>x.type==='image'&&x.active!==false);render();
+  }
+  function mediaOptions(current){
+    return '<option value="">Choose shared image</option>'+media.map(x=>`<option value="${esc(x.id)}" data-url="${esc(x.url)}" ${x.id===current?'selected':''}>${esc(x.title)}</option>`).join('');
+  }
+  function render(){
+    offerManagerGrid.innerHTML=offers.map(x=>`<article class="offer-manager-card" data-slot="${esc(x.slotId)}">
+      <div class="section-head"><div><b>${esc(x.loanType)}</b><small>${esc(x.slotId)}</small></div><label><input class="enabled" type="checkbox" ${x.enabled!==false?'checked':''}> Enabled</label></div>
+      <div class="offer-manager-preview">${(x.imageUrl||fallback[x.slotId])?`<img src="${esc(x.imageUrl||fallback[x.slotId])}" alt="">`:'No image selected'}</div>
+      <div class="fields">
+        <label>Upload New Image<input class="upload" type="file" accept="image/jpeg,image/png,image/webp"></label>
+        <label>Or Select Media<select class="media">${mediaOptions(x.mediaId)}</select></label>
+        <label>Image URL<input class="imageUrl" type="url" value="${esc(x.imageUrl||'')}"></label>
+        <label>Headline<input class="headline" maxlength="120" value="${esc(x.headline||x.loanType)}"></label>
+        <label>Message<textarea class="message" rows="3" maxlength="500">${esc(x.message||'')}</textarea></label>
+        <label>CTA Text<input class="ctaText" maxlength="80" value="${esc(x.ctaText||('Enquire about '+x.loanType+' →'))}"></label>
+        <label>CTA URL<input class="ctaUrl" value="${esc(x.ctaUrl||'index.html#eligibility')}"></label>
+      </div>
+      <div class="action-bar"><button class="btn primary save" type="button">Save</button><button class="btn ghost reset" type="button">Use Bundled Default</button></div>
+      <div class="auth-message msg"></div>
+    </article>`).join('');
+    document.querySelectorAll('.offer-manager-card').forEach(card=>{
+      const slot=card.dataset.slot, offer=offers.find(x=>x.slotId===slot), sel=card.querySelector('.media'), url=card.querySelector('.imageUrl'), preview=card.querySelector('.offer-manager-preview');
+      sel.onchange=()=>{const op=sel.selectedOptions[0];if(op&&op.dataset.url){url.value=op.dataset.url;preview.innerHTML=`<img src="${esc(op.dataset.url)}" alt="">`}};
+      url.oninput=()=>{preview.innerHTML=url.value?`<img src="${esc(url.value)}" alt="">`:'No image selected'};
+      card.querySelector('.reset').onclick=()=>{url.value='';sel.value='';preview.innerHTML=fallback[slot]?`<img src="${esc(fallback[slot])}" alt="">`:'No bundled default image';};
+      card.querySelector('.save').onclick=async()=>{
+        const b=card.querySelector('.save'),file=card.querySelector('.upload').files[0],msg=card.querySelector('.msg');HCUI.setLoading(b,true,'Updating…');
+        try{
+          let imageUrl=url.value.trim(),mediaId=sel.value;
+          if(file){
+            if(file.size>8*1024*1024)throw new Error('Image must be 8 MB or less.');
+            const up=await HCCRM.api('adminUploadMedia',{title:offer.loanType+' Offer Creative',type:'image',mimeType:file.type,fileSize:file.size,dataUrl:await readFile(file),allowedRoles:'admin',allowedUids:'',guestPageAllowed:false});
+            imageUrl=up.url;mediaId=up.mediaId;
+          }
+          await HCCRM.api('adminSaveOfferCreative',{slotId:slot,loanType:offer.loanType,imageUrl,mediaId,headline:card.querySelector('.headline').value,message:card.querySelector('.message').value,ctaText:card.querySelector('.ctaText').value,ctaUrl:card.querySelector('.ctaUrl').value,enabled:card.querySelector('.enabled').checked});
+          HCUI.message(msg,'Updated.','ok');await load();
+        }catch(e){HCUI.message(msg,e.message,'error')}finally{HCUI.setLoading(b,false)}
+      };
+    });
+  }
+  refreshOffers.onclick=load; await load();
+})();
+</script><script src="nav-shared.js"></script><script src="app-shell.js"></script></body></html>
