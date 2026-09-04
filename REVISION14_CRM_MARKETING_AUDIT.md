@@ -79,7 +79,7 @@ Browser-delivered HTML/CSS/JavaScript cannot be made impossible to inspect or co
 3. Deploy / Manage deployments / Edit / New version / Web app.
 4. Execute as: Me. Who has access: Anyone.
 5. The current configured `/exec` URL in this package is:
-   `https://script.google.com/macros/s/AKfycbx95Gm18F65uzfSDa5BNceoh9xDi7PeDj0RWgHS1QpY-aq3yHjmw_neF6c8OLk-0Sd9Gw/exec`
+   `https://script.google.com/macros/s/AKfycbwZHBFyn-u0KR4nkENig83QGEqu27Btx5vtNj6mrG8E8krKoWwGPvAuIJOhMt3KaQ0CjA/exec`
 6. If Apps Script gives a different `/exec` URL, update `portal-config.js`, `script.js`, `cibil.js`, and `apps-script-roi-news/index.html` before publishing GitHub Pages.
 7. Upload the Revision 14 web files to GitHub and wait for GitHub Pages deployment.
 

@@ -1,10 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Loan Rates & Banking News | Hello Customer Fintech Solutions</title>
-<link rel="stylesheet" href="style.css">
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Loan Rates &amp; Banking News | Hello Customer Fintech Solutions</title>
+<link href="style.css" rel="stylesheet"/>
 <style>
 .roi-shell{display:grid;grid-template-columns:1fr;gap:22px}
 .roi-panel{background:#fff;border:1px solid #e1e7ef;border-radius:18px;padding:22px;box-shadow:0 10px 28px rgba(20,37,61,.06)}
@@ -26,74 +27,63 @@
 @media(max-width:520px){.roi-result-grid{grid-template-columns:1fr}}
 </style>
 </head>
-<body><div id="hcPageLoader" class="page-loader"><div class="page-loader-card"><span class="page-loader-spinner"></span><b>Loading…</b><small>Please wait</small></div></div>
-<header class="site-header"><div class="container nav"><a class="brand" href="home.html"><span class="brand-mark">HC</span><span><strong>Hello Customer</strong><small>FINTECH SOLUTIONS</small></span></a><nav><a href="executive-dashboard.html">Dashboard</a><a href="government-schemes.html">Schemes</a><a href="login.html">Login</a></nav></div></header>
+<body><div class="page-loader" id="hcPageLoader"><div class="page-loader-card"><span class="page-loader-spinner"></span><b>Loading…</b><small>Please wait</small></div></div>
+<header class="site-header"><div class="container nav"><a class="brand" href="executive-dashboard.html"><span class="brand-mark">HC</span><span><strong>Hello Customer</strong><small>FINTECH SOLUTIONS</small></span></a><nav class="portal-nav"><a href="executive-dashboard.html">Dashboard</a><a href="government-schemes.html">Schemes</a><a href="login.html">Login</a></nav></div></header>
 <main>
-<section class="hero"><div class="container"><div class="eyebrow">Internal lender intelligence</div><h1>Live Bank ROI Finder & Banking Updates</h1><p class="lead">Reference lender ranges and current banking updates in one place.</p></div></section>
+<section class="hero"><div class="container"><div class="eyebrow">Internal lender intelligence</div><h1>Live Bank ROI Finder &amp; Banking Updates</h1><p class="lead">Reference lender ranges and current banking updates in one place.</p></div></section>
 <section class="section"><div class="container"><div id="rateGate">Checking access…</div>
-<div id="rateContent" hidden class="roi-shell">
-  <section class="roi-panel">
-    <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap">
-      <div><h2 style="margin:0">Bank ROI Finder</h2><p style="margin:.45rem 0 0;color:#667487">Choose a bank and loan type to view the current Sheet-based reference slab.</p></div>
-      
-    </div>
-    <div id="roiLoading" class="loader"><span class="spinner"></span>Loading current lender data…</div>
-    <div id="roiError" class="error-box" hidden></div>
-    <div id="roiApp" hidden>
-      <div class="roi-filters">
-        <label>Bank / Lender<select id="bankSelect"><option value="">Select bank</option></select></label>
-        <label>Loan Type<select id="loanSelect"><option value="">Select loan type</option></select></label>
-      </div>
-      <div id="roiEmpty" class="notice">Select a bank and loan type.</div>
-      <div id="roiResult" hidden>
-        <div class="roi-result-grid">
-          <div class="roi-stat"><small>Interest Rate</small><strong id="roiRange">—</strong></div>
-          <div class="roi-stat"><small>Benchmark</small><strong id="benchmark">—</strong></div>
-          <div class="roi-stat"><small>Processing Fee</small><strong id="processingFee">—</strong></div>
-          <div class="roi-stat"><small>Max Tenure</small><strong id="tenure">—</strong></div>
-          <div class="roi-stat"><small>Lender</small><strong id="lenderName">—</strong></div>
-        </div>
-        <p class="rate-note"><b>Important:</b> All rates are subject to the lender only. We try to show as much current information as possible as approximate ranges and details. Once you complete the enquiry, we can explain the available options more precisely according to your requirement and profile. Final rate, eligibility and approval are decided by the lender.</p>
-      </div>
-      <div class="notice" style="margin-top:18px"><b>Important:</b> <span id="disclaimer"></span></div>
-      <div class="api-status">API last updated: <span id="lastUpdated">—</span></div><div id="rateSource" class="rate-note"></div>
-    </div>
-  </section>
-
-  <section class="roi-panel">
-    <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap">
-      <div><h2 style="margin:0">Live Banking & Finance Updates</h2><p style="margin:.45rem 0 0;color:#667487">Headline links open the original publisher page. We do not republish article bodies.</p></div>
-      
-    </div>
-    <div id="newsLoading" class="loader"><span class="spinner"></span>Loading latest banking updates…</div>
-    <div id="newsError" class="error-box" hidden></div>
-    <div id="newsGrid" class="news-grid"></div>
-  </section>
+<div class="roi-shell" hidden="" id="rateContent">
+<section class="roi-panel">
+<div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap">
+<div><h2 style="margin:0">Bank ROI Finder</h2><p style="margin:.45rem 0 0;color:#667487">Choose a bank and loan type to view the current Sheet-based reference slab.</p></div>
+</div>
+<div class="loader" id="roiLoading"><span class="spinner"></span>Loading current lender data…</div>
+<div class="error-box" hidden="" id="roiError"></div>
+<div hidden="" id="roiApp">
+<div class="roi-filters">
+<label>Bank / Lender<select id="bankSelect"><option value="">Select bank</option></select></label>
+<label>Loan Type<select id="loanSelect"><option value="">Select loan type</option></select></label>
+</div>
+<div class="notice" id="roiEmpty">Select a bank and loan type.</div>
+<div hidden="" id="roiResult">
+<div class="roi-result-grid">
+<div class="roi-stat"><small>Interest Rate</small><strong id="roiRange">—</strong></div>
+<div class="roi-stat"><small>Benchmark</small><strong id="benchmark">—</strong></div>
+<div class="roi-stat"><small>Processing Fee</small><strong id="processingFee">—</strong></div>
+<div class="roi-stat"><small>Max Tenure</small><strong id="tenure">—</strong></div>
+<div class="roi-stat"><small>Lender</small><strong id="lenderName">—</strong></div>
+</div>
+<p class="rate-note"><b>Important:</b> All rates are subject to the lender only. We try to show as much current information as possible as approximate ranges and details. Once you complete the enquiry, we can explain the available options more precisely according to your requirement and profile. Final rate, eligibility and approval are decided by the lender.</p>
+</div>
+<div class="notice" style="margin-top:18px"><b>Important:</b> <span id="disclaimer"></span></div>
+<div class="api-status">API last updated: <span id="lastUpdated">—</span></div><div class="rate-note" id="rateSource"></div>
+</div>
+</section>
+<section class="roi-panel">
+<div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap">
+<div><h2 style="margin:0">Live Banking &amp; Finance Updates</h2><p style="margin:.45rem 0 0;color:#667487">Headline links open the original publisher page. We do not republish article bodies.</p></div>
+</div>
+<div class="loader" id="newsLoading"><span class="spinner"></span>Loading latest banking updates…</div>
+<div class="error-box" hidden="" id="newsError"></div>
+<div class="news-grid" id="newsGrid"></div>
+</section>
 </div></div></section>
 </main>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
-
-
-
 <script src="firebase-config.js"></script><script src="portal-config.js"></script><script src="auth.js"></script><script src="portal-access.js"></script><script src="ui.js"></script>
 <script>
 const loanLabels={home_loan:'Home Loan',personal_loan:'Personal Loan',business_loan:'Business Loan',car_loan:'Car / Vehicle Loan',education_loan:'Education Loan',loan_against_property:'Loan Against Property',home_loan_bt_topup:'Home Loan BT + Top-up',balance_transfer_consolidation:'Balance Transfer / Consolidation',project_funds:'Project Funds'};
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const formatDate=s=>{if(!s)return 'Date not provided';const d=new Date(s);return isNaN(d)?s:d.toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'})};
-function guestSession(){try{const x=JSON.parse(sessionStorage.getItem('hcGuestSession')||'null');return x&&x.token&&new Date(x.expiresAt)>new Date()?x:null}catch{return null}}
-async function publicApi(action,token){const fd=new FormData();fd.set('action',action);fd.set('guestToken',token);const r=await fetch(HC_PORTAL_CONFIG.appsScriptUrl,{method:'POST',body:fd,cache:'no-store'});const raw=await r.text();let d;try{d=JSON.parse(raw)}catch{throw Error('Please check with support for access issue.')}if(!d.ok)throw Error(d.error||'Unable to load data.');return d}
 (async()=>{
- const gate=document.getElementById('rateGate'),content=document.getElementById('rateContent'),g=guestSession();
+ const gate=document.getElementById('rateGate'),content=document.getElementById('rateContent');
  let access=null;try{access=await HCPortalAccess.allow('loanRates')}catch{}
- if(!access?.ctx?.user&&!g){location.href='guest-login.html?return='+encodeURIComponent('loan-rates.html');return}
- if(access?.ctx?.user&&!access.allowed){gate.innerHTML='<div class="access-denied"><h2>Access not enabled</h2><p>Loan Rates are not enabled for your account.</p><a class="btn ghost" href="executive-dashboard.html">Back to Dashboard</a></div>';return}
+ if(!access?.ctx?.user){location.replace('login.html?return='+encodeURIComponent('loan-rates.html'));return}
+ if(!access.allowed){location.replace('executive-dashboard.html?notice=permission');return}
  gate.hidden=true;content.hidden=false;
- const ratePromise=access?.ctx?.user?HCAuth.api('ratesOnly'):publicApi('guestRatesOnly',g.token);
- const newsPromise=access?.ctx?.user?HCAuth.api('newsOnly'):publicApi('guestNewsOnly',g.token);
- ratePromise.then(payload=>{renderRates(Array.isArray(payload.rates)?payload.rates:[],payload)}).catch(err=>{roiLoading.hidden=true;roiError.hidden=false;roiError.textContent='Unable to load lender information right now. Please try again later.'});
- newsPromise.then(payload=>renderNews(Array.isArray(payload.news)?payload.news:[])).catch(err=>{newsLoading.hidden=true;newsError.hidden=false;newsError.textContent='Unable to load banking updates right now. Please try again later.'});
+ HCAuth.api('ratesOnly').then(payload=>{renderRates(Array.isArray(payload.rates)?payload.rates:[],payload)}).catch(()=>{roiLoading.hidden=true;roiError.hidden=false;roiError.textContent='Unable to load lender information right now. Please try again later.'});
+ HCAuth.api('newsOnly').then(payload=>renderNews(Array.isArray(payload.news)?payload.news:[])).catch(()=>{newsLoading.hidden=true;newsError.hidden=false;newsError.textContent='Unable to load banking updates right now. Please try again later.'});
 })();
 
 function renderRates(rates,payload){
@@ -126,5 +116,4 @@ function renderNews(news){
   grid.innerHTML=news.map(n=>`<a class="news-card" href="${esc(n.link)}" target="_blank" rel="noopener noreferrer"><strong>${esc(n.title)}</strong><div class="news-meta">${esc(n.source||'Source')} · ${esc(formatDate(n.pubDate))}</div></a>`).join('');
 }
 </script>
-
 <script src="nav-shared.js"></script><script src="site-ads.js"></script><script src="app-shell.js"></script></body></html>

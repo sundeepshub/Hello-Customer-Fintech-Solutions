@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Guest Access | Hello Customer Fintech Solutions</title><link rel="stylesheet" href="style.css"></head>
 <body><div id="hcPageLoader" class="page-loader"><div class="page-loader-card"><span class="page-loader-spinner"></span><b>Loading…</b><small>Please wait</small></div></div><header class="site-header"><div class="container nav"><a class="brand" href="home.html"><span class="brand-mark">HC</span><span><strong>Hello Customer</strong><small>FINTECH SOLUTIONS</small></span></a><nav id="guestPublicNav"><a href="home.html">Home</a><a href="login.html">Login</a></nav></div></header>
-<main><section class="section"><div class="container auth-shell"><div><img id="guestBrandImage" class="guest-hero-image" alt="Campaign"><div class="eyebrow">Guest access</div><h1>Continue as a Guest</h1><p>Enter the mandatory details below to continue to the information shared with you.</p><div id="sourceBadge" class="notice" hidden></div></div>
+<main><section class="section"><div class="container auth-shell"><div><img id="guestBrandImage" class="guest-hero-image" src="assets/guest/guest-access-hero.png" alt="Loan guidance and guest access" loading="eager" decoding="async"><div class="eyebrow">Guest access</div><h1>Continue as a Guest</h1><p>Enter the mandatory details below to continue to the information shared with you.</p><div id="sourceBadge" class="notice" hidden></div></div>
 <form id="guestForm" class="auth-card" novalidate>
 <label>Full Name *<input name="fullName" required maxlength="120" autocomplete="name"></label>
 <label>Mobile Number *<input name="mobile" required inputmode="numeric" maxlength="10" autocomplete="tel"></label>
@@ -11,10 +11,11 @@
 <label>Any CIBIL / Credit issue? *<select name="hasCibilIssue" id="guestCibil" required><option value="">Select</option><option>No</option><option>Yes</option><option>Not sure</option></select></label>
 <label id="guestCibilDetailsWrap" hidden>CIBIL / Credit details *<textarea name="cibilDetails" rows="3" maxlength="900" placeholder="Example: overdue, settlement, late payment, unknown account, score concern, or not sure about the report"></textarea></label>
 <label class="consent-check"><input type="checkbox" name="consent" required> I agree that Hello Customer Fintech Solutions may contact me regarding this enquiry.</label>
-<button class="btn primary" type="submit">Enter as a Guest →</button><div id="guestMsg" class="auth-message"></div></form>
+<button class="btn primary hc-guest-btn" type="submit">Continue as a Guest →</button><div id="guestMsg" class="auth-message"></div></form>
 </div></section></main><script src="portal-config.js"></script><script src="ui.js"></script>
 <script>
-const f=document.getElementById('guestForm'),q=new URLSearchParams(location.search),source=(q.get('source')||'Website').slice(0,40),ref=(q.get('ref')||'').slice(0,60),campaignId=(q.get('campaign')||'').slice(0,60),ret=(q.get('return')||'loan-rates.html').replace(/^https?:.*/i,'loan-rates.html');
+const f=document.getElementById('guestForm'),q=new URLSearchParams(location.search),source=(q.get('source')||'Website').slice(0,40),ref=(q.get('ref')||'').slice(0,60),campaignId=(q.get('campaign')||'').slice(0,60);let ret=(q.get('return')||'index.html#eligibility').replace(/^https?:.*/i,'index.html#eligibility');
+if(['loan-rates.html','government-schemes.html'].includes(ret.split('?')[0].split('#')[0]))ret='index.html#eligibility';
 const tracking=!!(ref||q.get('source')||campaignId);if(tracking){document.body.classList.add('guest-tracking');document.body.dataset.trackingMode='true';guestPublicNav.hidden=true;document.querySelector('.brand')?.removeAttribute('href')}
 if(ref||source!=='Website'||campaignId){sourceBadge.hidden=false;sourceBadge.textContent='Campaign: '+source+(ref?' · '+ref:'')+(campaignId?' · '+campaignId:'')}
 f.mobile.oninput=()=>f.mobile.value=f.mobile.value.replace(/\D/g,'').slice(0,10);f.pincode.oninput=()=>f.pincode.value=f.pincode.value.replace(/\D/g,'').slice(0,6);

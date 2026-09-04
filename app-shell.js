@@ -30,7 +30,7 @@
       const d=await HCAuth.api('getAccessContext',{page:path}),pol=d.policies||[];
       const denied=(scope,key)=>pol.some(x=>x.scope===scope&&String(x.key||'').toLowerCase()===String(key||'').toLowerCase()&&x.allow===false);
       if(denied('page','access')||denied('page',path)){
-        document.querySelector('main')?.replaceChildren(Object.assign(document.createElement('section'),{className:'section',innerHTML:'<div class="container"><div class="access-denied"><h2>Access not enabled</h2><p>This page is not enabled for your account. Please contact the administrator if you need access.</p><a class="btn ghost" href="executive-dashboard.html">Back to Dashboard</a></div></div>'}));return;
+        location.replace('executive-dashboard.html?notice=permission');return;
       }
       document.querySelectorAll('[data-policy-key]').forEach(el=>{const k=el.dataset.policyKey;if(denied('option',k)||denied('form',k)||denied('data',k))el.hidden=true});
       document.querySelectorAll('.portal-nav a[href]').forEach(a=>{const h=(a.getAttribute('href')||'').split('?')[0];if(pol.some(x=>x.scope==='page'&&x.allow===false&&(x.key===h||x.page===h)))a.hidden=true});
