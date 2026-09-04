@@ -1,5 +1,6 @@
 (function(){
   const path=(location.pathname.split('/').pop()||'home.html').toLowerCase();
+  function brandUpgrade(){if(!document.body.classList.contains('portal-body'))document.body.classList.add('hc-modern-public');document.querySelectorAll('.brand').forEach(b=>{if(b.dataset.hcBrand==='1')return;b.dataset.hcBrand='1';b.innerHTML='<span class="hc-logo-symbol" aria-hidden="true"><i></i><i></i><i></i></span><span class="hc-wordmark"><strong><span>Hello</span><em>Customer</em></strong><small>Loans · Finance · Your Growth Partner</small></span>'});}
   function overlay(){if(document.getElementById('hcPageLoader'))return;const d=document.createElement('div');d.id='hcPageLoader';d.className='page-loader';d.innerHTML='<div class="page-loader-card"><span class="page-loader-spinner"></span><b>Loading…</b><small>Please wait</small></div>';document.body.appendChild(d)}
   function hide(){document.getElementById('hcPageLoader')?.classList.add('done');setTimeout(()=>document.getElementById('hcPageLoader')?.remove(),220)}
   function show(label='Loading…'){overlay();const d=document.getElementById('hcPageLoader');d?.classList.remove('done');const b=d?.querySelector('b');if(b)b.textContent=label}
@@ -27,7 +28,7 @@
     const u=await new Promise(res=>{const off=HCAuth.auth.onAuthStateChanged(x=>{off();res(x)})});if(!u)return;
     document.querySelectorAll('a[href="login.html"],a[href="admin-login.html"],a[href="executive-login.html"]').forEach(a=>{if(a.closest('.portal-nav'))a.remove()});
     try{
-      const d=await HCAuth.api('getAccessContext',{page:path}),pol=d.policies||[];
+      let d=null;try{const c=JSON.parse(sessionStorage.getItem('hcAccessContext')||'null');if(c&&c.__page===path)d=c}catch(_){}if(!d){d=await HCAuth.api('getAccessContext',{page:path});d.__page=path;sessionStorage.setItem('hcAccessContext',JSON.stringify(d))}const pol=d.policies||[];
       const denied=(scope,key)=>pol.some(x=>x.scope===scope&&String(x.key||'').toLowerCase()===String(key||'').toLowerCase()&&x.allow===false);
       if(denied('page','access')||denied('page',path)){
         location.replace('executive-dashboard.html?notice=permission');return;
@@ -53,14 +54,14 @@
   }
   async function roleAndReminders(){
     if(!window.HCAuth?.auth||!document.querySelector('.portal-nav'))return;const u=await new Promise(res=>{const off=HCAuth.auth.onAuthStateChanged(x=>{off();res(x)})});if(!u)return;
-    try{const p=(await HCAuth.api('getProfile')).profile,nav=document.querySelector('.portal-nav'),label=p.role==='admin'?'Admin Logged In':p.role==='connector'?'Connector IN':'Executive IN';let badge=document.getElementById('hcRoleState');if(!badge){badge=document.createElement('span');badge.id='hcRoleState';badge.className='login-state';nav.insertBefore(badge,nav.querySelector('#logout')||null)}badge.textContent=label;
+    try{const p=HCAuth.getCachedProfile?.()||(await HCAuth.api('getProfile')).profile,nav=document.querySelector('.portal-nav'),label=p.role==='admin'?'Admin Logged In':p.role==='connector'?'Connector IN':'Executive IN';let badge=document.getElementById('hcRoleState');if(!badge){badge=document.createElement('span');badge.id='hcRoleState';badge.className='login-state';nav.insertBefore(badge,nav.querySelector('#logout')||null)}badge.textContent=label;
       if(window.HCCRM){const leads=await HCCRM.myLeads(),today=new Date();today.setHours(23,59,59,999);const done=['Closed','Disbursed','Rejected','Not Interested'];const due=leads.filter(x=>{if(done.includes(x.status)||!x.nextFollowUp)return false;const d=new Date(String(x.nextFollowUp).split('|')[0].trim());return !isNaN(d)&&d<=today}).length;if(due){let r=document.getElementById('hcFollowReminder');if(!r){r=document.createElement('a');r.id='hcFollowReminder';r.className='follow-reminder';r.href='my-leads.html?followup=due';nav.insertBefore(r,nav.querySelector('#logout')||null)}r.textContent=`Follow-ups ${due}`;r.title='Follow-ups due today or earlier';}}
     }catch(_){ }
   }
 
   function navLoading(){document.addEventListener('click',e=>{const a=e.target.closest('a[href]');if(!a||a.target==='_blank'||a.hasAttribute('download'))return;const h=a.getAttribute('href');if(!h||h.startsWith('#')||h.startsWith('javascript:')||h.startsWith('mailto:')||h.startsWith('tel:'))return;show('Opening page…')},true)}
   function noDuplicateExplore(){document.querySelectorAll('header nav').forEach(n=>{const ex=[...n.querySelectorAll('.nav-dropdown')].filter(d=>/^Explore\b/i.test(d.querySelector('.nav-drop-btn')?.textContent||''));ex.slice(1).forEach(x=>x.remove())})}
-  document.addEventListener('DOMContentLoaded',()=>{overlay();tooltips();navLoading();noDuplicateExplore();enhanceTables();const mo=new MutationObserver(()=>enhanceTables());mo.observe(document.body,{childList:true,subtree:true});setTimeout(hide,180);setTimeout(idleSession,300);setTimeout(accessPolicies,350);setTimeout(roleAndReminders,450)});
+  document.addEventListener('DOMContentLoaded',()=>{brandUpgrade();overlay();tooltips();navLoading();noDuplicateExplore();enhanceTables();const mo=new MutationObserver(()=>enhanceTables());mo.observe(document.body,{childList:true,subtree:true});setTimeout(hide,180);setTimeout(idleSession,300);setTimeout(accessPolicies,350);setTimeout(roleAndReminders,1200)});
   window.addEventListener('load',hide,{once:true});
   window.HCAppShell={show,hide};
 })();
