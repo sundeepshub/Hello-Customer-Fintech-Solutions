@@ -164,3 +164,6 @@ body{background:#f8fafc;color:var(--hc-text)}
 .disabled-option{opacity:.5}
 @media(max-width:900px){.hc-creative-workspace,.dashboard-grid{grid-template-columns:1fr}.hc-side-preview{position:static}.hc-calc-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.hc-calc-grid{grid-template-columns:1fr}.dashboard-head{display:block}.portal-body .container{padding-left:14px;padding-right:14px}}
+
+/* Revision 23 — public footer/legal */
+.footer .footer-grid a{display:block!important;color:#dbe6f1!important;opacity:1!important;visibility:visible!important;text-decoration:none!important;font-weight:500!important}.footer .footer-grid a:hover{color:#fff!important;text-decoration:underline!important}.footer .footer-grid h4{color:#fff!important}.hc-legal-page{max-width:920px}.hc-legal-page h1{font-size:clamp(40px,5vw,60px)}.hc-legal-page h2{font-size:25px;margin-top:32px;margin-bottom:10px}.hc-legal-page p,.hc-legal-page li{color:#46586d}.hc-legal-updated{padding-bottom:18px;border-bottom:1px solid var(--line)}.hc-legal-note{margin-top:30px;padding:16px;border-left:4px solid var(--gold);background:#fbf8f1}.hc-legal-page .dashboard-grid{margin:24px 0}
