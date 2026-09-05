@@ -5,11 +5,11 @@
 <header class="site-header"><div class="container nav"><a class="brand" href="admin-dashboard.html"><span class="brand-mark">HC</span><span><strong>Hello Customer</strong><small>FINTECH SOLUTIONS</small></span></a>
 <nav class="portal-nav"><a href="admin-dashboard.html">Dashboard</a><a href="offers.html">Offer Library</a><a href="media-library.html">Media Library</a><a href="ad-manager.html">Ad Manager</a><a href="admin-settings.html">Settings</a><button class="btn primary small" id="logout">Logout</button></nav></div></header>
 <main class="portal-main"><section class="section"><div class="container">
-<div class="dashboard-head"><div><div class="eyebrow">Admin control</div><h1>Offer Creative Manager</h1><p>Upload, replace, enable or disable the image used for every Offer Library template.</p></div></div>
+<div class="dashboard-head"><div><div class="eyebrow">Admin control</div><h1>Offer Creative Manager</h1><p>Manage approved offer creatives, messages and publishing readiness.</p></div></div>
 
 <div class="dashboard-panel admin-note"><b>Creative placement note — Admin only</b><p>Recommended sizes: Hero 1920×600, campaign 1200×400, offer card 600×400, compact card 400×300. Keep important text away from edges and publish only verified offer/eligibility information. Avoid approval guarantees.</p></div>
 
-<div class="dashboard-panel"><div class="section-head"><div><h2>Offer Templates</h2><p class="muted">Images can be uploaded here or selected from the Admin Media Library.</p></div><button id="refreshOffers" class="btn ghost">Refresh</button></div>
+<div class="dashboard-panel"><div class="section-head"><div><h2>Money Mantri Tips</h2><p class="muted">Short financial-awareness reminders for responsible borrower communication.</p></div><button class="btn ghost small" id="refreshMoneyTips" type="button">Refresh</button></div><div id="moneyTips">Loading…</div><p class="hc-disclaimer">Use these as awareness content, not as lender advice or a promise of approval. Verify current lender terms separately.</p></div><div class="dashboard-panel"><div class="section-head"><div><h2>Offer Templates</h2><p class="muted">Images can be uploaded here or selected from the Admin Media Library.</p></div><button id="refreshOffers" class="btn ghost">Refresh</button></div>
 <div id="offerManagerGrid" class="offer-manager-grid">Loading…</div></div>
 </div></section></main>
 
@@ -72,4 +72,4 @@
   }
   refreshOffers.onclick=load; await load();
 })();
-</script><script src="nav-shared.js"></script><script src="app-shell.js"></script></body></html>
+</script><script>(async()=>{async function loadMoneyTips(){if(!document.getElementById('moneyTips'))return;HCUI.setLoading(document.getElementById('refreshMoneyTips'),true,'Refreshing…');try{const d=await HCCRM.api('moneyMantriTips');moneyTips.innerHTML=(d.tips||[]).map(x=>`<div class="portal-subcard"><b>${HCCRM.esc(x.title)}</b><p>${HCCRM.esc(x.text)}</p><small>${HCCRM.esc(x.source||'')}</small></div>`).join('')||'<p class="muted">No tips available.</p>'}catch(e){moneyTips.textContent='Unable to load tips.'}finally{HCUI.setLoading(document.getElementById('refreshMoneyTips'),false)}}document.getElementById('refreshMoneyTips')?.addEventListener('click',loadMoneyTips);loadMoneyTips()})();</script><script src="nav-shared.js"></script><script src="app-shell.js"></script></body></html>
