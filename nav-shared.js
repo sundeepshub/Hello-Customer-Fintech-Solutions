@@ -16,3 +16,20 @@ async function applyPortalPermissions(){if(!window.HCAuth?.auth)return;const u=H
 function bind(){document.querySelectorAll('.nav-dropdown').forEach(bindDrop);document.addEventListener('click',e=>{if(!e.target.closest('.nav-dropdown'))document.querySelectorAll('.nav-dropdown.open').forEach(x=>x.classList.remove('open'))},{passive:true});if(document.querySelector('.portal-nav')){document.querySelectorAll('.portal-nav').forEach(ensureMenuFor);addPortalPrimaryNavigation();ensurePortalCoreLinks();ensurePortalLogout();standardizePortalNav();applyPortalPermissions()}else rebuildPublicNav()}
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',bind):bind();window.addEventListener('pageshow',()=>{document.querySelectorAll('.nav-dropdown.open').forEach(x=>x.classList.remove('open'));document.querySelectorAll('nav.open').forEach(x=>x.classList.remove('open'));if(document.querySelector('.portal-nav'))applyPortalPermissions()});
 })();
+/* Revision 25: ordered administrator navigation */
+(function(){
+ function adminNav(){
+  const nav=document.querySelector('.portal-nav'); if(!nav||!document.body.classList.contains('portal-body')) return;
+  const adminHint=location.pathname.includes('admin-')||location.pathname.includes('access-control')||sessionStorage.getItem('hcRole')==='admin';
+  if(!adminHint)return;
+  nav.innerHTML=`<a href="home.html">Home</a><a href="admin-dashboard.html">Dashboard</a>
+  <span class="hc-nav-group"><button type="button">Loans ▾</button><span><a href="personal-loan.html">Personal Loan</a><a href="home-loan.html">Home Loan</a><a href="education-loan.html">Education Loan</a><a href="business-loan.html">Business Loan</a><a href="lap-loan.html">Loan Against Property</a><a href="vehicle-loan.html">Vehicle Loan</a><a href="project-funds.html">Project Funding</a><a href="balance-transfer.html">Balance Transfer & Consolidation</a></span></span>
+  <span class="hc-nav-group"><button type="button">Leads ▾</button><span><a href="my-leads.html?scope=all">All Leads</a><a href="my-leads.html?scope=mine">My Leads</a><a href="new-lead.html">Add Lead</a><a href="lead-queue.html">Assigned Queue</a><a href="my-leads.html?scope=assigned">Assigned Leads</a><a href="my-leads.html?scope=unassigned">Unassigned Leads</a><a href="insurance-leads.html">Insurance Leads</a><a href="insurance-guest.html">Insurance Guest Form</a></span></span>
+  <span class="hc-nav-group"><button type="button">Marketing ▾</button><span><a href="creative-studio.html">Creative Studio</a><a href="social-publisher.html">Social Publisher</a><a href="campaign-manager.html">Campaigns</a><a href="ai-marketing-studio.html">HC AI Engine</a><a href="offer-creatives.html">Offers Creative</a><a href="content-library.html">Content Library</a><a href="research-lab.html">Research Lab</a></span></span>
+  <span class="hc-nav-group"><button type="button">Resources ▾</button><span><a href="employer-checker.html">Employer Checker</a><a href="loan-rates.html">Loan Rates</a><a href="index.html#calculator">Loan Calculator</a><a href="media-library.html">Media Library</a><a href="government-schemes.html">Schemes</a></span></span>
+  <span class="hc-nav-group"><button type="button">General Settings ▾</button><span><a href="ad-manager.html">Ad Manager</a><a href="access-control.html">Access Controls</a><a href="admin-settings.html">Settings</a></span></span>
+  <a href="executive-profile.html">Profile</a><button class="btn primary small" id="logout">Logout</button>`;
+  nav.querySelector('#logout').onclick=()=>window.HCAuth?.logout();
+ }
+ document.addEventListener('DOMContentLoaded',()=>setTimeout(adminNav,80));
+})();

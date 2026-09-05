@@ -41,7 +41,7 @@
 <script>
 (async()=>{
  const {profile}=await HCAuth.guard();logout.onclick=HCAuth.logout;if(profile.role!=='admin'&&profile.permissions?.socialPublisher===false){location.href='executive-dashboard.html?access=denied';return}
- const esc=HCCRM.esc,skills=HCMarketingSkills,ref=profile.role==='admin'?'AID-ADMIN':(profile.role==='connector'?'CID-':'EID-')+(profile.executiveId||'USER');
+ const pushDraft=(()=>{try{return JSON.parse(sessionStorage.getItem('hcPushDraft')||'null')}catch(_){return null}})();const esc=HCCRM.esc,skills=HCMarketingSkills,ref=profile.role==='admin'?'AID-ADMIN':(profile.role==='connector'?'CID-':'EID-')+(profile.executiveId||'USER');if(pushDraft){postTitle.value=pushDraft.title||'';caption.value=pushDraft.caption||'';cta.value=pushDraft.cta||'Start Enquiry';trackUrl.value=pushDraft.trackingUrl||'';const wanted=(pushDraft.platform||'').toLowerCase();document.querySelectorAll('.platform').forEach(x=>x.checked=x.value.toLowerCase().includes(wanted));sessionStorage.removeItem('hcPushDraft');}
  refCode.value=ref;
  messageCategory.innerHTML=(skills.messageCategories||[]).map(x=>`<option>${esc(x)}</option>`).join('');
  cta.innerHTML=(skills.ctas||[]).map(x=>`<option>${esc(x)}</option>`).join('');
